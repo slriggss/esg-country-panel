@@ -6,6 +6,14 @@
 <title>Dashboard &mdash; ESG Country Panel</title>
 <meta name="description" content="Filter and explore 22 years of World Bank ESG country data interactively.">
 <link rel="stylesheet" href="css/style.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('esg-theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 </head>
 <body>
 
@@ -15,6 +23,7 @@
     <div class="links">
       <a href="index.html">Report</a>
       <a href="dashboard.html" class="active">Dashboard</a>
+      <button class="btn" id="theme-toggle" style="margin-left:20px;">&#127769; Dark</button>
     </div>
   </div>
 </nav>
@@ -57,7 +66,9 @@
       </div>
     </div>
     <div class="toolbar-actions">
-      <button class="btn" id="btn-reset">Reset all filters</button>
+      <button class="btn" id="btn-share">Copy shareable link</button>
+      <button class="btn" id="btn-export-csv" style="margin-left:8px;">Download filtered data (CSV)</button>
+      <button class="btn" id="btn-reset" style="margin-left:8px;">Reset all filters</button>
     </div>
   </div>
 
@@ -83,10 +94,27 @@
   </div>
 
   <div class="charts-grid">
-    <div class="chart-card"><h3 style="margin:0 0 8px;font-size:14px;">Trend over time</h3><div class="chart-holder"><canvas id="chart-trend"></canvas></div></div>
-    <div class="chart-card"><h3 style="margin:0 0 8px;font-size:14px;">Latest year, by group</h3><div class="chart-holder"><canvas id="chart-groups"></canvas></div></div>
-    <div class="chart-card"><h3 style="margin:0 0 8px;font-size:14px;">Distribution across countries, latest year</h3><div class="chart-holder"><canvas id="chart-distribution"></canvas></div></div>
-    <div class="chart-card"><h3 style="margin:0 0 8px;font-size:14px;">Highest &amp; lowest countries, latest year</h3><div class="chart-holder"><canvas id="chart-rank"></canvas></div></div>
+    <div class="chart-card">
+      <div class="chart-card-head"><h3>Trend over time</h3><button class="btn btn-sm" data-download="chart-trend">Download PNG</button></div>
+      <div class="chart-holder"><canvas id="chart-trend"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-head"><h3>Latest year, by group</h3><button class="btn btn-sm" data-download="chart-groups">Download PNG</button></div>
+      <div class="chart-holder"><canvas id="chart-groups"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-head"><h3>Distribution across countries, latest year</h3><button class="btn btn-sm" data-download="chart-distribution">Download PNG</button></div>
+      <div class="chart-holder"><canvas id="chart-distribution"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-head"><h3>Highest &amp; lowest countries, latest year</h3><button class="btn btn-sm" data-download="chart-rank">Download PNG</button></div>
+      <div class="chart-holder"><canvas id="chart-rank"></canvas></div>
+    </div>
+  </div>
+
+  <div class="chart-card" style="max-width:none;margin-top:18px;">
+    <div class="chart-card-head"><h3>World map, latest year</h3><button class="btn btn-sm" data-download="chart-map">Download PNG</button></div>
+    <div class="chart-holder" style="height:420px;"><canvas id="chart-map"></canvas></div>
   </div>
 
   <p class="result-count" id="result-count"></p>
@@ -114,8 +142,10 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-geo@4/build/index.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script src="js/charts-common.js"></script>
 <script src="js/dashboard.js"></script>
+<script src="js/theme.js"></script>
 </body>
 </html>

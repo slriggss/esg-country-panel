@@ -1,6 +1,9 @@
 let allRows = [];
 let indicatorMeta = []; // [{code, name, pillar}]
 let charts = {}; // canvasId -> Chart instance
+let mapFeatures = null; // GeoJSON features from the world topojson
+let isoToNumeric = {}; // ISO3 -> numeric country code (for joining to the map)
+let numericToIso3 = {}; // reverse of the above
 
 const state = {
   indicator: null,
@@ -123,6 +126,86 @@ function populateFilters() {
     });
     render();
   });
+
+  document.getElementById('btn-share').addEventListener('click', () => {
+    const btn = document.getElementById('btn-share');
+    const original = btn.textContent;
+    navigator.clipboard.writeText(location.href).then(() => {
+      btn.textContent = 'Link copied!';
+      setTimeout(() => { btn.textContent = original; }, 1500);
+    }).catch(() => {
+      btn.textContent = 'Could not copy — copy the URL bar';
+      setTimeout(() => { btn.textContent = original; }, 2000);
+    });
+  });
+
+  document.getElementById('btn-export-csv').addEventListener('click', () => {
+    const rows = filteredForIndicator();
+    const cols = ['country', 'iso3', 'region', 'income_group', 'year', 'pillar', 'indicator_code', 'indicator_name', 'value', 'pct_change_yoy', 'percentile_rank'];
+    const esc = (v) => {
+      const s = v === null || v === undefined ? '' : String(v);
+      return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    };
+    const csv = [cols.join(',')].concat(rows.map(r => cols.map(c => esc(r[c])).join(','))).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `esg-panel-${state.indicator}-${state.yearFrom}-${state.yearTo}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  document.querySelectorAll('[data-download]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const chart = charts[btn.dataset.download];
+      if (!chart) return;
+      const a = document.createElement('a');
+      a.href = chart.toBase64Image();
+      a.download = `${btn.dataset.download}.png`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+  });
+}
+
+function applyStateFromURL() {
+  const params = new URLSearchParams(location.search);
+  const setSelect = (id, value) => { const el = document.getElementById(id); if (el) el.value = value; };
+
+  if (params.has('indicator') && indicatorMeta.some(i => i.code === params.get('indicator'))) {
+    state.indicator = params.get('indicator');
+    setSelect('f-indicator', state.indicator);
+  }
+  if (params.has('from')) { state.yearFrom = Number(params.get('from')); setSelect('f-year-from', state.yearFrom); }
+  if (params.has('to')) { state.yearTo = Number(params.get('to')); setSelect('f-year-to', state.yearTo); }
+  if (params.has('region')) { state.region = params.get('region'); setSelect('f-region', state.region); }
+  if (params.has('income')) { state.income = params.get('income'); setSelect('f-income', state.income); }
+  if (params.has('country')) { state.country = params.get('country'); setSelect('f-country', state.country); }
+  if (params.has('measure')) {
+    state.measure = params.get('measure');
+    document.querySelectorAll('#measure-switch button').forEach(b => b.classList.toggle('active', b.dataset.measure === state.measure));
+  }
+  if (params.has('breakdown')) {
+    state.breakdown = params.get('breakdown');
+    document.querySelectorAll('#breakdown-switch button').forEach(b => b.classList.toggle('active', b.dataset.breakdown === state.breakdown));
+  }
+}
+
+function syncURL() {
+  const params = new URLSearchParams();
+  params.set('indicator', state.indicator);
+  params.set('from', state.yearFrom);
+  params.set('to', state.yearTo);
+  if (state.region) params.set('region', state.region);
+  if (state.income) params.set('income', state.income);
+  if (state.country) params.set('country', state.country);
+  params.set('measure', state.measure);
+  params.set('breakdown', state.breakdown);
+  history.replaceState(null, '', '?' + params.toString());
 }
 
 function filteredForIndicator() {
@@ -146,6 +229,7 @@ function destroyChart(id) {
 }
 
 function render() {
+  syncURL();
   const rows = filteredForIndicator();
   const ind = indicatorMeta.find(i => i.code === state.indicator);
   const C = window.ESG_COLORS;
@@ -294,6 +378,57 @@ function render() {
     });
   }
 
+  // --- Chart 5: world map, latest year ---
+  if (mapFeatures && window.ChartGeo) {
+    try {
+      const valueByIso3 = {};
+      latestRows.forEach(r => { valueByIso3[r.iso3] = r.value; });
+      const vals = Object.values(valueByIso3);
+      const vMin = vals.length ? Math.min(...vals) : 0;
+      const vMax = vals.length ? Math.max(...vals) : 1;
+      const bucketColor = (v) => {
+        if (v === undefined || v === null) return C.grid;
+        const t = vMax > vMin ? (v - vMin) / (vMax - vMin) : 0.5;
+        const bucket = Math.min(4, Math.max(0, Math.floor(t * 5)));
+        return C.sequential[bucket];
+      };
+      destroyChart('chart-map');
+      charts['chart-map'] = new Chart(document.getElementById('chart-map').getContext('2d'), {
+        type: 'choropleth',
+        data: {
+          labels: mapFeatures.map(f => f.properties.name),
+          datasets: [{
+            label: ind ? ind.name : '',
+            data: mapFeatures.map(f => ({ feature: f, value: valueByIso3[numericToIso3[f.id]] })),
+            backgroundColor: (ctx) => bucketColor(ctx.raw && ctx.raw.value),
+            borderColor: C.surface,
+            borderWidth: 0.5,
+          }],
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          showOutline: true,
+          showGraticule: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => {
+                  const v = ctx.raw && ctx.raw.value;
+                  return `${ctx.raw.feature.properties.name}: ${v === undefined || v === null ? 'no data' : fmt(v)}`;
+                },
+              },
+            },
+          },
+        },
+      });
+    } catch (err) {
+      console.error('Map chart failed to render:', err);
+      const holder = document.getElementById('chart-map').parentElement;
+      holder.innerHTML = `<p class="loading-note">Map failed to load (${err.message}). The other charts and the table below are unaffected.</p>`;
+    }
+  }
+
   // --- Table ---
   const tbody = document.getElementById('table-body');
   const sortedRows = [...rows].sort((a, b) => b.year - a.year || a.country.localeCompare(b.country));
@@ -312,23 +447,38 @@ function render() {
     : `${rows.length.toLocaleString()} matching row${rows.length === 1 ? '' : 's'}.`;
 }
 
-Papa.parse('data/esg_panel.csv', {
-  download: true,
-  header: true,
-  dynamicTyping: true,
-  skipEmptyLines: true,
-  complete: (results) => {
-    allRows = results.data.filter(r => r.iso3);
-    const seen = new Set();
-    indicatorMeta = [];
-    allRows.forEach(r => {
-      if (!seen.has(r.indicator_code)) {
-        seen.add(r.indicator_code);
-        indicatorMeta.push({ code: r.indicator_code, name: r.indicator_name, pillar: r.pillar });
-      }
+function loadCSV() {
+  return new Promise((resolve) => {
+    Papa.parse('data/esg_panel.csv', {
+      download: true, header: true, dynamicTyping: true, skipEmptyLines: true,
+      complete: (results) => resolve(results.data.filter(r => r.iso3)),
     });
-    indicatorMeta.sort((a, b) => a.name.localeCompare(b.name));
-    populateFilters();
-    render();
-  },
+  });
+}
+
+Promise.all([
+  loadCSV(),
+  fetch('data/world-countries-50m.json').then(r => r.json()),
+  fetch('data/iso3_numeric.json').then(r => r.json()),
+]).then(([rows, topology, isoMap]) => {
+  allRows = rows;
+  const seen = new Set();
+  indicatorMeta = [];
+  allRows.forEach(r => {
+    if (!seen.has(r.indicator_code)) {
+      seen.add(r.indicator_code);
+      indicatorMeta.push({ code: r.indicator_code, name: r.indicator_name, pillar: r.pillar });
+    }
+  });
+  indicatorMeta.sort((a, b) => a.name.localeCompare(b.name));
+
+  isoMap.forEach(m => { isoToNumeric[m.iso3] = m.numeric; numericToIso3[m.numeric] = m.iso3; });
+  mapFeatures = ChartGeo.topojson.feature(topology, topology.objects.countries).features;
+
+  populateFilters();
+  applyStateFromURL();
+  render();
+}).catch((err) => {
+  document.getElementById('table-body').innerHTML =
+    `<tr><td colspan="8" class="loading-note">Could not load the data set (${err.message}). Try reloading.</td></tr>`;
 });
