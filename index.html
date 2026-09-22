@@ -6,6 +6,14 @@
 <title>Two Decades of E, S, and G &mdash; A World Bank Country Panel</title>
 <meta name="description" content="An ESG-lens report on 22 years of World Bank country data across 217 countries.">
 <link rel="stylesheet" href="css/style.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('esg-theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 </head>
 <body>
 
@@ -15,6 +23,7 @@
     <div class="links">
       <a href="index.html" class="active">Report</a>
       <a href="dashboard.html">Dashboard</a>
+      <button class="btn" id="theme-toggle" style="margin-left:20px;">&#127769; Dark</button>
     </div>
   </div>
 </nav>
@@ -226,5 +235,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script src="js/charts-common.js"></script>
 <script src="js/report.js"></script>
+<script src="js/theme.js"></script>
 </body>
 </html>
