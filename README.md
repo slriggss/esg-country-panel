@@ -11,16 +11,19 @@ Environmental, Social, and Governance (ESG) indicators &mdash; 217 countries,
 
 | File | What it does |
 |---|---|
-| `index.html` | The report page. Title, byline, headline numbers, 8 findings (each with a chart), and a closing methodology section. Loads `data/findings.json` and renders charts with Chart.js. |
-| `dashboard.html` | The interactive dashboard. Loads `data/esg_panel.csv` directly in the browser (via PapaParse) and lets the reader filter by indicator, year range, region, income group, and country; switch the measure (average/median/total/count) and the breakdown variable (region/income group/none); and see four charts, four summary numbers, and a data table all recompute live. |
-| `css/style.css` | Shared styles for both pages &mdash; one navigation bar, one type system, one color palette (light and dark mode). |
-| `js/charts-common.js` | Shared Chart.js defaults (colors, fonts, tooltip style) so every chart on the site looks like one system. |
-| `js/report.js` | Builds the 8 report-page charts from `data/findings.json`. |
-| `js/dashboard.js` | All dashboard interactivity: filtering, the measure/breakdown switches, the four charts, the summary tiles, and the table. |
+| `index.html` | The report page. Title, byline, headline numbers, 9 findings (each with a chart, including a percentile-based ESG composite score and country ranking), and a closing methodology section. Loads `data/findings.json` and renders charts with Chart.js. |
+| `dashboard.html` | The interactive dashboard. Loads `data/esg_panel.csv` directly in the browser (via PapaParse) and lets the reader filter by indicator, year range, region, income group, and country; switch the measure (average/median/total/count) and the breakdown variable (region/income group/none); and see five charts (trend, group comparison, distribution, high/low ranking, and a world map), four summary numbers, and a data table all recompute live. Also supports shareable filtered links (state syncs to the URL), CSV export of the filtered rows, and PNG export of any chart. |
+| `css/style.css` | Shared styles for both pages &mdash; one navigation bar, one type system, one color palette (light and dark mode, plus a manual toggle). |
+| `js/charts-common.js` | Shared Chart.js defaults (colors, fonts, tooltip style, the sequential color ramp used by the map) so every chart on the site looks like one system. |
+| `js/theme.js` | The light/dark theme toggle button, shared by both pages. |
+| `js/report.js` | Builds the 9 report-page charts from `data/findings.json`. |
+| `js/dashboard.js` | All dashboard interactivity: filtering, URL state sync, the measure/breakdown switches, the five charts (including the choropleth map), CSV/PNG export, the summary tiles, and the table. |
 | `data/esg_panel.csv` | The data set itself. One row = one country, in one year, for one indicator. Columns: `country, iso3, region, income_group, year, pillar, indicator_code, indicator_name, value, pct_change_yoy, percentile_rank`. |
-| `data/findings.json` | Precomputed numbers behind every report-page finding (trends, group averages, correlations), generated from `data/esg_panel.csv` so every number in the report is reproducible from the source data. |
+| `data/findings.json` | Precomputed numbers behind every report-page finding (trends, group averages, correlations, the ESG composite ranking), generated from `data/esg_panel.csv` so every number in the report is reproducible from the source data. |
+| `data/world-countries-50m.json` | World country boundaries (TopoJSON, via the `world-atlas` package) used by the dashboard's map chart. |
+| `data/iso3_numeric.json` | Maps each country's World Bank ISO3 code to the numeric country code the map's TopoJSON uses, so the panel data can be joined to the map. |
 | `scripts/fetch_data.js` | Pulls the raw panel from the World Bank API (source: ESG Data + Worldwide Governance Indicators) and writes `data/esg_panel.csv`. Run with `node scripts/fetch_data.js`. |
-| `scripts/analyze.js` | Reads `data/esg_panel.csv` and computes every number used in the report, writing `data/findings.json`. Run with `node scripts/analyze.js`. |
+| `scripts/analyze.js` | Reads `data/esg_panel.csv` and computes every number used in the report, including the ESG composite score, writing `data/findings.json`. Run with `node scripts/analyze.js`. |
 | `FDA Data Website Project.pdf` | The assignment instructions. |
 | `submission.txt` | Name, student ID, repository URL, and live site URL, as required for turn-in. |
 
