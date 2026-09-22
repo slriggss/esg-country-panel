@@ -4,8 +4,8 @@ A two-page site built around a 2002&ndash;2023 country-level panel of World Bank
 Environmental, Social, and Governance (ESG) indicators &mdash; 217 countries,
 24 indicators, 95,355 rows. Built for the FDA II Data Website Project.
 
-**Live site:** _add the GitHub Pages URL here after publishing_
-**Repository:** _add the GitHub repo URL here after publishing_
+**Live site:** https://slriggss.github.io/esg-country-panel/
+**Repository:** https://github.com/slriggss/esg-country-panel
 
 ## Files
 
