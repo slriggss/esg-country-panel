@@ -188,95 +188,95 @@
         ]
       },
       {
-        "group": "Low income",
+        "group": "Upper middle income",
         "series": [
           {
             "year": 2002,
-            "avg": 16.8
+            "avg": 88.5
           },
           {
             "year": 2003,
-            "avg": 18.2
+            "avg": 88.83
           },
           {
             "year": 2004,
-            "avg": 19.35
+            "avg": 89.42
           },
           {
             "year": 2005,
-            "avg": 19.2
+            "avg": 89.95
           },
           {
             "year": 2006,
-            "avg": 21.41
+            "avg": 90.74
           },
           {
             "year": 2007,
-            "avg": 20.98
+            "avg": 90.89
           },
           {
             "year": 2008,
-            "avg": 20.81
+            "avg": 91.7
           },
           {
             "year": 2009,
-            "avg": 22.32
+            "avg": 92.19
           },
           {
             "year": 2010,
-            "avg": 24.02
+            "avg": 93.11
           },
           {
             "year": 2011,
-            "avg": 25.21
+            "avg": 93.3
           },
           {
             "year": 2012,
-            "avg": 27.41
+            "avg": 93.89
           },
           {
             "year": 2013,
-            "avg": 28.46
+            "avg": 94.23
           },
           {
             "year": 2014,
-            "avg": 30.57
+            "avg": 94.66
           },
           {
             "year": 2015,
-            "avg": 30.9
+            "avg": 95.14
           },
           {
             "year": 2016,
-            "avg": 33.98
+            "avg": 95.49
           },
           {
             "year": 2017,
-            "avg": 35.66
+            "avg": 95.92
           },
           {
             "year": 2018,
-            "avg": 37.31
+            "avg": 96.23
           },
           {
             "year": 2019,
-            "avg": 38.17
+            "avg": 96.56
           },
           {
             "year": 2020,
-            "avg": 39.39
+            "avg": 97.05
           },
           {
             "year": 2021,
-            "avg": 40.8
+            "avg": 97.17
           },
           {
             "year": 2022,
-            "avg": 41.28
+            "avg": 97.34
           },
           {
             "year": 2023,
-            "avg": 43.51
+            "avg": 97.62
           }
         ]
       },
@@ -374,95 +374,95 @@
         ]
       },
       {
-        "group": "Upper middle income",
+        "group": "Low income",
         "series": [
           {
             "year": 2002,
-            "avg": 88.5
+            "avg": 16.8
           },
           {
             "year": 2003,
-            "avg": 88.83
+            "avg": 18.2
           },
           {
             "year": 2004,
-            "avg": 89.42
+            "avg": 19.35
           },
           {
             "year": 2005,
-            "avg": 89.95
+            "avg": 19.2
           },
           {
             "year": 2006,
-            "avg": 90.74
+            "avg": 21.41
           },
           {
             "year": 2007,
-            "avg": 90.89
+            "avg": 20.98
           },
           {
             "year": 2008,
-            "avg": 91.7
+            "avg": 20.81
           },
           {
             "year": 2009,
-            "avg": 92.19
+            "avg": 22.32
           },
           {
             "year": 2010,
-            "avg": 93.11
+            "avg": 24.02
           },
           {
             "year": 2011,
-            "avg": 93.3
+            "avg": 25.21
           },
           {
             "year": 2012,
-            "avg": 93.89
+            "avg": 27.41
           },
           {
             "year": 2013,
-            "avg": 94.23
+            "avg": 28.46
           },
           {
             "year": 2014,
-            "avg": 94.66
+            "avg": 30.57
           },
           {
             "year": 2015,
-            "avg": 95.14
+            "avg": 30.9
           },
           {
             "year": 2016,
-            "avg": 95.49
+            "avg": 33.98
           },
           {
             "year": 2017,
-            "avg": 95.92
+            "avg": 35.66
           },
           {
             "year": 2018,
-            "avg": 96.23
+            "avg": 37.31
           },
           {
             "year": 2019,
-            "avg": 96.56
+            "avg": 38.17
           },
           {
             "year": 2020,
-            "avg": 97.05
+            "avg": 39.39
           },
           {
             "year": 2021,
-            "avg": 97.17
+            "avg": 40.8
           },
           {
             "year": 2022,
-            "avg": 97.34
+            "avg": 41.28
           },
           {
             "year": 2023,
-            "avg": 97.62
+            "avg": 43.51
           }
         ]
       }
@@ -474,16 +474,16 @@
         "avg": 99.94
       },
       {
-        "group": "Low income",
-        "avg": 43.51
+        "group": "Upper middle income",
+        "avg": 97.62
       },
       {
         "group": "Lower middle income",
         "avg": 79.04
       },
       {
-        "group": "Upper middle income",
-        "avg": 97.62
+        "group": "Low income",
+        "avg": 43.51
       }
     ],
     "gap": 56.4
@@ -584,95 +584,95 @@
         ]
       },
       {
-        "group": "Low income",
+        "group": "Upper middle income",
         "series": [
           {
             "year": 2002,
-            "avg": 1.62
+            "avg": 4.8
           },
           {
             "year": 2003,
-            "avg": 1.66
+            "avg": 5.01
           },
           {
             "year": 2004,
-            "avg": 1.65
+            "avg": 5.15
           },
           {
             "year": 2005,
-            "avg": 1.7
+            "avg": 5.22
           },
           {
             "year": 2006,
-            "avg": 1.7
+            "avg": 5.33
           },
           {
             "year": 2007,
-            "avg": 1.68
+            "avg": 5.38
           },
           {
             "year": 2008,
-            "avg": 1.69
+            "avg": 5.44
           },
           {
             "year": 2009,
-            "avg": 1.68
+            "avg": 5.23
           },
           {
             "year": 2010,
-            "avg": 1.69
+            "avg": 5.41
           },
           {
             "year": 2011,
-            "avg": 1.65
+            "avg": 5.41
           },
           {
             "year": 2012,
-            "avg": 1.61
+            "avg": 5.55
           },
           {
             "year": 2013,
-            "avg": 1.57
+            "avg": 5.55
           },
           {
             "year": 2014,
-            "avg": 1.58
+            "avg": 5.5
           },
           {
             "year": 2015,
-            "avg": 1.54
+            "avg": 5.37
           },
           {
             "year": 2016,
-            "avg": 1.55
+            "avg": 5.43
           },
           {
             "year": 2017,
-            "avg": 1.61
+            "avg": 5.47
           },
           {
             "year": 2018,
-            "avg": 1.6
+            "avg": 5.5
           },
           {
             "year": 2019,
-            "avg": 1.61
+            "avg": 5.57
           },
           {
             "year": 2020,
-            "avg": 1.58
+            "avg": 5.26
           },
           {
             "year": 2021,
-            "avg": 1.57
+            "avg": 5.51
           },
           {
             "year": 2022,
-            "avg": 1.56
+            "avg": 5.54
           },
           {
             "year": 2023,
-            "avg": 1.55
+            "avg": 5.65
           }
         ]
       },
@@ -770,95 +770,95 @@
         ]
       },
       {
-        "group": "Upper middle income",
+        "group": "Low income",
         "series": [
           {
             "year": 2002,
-            "avg": 4.8
+            "avg": 1.62
           },
           {
             "year": 2003,
-            "avg": 5.01
+            "avg": 1.66
           },
           {
             "year": 2004,
-            "avg": 5.15
+            "avg": 1.65
           },
           {
             "year": 2005,
-            "avg": 5.22
+            "avg": 1.7
           },
           {
             "year": 2006,
-            "avg": 5.33
+            "avg": 1.7
           },
           {
             "year": 2007,
-            "avg": 5.38
+            "avg": 1.68
           },
           {
             "year": 2008,
-            "avg": 5.44
+            "avg": 1.69
           },
           {
             "year": 2009,
-            "avg": 5.23
+            "avg": 1.68
           },
           {
             "year": 2010,
-            "avg": 5.41
+            "avg": 1.69
           },
           {
             "year": 2011,
-            "avg": 5.41
+            "avg": 1.65
           },
           {
             "year": 2012,
-            "avg": 5.55
+            "avg": 1.61
           },
           {
             "year": 2013,
-            "avg": 5.55
+            "avg": 1.57
           },
           {
             "year": 2014,
-            "avg": 5.5
+            "avg": 1.58
           },
           {
             "year": 2015,
-            "avg": 5.37
+            "avg": 1.54
           },
           {
             "year": 2016,
-            "avg": 5.43
+            "avg": 1.55
           },
           {
             "year": 2017,
-            "avg": 5.47
+            "avg": 1.61
           },
           {
             "year": 2018,
-            "avg": 5.5
+            "avg": 1.6
           },
           {
             "year": 2019,
-            "avg": 5.57
+            "avg": 1.61
           },
           {
             "year": 2020,
-            "avg": 5.26
+            "avg": 1.58
           },
           {
             "year": 2021,
-            "avg": 5.51
+            "avg": 1.57
           },
           {
             "year": 2022,
-            "avg": 5.54
+            "avg": 1.56
           },
           {
             "year": 2023,
-            "avg": 5.65
+            "avg": 1.55
           }
         ]
       }
@@ -870,16 +870,16 @@
         "avg": 11.17
       },
       {
-        "group": "Low income",
-        "avg": 1.55
+        "group": "Upper middle income",
+        "avg": 5.65
       },
       {
         "group": "Lower middle income",
         "avg": 2.36
       },
       {
-        "group": "Upper middle income",
-        "avg": 5.65
+        "group": "Low income",
+        "avg": 1.55
       }
     ],
     "ratio": 7.2
@@ -979,7 +979,1026 @@
   },
   "governance_vs_electricity": {
     "n": 4370,
-    "r": 0.574
+    "r": 0.574,
+    "xLabel": "Government effectiveness (estimate)",
+    "yLabel": "Access to electricity (%)",
+    "points": [
+      {
+        "country": "Afghanistan",
+        "x": -1.637,
+        "y": 62.941
+      },
+      {
+        "country": "Albania",
+        "x": -0.181,
+        "y": 99.768
+      },
+      {
+        "country": "Algeria",
+        "x": -0.544,
+        "y": 99.182
+      },
+      {
+        "country": "Andorra",
+        "x": 1.361,
+        "y": 100
+      },
+      {
+        "country": "Angola",
+        "x": -1.109,
+        "y": 38.25
+      },
+      {
+        "country": "Antigua and Barbuda",
+        "x": 0.326,
+        "y": 99.082
+      },
+      {
+        "country": "Argentina",
+        "x": 0.068,
+        "y": 98.677
+      },
+      {
+        "country": "Armenia",
+        "x": -0.183,
+        "y": 99.55
+      },
+      {
+        "country": "Aruba",
+        "x": 0.969,
+        "y": 99.695
+      },
+      {
+        "country": "Australia",
+        "x": 1.731,
+        "y": 100
+      },
+      {
+        "country": "Austria",
+        "x": 1.718,
+        "y": 100
+      },
+      {
+        "country": "Azerbaijan",
+        "x": -0.545,
+        "y": 99.786
+      },
+      {
+        "country": "Bahamas, The",
+        "x": 0.895,
+        "y": 100
+      },
+      {
+        "country": "Bahrain",
+        "x": 0.427,
+        "y": 100
+      },
+      {
+        "country": "Bangladesh",
+        "x": -0.752,
+        "y": 67.586
+      },
+      {
+        "country": "Barbados",
+        "x": 1.03,
+        "y": 99.991
+      },
+      {
+        "country": "Belarus",
+        "x": -0.816,
+        "y": 95.732
+      },
+      {
+        "country": "Belgium",
+        "x": 1.509,
+        "y": 100
+      },
+      {
+        "country": "Belize",
+        "x": -0.361,
+        "y": 90.436
+      },
+      {
+        "country": "Benin",
+        "x": -0.456,
+        "y": 34.945
+      },
+      {
+        "country": "Bermuda",
+        "x": 1.053,
+        "y": 100
+      },
+      {
+        "country": "Bhutan",
+        "x": 0.413,
+        "y": 81.15
+      },
+      {
+        "country": "Bolivia",
+        "x": -0.403,
+        "y": 86.959
+      },
+      {
+        "country": "Bosnia and Herzegovina",
+        "x": -0.708,
+        "y": 99.614
+      },
+      {
+        "country": "Botswana",
+        "x": 0.494,
+        "y": 55.05
+      },
+      {
+        "country": "Brazil",
+        "x": -0.123,
+        "y": 98.868
+      },
+      {
+        "country": "Brunei Darussalam",
+        "x": 0.821,
+        "y": 100
+      },
+      {
+        "country": "Bulgaria",
+        "x": -0.097,
+        "y": 95.018
+      },
+      {
+        "country": "Burkina Faso",
+        "x": -0.689,
+        "y": 14.995
+      },
+      {
+        "country": "Burundi",
+        "x": -1.209,
+        "y": 6.777
+      },
+      {
+        "country": "Cabo Verde",
+        "x": 0.149,
+        "y": 81.164
+      },
+      {
+        "country": "Cambodia",
+        "x": -0.773,
+        "y": 51.186
+      },
+      {
+        "country": "Cameroon",
+        "x": -0.85,
+        "y": 56.141
+      },
+      {
+        "country": "Canada",
+        "x": 1.842,
+        "y": 100
+      },
+      {
+        "country": "Cayman Islands",
+        "x": 1.138,
+        "y": 100
+      },
+      {
+        "country": "Central African Republic",
+        "x": -1.588,
+        "y": 11.291
+      },
+      {
+        "country": "Chad",
+        "x": -1.288,
+        "y": 7.768
+      },
+      {
+        "country": "Chile",
+        "x": 1.111,
+        "y": 99.3
+      },
+      {
+        "country": "China",
+        "x": 0.119,
+        "y": 99.286
+      },
+      {
+        "country": "Colombia",
+        "x": -0.176,
+        "y": 97.464
+      },
+      {
+        "country": "Comoros",
+        "x": -1.441,
+        "y": 68.809
+      },
+      {
+        "country": "Congo, Dem. Rep.",
+        "x": -1.647,
+        "y": 14.786
+      },
+      {
+        "country": "Congo, Rep.",
+        "x": -1.105,
+        "y": 41.536
+      },
+      {
+        "country": "Costa Rica",
+        "x": 0.296,
+        "y": 99.4
+      },
+      {
+        "country": "Cote d'Ivoire",
+        "x": -0.941,
+        "y": 61.486
+      },
+      {
+        "country": "Croatia",
+        "x": 0.406,
+        "y": 99.973
+      },
+      {
+        "country": "Cuba",
+        "x": -0.347,
+        "y": 98.295
+      },
+      {
+        "country": "Cyprus",
+        "x": 1.197,
+        "y": 100
+      },
+      {
+        "country": "Czechia",
+        "x": 0.9,
+        "y": 100
+      },
+      {
+        "country": "Denmark",
+        "x": 2.02,
+        "y": 100
+      },
+      {
+        "country": "Djibouti",
+        "x": -0.743,
+        "y": 59.164
+      },
+      {
+        "country": "Dominica",
+        "x": 0.236,
+        "y": 93.5
+      },
+      {
+        "country": "Dominican Republic",
+        "x": -0.482,
+        "y": 96.536
+      },
+      {
+        "country": "Ecuador",
+        "x": -0.446,
+        "y": 97.6
+      },
+      {
+        "country": "Egypt, Arab Rep.",
+        "x": -0.458,
+        "y": 99.414
+      },
+      {
+        "country": "El Salvador",
+        "x": -0.365,
+        "y": 93.559
+      },
+      {
+        "country": "Equatorial Guinea",
+        "x": -1.217,
+        "y": 65.886
+      },
+      {
+        "country": "Eritrea",
+        "x": -1.231,
+        "y": 43.045
+      },
+      {
+        "country": "Estonia",
+        "x": 1.074,
+        "y": 100
+      },
+      {
+        "country": "Eswatini",
+        "x": -0.496,
+        "y": 56.073
+      },
+      {
+        "country": "Ethiopia",
+        "x": -0.667,
+        "y": 31.791
+      },
+      {
+        "country": "Fiji",
+        "x": 0.004,
+        "y": 90.077
+      },
+      {
+        "country": "Finland",
+        "x": 2.103,
+        "y": 100
+      },
+      {
+        "country": "France",
+        "x": 1.504,
+        "y": 100
+      },
+      {
+        "country": "Gabon",
+        "x": -0.75,
+        "y": 86.205
+      },
+      {
+        "country": "Gambia, The",
+        "x": -0.62,
+        "y": 49.3
+      },
+      {
+        "country": "Georgia",
+        "x": 0.12,
+        "y": 99.891
+      },
+      {
+        "country": "Germany",
+        "x": 1.754,
+        "y": 100
+      },
+      {
+        "country": "Ghana",
+        "x": -0.064,
+        "y": 68.045
+      },
+      {
+        "country": "Greece",
+        "x": 0.402,
+        "y": 100
+      },
+      {
+        "country": "Greenland",
+        "x": 0.516,
+        "y": 100
+      },
+      {
+        "country": "Grenada",
+        "x": 0.297,
+        "y": 90.441
+      },
+      {
+        "country": "Guam",
+        "x": 0.286,
+        "y": 100
+      },
+      {
+        "country": "Guatemala",
+        "x": -0.741,
+        "y": 87.709
+      },
+      {
+        "country": "Guinea",
+        "x": -0.992,
+        "y": 32.127
+      },
+      {
+        "country": "Guinea-Bissau",
+        "x": -1.268,
+        "y": 17.85
+      },
+      {
+        "country": "Guyana",
+        "x": -0.085,
+        "y": 84.859
+      },
+      {
+        "country": "Haiti",
+        "x": -1.77,
+        "y": 39.782
+      },
+      {
+        "country": "Honduras",
+        "x": -0.662,
+        "y": 82.473
+      },
+      {
+        "country": "Hong Kong SAR, China",
+        "x": 1.695,
+        "y": 100
+      },
+      {
+        "country": "Hungary",
+        "x": 0.628,
+        "y": 99.991
+      },
+      {
+        "country": "Iceland",
+        "x": 1.624,
+        "y": 100
+      },
+      {
+        "country": "India",
+        "x": 0.066,
+        "y": 82.268
+      },
+      {
+        "country": "Indonesia",
+        "x": -0.18,
+        "y": 94.632
+      },
+      {
+        "country": "Iran, Islamic Rep.",
+        "x": -0.565,
+        "y": 99.395
+      },
+      {
+        "country": "Iraq",
+        "x": -1.34,
+        "y": 98.795
+      },
+      {
+        "country": "Ireland",
+        "x": 1.401,
+        "y": 100
+      },
+      {
+        "country": "Israel",
+        "x": 1.381,
+        "y": 100
+      },
+      {
+        "country": "Italy",
+        "x": 0.45,
+        "y": 100
+      },
+      {
+        "country": "Jamaica",
+        "x": 0.208,
+        "y": 93.477
+      },
+      {
+        "country": "Japan",
+        "x": 1.558,
+        "y": 100
+      },
+      {
+        "country": "Jordan",
+        "x": 0.162,
+        "y": 99.682
+      },
+      {
+        "country": "Kazakhstan",
+        "x": -0.459,
+        "y": 99.968
+      },
+      {
+        "country": "Kenya",
+        "x": -0.513,
+        "y": 42.782
+      },
+      {
+        "country": "Kiribati",
+        "x": -0.452,
+        "y": 78.123
+      },
+      {
+        "country": "Korea, Dem. People's Rep.",
+        "x": -1.666,
+        "y": 42.007
+      },
+      {
+        "country": "Korea, Rep.",
+        "x": 1.228,
+        "y": 100
+      },
+      {
+        "country": "Kuwait",
+        "x": 0.063,
+        "y": 100
+      },
+      {
+        "country": "Kyrgyz Republic",
+        "x": -0.797,
+        "y": 99.495
+      },
+      {
+        "country": "Lao PDR",
+        "x": -0.787,
+        "y": 76.736
+      },
+      {
+        "country": "Latvia",
+        "x": 0.601,
+        "y": 99.891
+      },
+      {
+        "country": "Lebanon",
+        "x": -0.429,
+        "y": 99.595
+      },
+      {
+        "country": "Lesotho",
+        "x": -0.46,
+        "y": 27
+      },
+      {
+        "country": "Liberia",
+        "x": -1.272,
+        "y": 15.812
+      },
+      {
+        "country": "Libya",
+        "x": -1.445,
+        "y": 79.218
+      },
+      {
+        "country": "Liechtenstein",
+        "x": 1.627,
+        "y": 100
+      },
+      {
+        "country": "Lithuania",
+        "x": 0.716,
+        "y": 99.759
+      },
+      {
+        "country": "Luxembourg",
+        "x": 1.926,
+        "y": 100
+      },
+      {
+        "country": "Macao SAR, China",
+        "x": 1.054,
+        "y": 100
+      },
+      {
+        "country": "Madagascar",
+        "x": -0.777,
+        "y": 22.623
+      },
+      {
+        "country": "Malawi",
+        "x": -0.719,
+        "y": 9.823
+      },
+      {
+        "country": "Malaysia",
+        "x": 0.839,
+        "y": 99.482
+      },
+      {
+        "country": "Maldives",
+        "x": -0.016,
+        "y": 96.927
+      },
+      {
+        "country": "Mali",
+        "x": -0.968,
+        "y": 32.614
+      },
+      {
+        "country": "Malta",
+        "x": 0.969,
+        "y": 100
+      },
+      {
+        "country": "Marshall Islands",
+        "x": -0.652,
+        "y": 87.577
+      },
+      {
+        "country": "Mauritania",
+        "x": -0.738,
+        "y": 36.141
+      },
+      {
+        "country": "Mauritius",
+        "x": 0.807,
+        "y": 99.436
+      },
+      {
+        "country": "Mexico",
+        "x": -0.026,
+        "y": 99.059
+      },
+      {
+        "country": "Micronesia, Fed. Sts.",
+        "x": -0.251,
+        "y": 68.573
+      },
+      {
+        "country": "Moldova",
+        "x": -0.534,
+        "y": 99.505
+      },
+      {
+        "country": "Monaco",
+        "x": 1.786,
+        "y": 100
+      },
+      {
+        "country": "Mongolia",
+        "x": -0.455,
+        "y": 86.141
+      },
+      {
+        "country": "Montenegro",
+        "x": 0.029,
+        "y": 99.391
+      },
+      {
+        "country": "Morocco",
+        "x": -0.228,
+        "y": 92.245
+      },
+      {
+        "country": "Mozambique",
+        "x": -0.688,
+        "y": 21.232
+      },
+      {
+        "country": "Myanmar",
+        "x": -1.472,
+        "y": 57.559
+      },
+      {
+        "country": "Namibia",
+        "x": 0.245,
+        "y": 46.927
+      },
+      {
+        "country": "Naoero",
+        "x": -0.145,
+        "y": 99.45
+      },
+      {
+        "country": "Nepal",
+        "x": -0.952,
+        "y": 70.909
+      },
+      {
+        "country": "Netherlands",
+        "x": 1.891,
+        "y": 100
+      },
+      {
+        "country": "New Zealand",
+        "x": 1.843,
+        "y": 100
+      },
+      {
+        "country": "Nicaragua",
+        "x": -0.866,
+        "y": 81.018
+      },
+      {
+        "country": "Niger",
+        "x": -0.71,
+        "y": 14.405
+      },
+      {
+        "country": "Nigeria",
+        "x": -1.043,
+        "y": 53.141
+      },
+      {
+        "country": "North Macedonia",
+        "x": -0.211,
+        "y": 99.591
+      },
+      {
+        "country": "Norway",
+        "x": 1.897,
+        "y": 100
+      },
+      {
+        "country": "Oman",
+        "x": 0.184,
+        "y": 99.991
+      },
+      {
+        "country": "Pakistan",
+        "x": -0.635,
+        "y": 87.041
+      },
+      {
+        "country": "Palau",
+        "x": -0.22,
+        "y": 99.123
+      },
+      {
+        "country": "Panama",
+        "x": 0.126,
+        "y": 89.709
+      },
+      {
+        "country": "Papua New Guinea",
+        "x": -0.762,
+        "y": 17.118
+      },
+      {
+        "country": "Paraguay",
+        "x": -0.777,
+        "y": 97.555
+      },
+      {
+        "country": "Peru",
+        "x": -0.326,
+        "y": 88.491
+      },
+      {
+        "country": "Philippines",
+        "x": 0.065,
+        "y": 88.086
+      },
+      {
+        "country": "Poland",
+        "x": 0.556,
+        "y": 99.955
+      },
+      {
+        "country": "Portugal",
+        "x": 0.957,
+        "y": 100
+      },
+      {
+        "country": "Puerto Rico (US)",
+        "x": 0.25,
+        "y": 100
+      },
+      {
+        "country": "Qatar",
+        "x": 0.821,
+        "y": 100
+      },
+      {
+        "country": "Romania",
+        "x": -0.229,
+        "y": 97.85
+      },
+      {
+        "country": "Russian Federation",
+        "x": -0.508,
+        "y": 98.995
+      },
+      {
+        "country": "Rwanda",
+        "x": -0.171,
+        "y": 23.864
+      },
+      {
+        "country": "Samoa",
+        "x": 0.23,
+        "y": 96.364
+      },
+      {
+        "country": "San Marino",
+        "x": 1.361,
+        "y": 100
+      },
+      {
+        "country": "Sao Tome and Principe",
+        "x": -0.717,
+        "y": 65.214
+      },
+      {
+        "country": "Saudi Arabia",
+        "x": 0.016,
+        "y": 99.991
+      },
+      {
+        "country": "Senegal",
+        "x": -0.226,
+        "y": 56.764
+      },
+      {
+        "country": "Serbia",
+        "x": -0.148,
+        "y": 99.809
+      },
+      {
+        "country": "Seychelles",
+        "x": 0.552,
+        "y": 98.25
+      },
+      {
+        "country": "Sierra Leone",
+        "x": -1.192,
+        "y": 18.418
+      },
+      {
+        "country": "Singapore",
+        "x": 2.196,
+        "y": 100
+      },
+      {
+        "country": "Slovak Republic",
+        "x": 0.612,
+        "y": 99.991
+      },
+      {
+        "country": "Slovenia",
+        "x": 1.002,
+        "y": 100
+      },
+      {
+        "country": "Solomon Islands",
+        "x": -0.929,
+        "y": 43.932
+      },
+      {
+        "country": "Somalia, Fed. Rep.",
+        "x": -2.017,
+        "y": 38.186
+      },
+      {
+        "country": "South Africa",
+        "x": 0.262,
+        "y": 83.8
+      },
+      {
+        "country": "South Sudan",
+        "x": -1.979,
+        "y": 4.529
+      },
+      {
+        "country": "Spain",
+        "x": 1.115,
+        "y": 100
+      },
+      {
+        "country": "Sri Lanka",
+        "x": -0.182,
+        "y": 89.727
+      },
+      {
+        "country": "St. Kitts and Nevis",
+        "x": 0.852,
+        "y": 98.773
+      },
+      {
+        "country": "St. Lucia",
+        "x": 0.495,
+        "y": 95.609
+      },
+      {
+        "country": "St. Vincent and the Grenadines",
+        "x": 0.621,
+        "y": 94.145
+      },
+      {
+        "country": "Sudan",
+        "x": -1.363,
+        "y": 43.15
+      },
+      {
+        "country": "Suriname",
+        "x": -0.117,
+        "y": 95.605
+      },
+      {
+        "country": "Sweden",
+        "x": 1.918,
+        "y": 100
+      },
+      {
+        "country": "Switzerland",
+        "x": 1.979,
+        "y": 100
+      },
+      {
+        "country": "Syrian Arab Republic",
+        "x": -1.211,
+        "y": 90.555
+      },
+      {
+        "country": "Tajikistan",
+        "x": -0.998,
+        "y": 99.132
+      },
+      {
+        "country": "Tanzania",
+        "x": -0.5,
+        "y": 23.868
+      },
+      {
+        "country": "Thailand",
+        "x": 0.163,
+        "y": 97.755
+      },
+      {
+        "country": "Timor-Leste",
+        "x": -0.972,
+        "y": 60.977
+      },
+      {
+        "country": "Togo",
+        "x": -1.245,
+        "y": 40.159
+      },
+      {
+        "country": "Tonga",
+        "x": -0.224,
+        "y": 94.509
+      },
+      {
+        "country": "Trinidad and Tobago",
+        "x": 0.269,
+        "y": 99.1
+      },
+      {
+        "country": "Tunisia",
+        "x": 0.169,
+        "y": 99.527
+      },
+      {
+        "country": "Turkiye",
+        "x": 0.153,
+        "y": 99.9
+      },
+      {
+        "country": "Turkmenistan",
+        "x": -1.192,
+        "y": 99.836
+      },
+      {
+        "country": "Tuvalu",
+        "x": -0.566,
+        "y": 97.473
+      },
+      {
+        "country": "Uganda",
+        "x": -0.484,
+        "y": 23.486
+      },
+      {
+        "country": "Ukraine",
+        "x": -0.673,
+        "y": 99.855
+      },
+      {
+        "country": "United Arab Emirates",
+        "x": 1.068,
+        "y": 100
+      },
+      {
+        "country": "United Kingdom",
+        "x": 1.541,
+        "y": 100
+      },
+      {
+        "country": "United States",
+        "x": 1.549,
+        "y": 100
+      },
+      {
+        "country": "Uruguay",
+        "x": 0.61,
+        "y": 99.232
+      },
+      {
+        "country": "Uzbekistan",
+        "x": -0.913,
+        "y": 99.745
+      },
+      {
+        "country": "Vanuatu",
+        "x": -0.322,
+        "y": 46.45
+      },
+      {
+        "country": "Venezuela, RB",
+        "x": -1.174,
+        "y": 99.286
+      },
+      {
+        "country": "Viet Nam",
+        "x": -0.236,
+        "y": 97.045
+      },
+      {
+        "country": "Virgin Islands (U.S.)",
+        "x": 1.013,
+        "y": 100
+      },
+      {
+        "country": "West Bank and Gaza",
+        "x": -0.6,
+        "y": 99.755
+      },
+      {
+        "country": "Yemen, Rep.",
+        "x": -1.39,
+        "y": 64.323
+      },
+      {
+        "country": "Zambia",
+        "x": -0.707,
+        "y": 31.459
+      },
+      {
+        "country": "Zimbabwe",
+        "x": -1.179,
+        "y": 41.605
+      }
+    ]
   },
   "gini_by_region": {
     "byRegion": [
@@ -1766,7 +2785,1174 @@
   },
   "regulation_vs_pollution": {
     "n": 4294,
-    "r": -0.333
+    "r": -0.333,
+    "xLabel": "Regulatory quality (estimate)",
+    "yLabel": "PM2.5 air pollution (micrograms/m3)",
+    "points": [
+      {
+        "country": "Afghanistan",
+        "x": -1.453,
+        "y": 39.523
+      },
+      {
+        "country": "Albania",
+        "x": -0.042,
+        "y": 19.163
+      },
+      {
+        "country": "Algeria",
+        "x": -0.846,
+        "y": 16.172
+      },
+      {
+        "country": "American Samoa",
+        "x": 0.354,
+        "y": 4.389
+      },
+      {
+        "country": "Andorra",
+        "x": 1.437,
+        "y": 11.031
+      },
+      {
+        "country": "Angola",
+        "x": -1.133,
+        "y": 21.384
+      },
+      {
+        "country": "Antigua and Barbuda",
+        "x": 0.442,
+        "y": 9.132
+      },
+      {
+        "country": "Argentina",
+        "x": -0.636,
+        "y": 15.262
+      },
+      {
+        "country": "Armenia",
+        "x": 0.235,
+        "y": 28.36
+      },
+      {
+        "country": "Australia",
+        "x": 1.798,
+        "y": 6.112
+      },
+      {
+        "country": "Austria",
+        "x": 1.55,
+        "y": 14.945
+      },
+      {
+        "country": "Azerbaijan",
+        "x": -0.338,
+        "y": 24.681
+      },
+      {
+        "country": "Bahamas, The",
+        "x": 0.556,
+        "y": 6.14
+      },
+      {
+        "country": "Bahrain",
+        "x": 0.755,
+        "y": 58.353
+      },
+      {
+        "country": "Bangladesh",
+        "x": -0.897,
+        "y": 67.37
+      },
+      {
+        "country": "Barbados",
+        "x": 0.72,
+        "y": 11.364
+      },
+      {
+        "country": "Belarus",
+        "x": -1.104,
+        "y": 17.541
+      },
+      {
+        "country": "Belgium",
+        "x": 1.283,
+        "y": 14.468
+      },
+      {
+        "country": "Belize",
+        "x": -0.327,
+        "y": 16.64
+      },
+      {
+        "country": "Benin",
+        "x": -0.473,
+        "y": 38.582
+      },
+      {
+        "country": "Bermuda",
+        "x": 1.147,
+        "y": 5.27
+      },
+      {
+        "country": "Bhutan",
+        "x": -0.386,
+        "y": 31.259
+      },
+      {
+        "country": "Bolivia",
+        "x": -0.767,
+        "y": 36.62
+      },
+      {
+        "country": "Bosnia and Herzegovina",
+        "x": -0.315,
+        "y": 31.536
+      },
+      {
+        "country": "Botswana",
+        "x": 0.666,
+        "y": 15.884
+      },
+      {
+        "country": "Brazil",
+        "x": -0.002,
+        "y": 16.569
+      },
+      {
+        "country": "Brunei Darussalam",
+        "x": 0.976,
+        "y": 9.173
+      },
+      {
+        "country": "Bulgaria",
+        "x": 0.445,
+        "y": 25.374
+      },
+      {
+        "country": "Burkina Faso",
+        "x": -0.379,
+        "y": 41.228
+      },
+      {
+        "country": "Burundi",
+        "x": -1.033,
+        "y": 37.846
+      },
+      {
+        "country": "Cabo Verde",
+        "x": -0.139,
+        "y": 19.603
+      },
+      {
+        "country": "Cambodia",
+        "x": -0.535,
+        "y": 21.406
+      },
+      {
+        "country": "Cameroon",
+        "x": -0.811,
+        "y": 54.085
+      },
+      {
+        "country": "Canada",
+        "x": 1.682,
+        "y": 7.383
+      },
+      {
+        "country": "Central African Republic",
+        "x": -1.338,
+        "y": 34.83
+      },
+      {
+        "country": "Chad",
+        "x": -1.152,
+        "y": 44.6
+      },
+      {
+        "country": "Chile",
+        "x": 1.332,
+        "y": 23.023
+      },
+      {
+        "country": "China",
+        "x": -0.183,
+        "y": 44.707
+      },
+      {
+        "country": "Colombia",
+        "x": 0.149,
+        "y": 20.256
+      },
+      {
+        "country": "Comoros",
+        "x": -1.343,
+        "y": 11.038
+      },
+      {
+        "country": "Congo, Dem. Rep.",
+        "x": -1.407,
+        "y": 37.46
+      },
+      {
+        "country": "Congo, Rep.",
+        "x": -1.124,
+        "y": 36.618
+      },
+      {
+        "country": "Costa Rica",
+        "x": 0.598,
+        "y": 18.795
+      },
+      {
+        "country": "Cote d'Ivoire",
+        "x": -0.643,
+        "y": 22.674
+      },
+      {
+        "country": "Croatia",
+        "x": 0.294,
+        "y": 20.816
+      },
+      {
+        "country": "Cuba",
+        "x": -1.337,
+        "y": 9.942
+      },
+      {
+        "country": "Cyprus",
+        "x": 1.114,
+        "y": 20.677
+      },
+      {
+        "country": "Czechia",
+        "x": 1.095,
+        "y": 18.322
+      },
+      {
+        "country": "Denmark",
+        "x": 1.94,
+        "y": 10.564
+      },
+      {
+        "country": "Djibouti",
+        "x": -0.721,
+        "y": 39.802
+      },
+      {
+        "country": "Dominica",
+        "x": 0.392,
+        "y": 11.809
+      },
+      {
+        "country": "Dominican Republic",
+        "x": -0.156,
+        "y": 13.236
+      },
+      {
+        "country": "Ecuador",
+        "x": -0.873,
+        "y": 22.601
+      },
+      {
+        "country": "Egypt, Arab Rep.",
+        "x": -0.514,
+        "y": 45.58
+      },
+      {
+        "country": "El Salvador",
+        "x": 0.126,
+        "y": 30.547
+      },
+      {
+        "country": "Equatorial Guinea",
+        "x": -1.512,
+        "y": 37.921
+      },
+      {
+        "country": "Eritrea",
+        "x": -1.798,
+        "y": 33.206
+      },
+      {
+        "country": "Estonia",
+        "x": 1.483,
+        "y": 9.388
+      },
+      {
+        "country": "Eswatini",
+        "x": -0.471,
+        "y": 17.378
+      },
+      {
+        "country": "Ethiopia",
+        "x": -0.9,
+        "y": 23.604
+      },
+      {
+        "country": "Fiji",
+        "x": -0.388,
+        "y": 6.627
+      },
+      {
+        "country": "Finland",
+        "x": 1.923,
+        "y": 6.715
+      },
+      {
+        "country": "France",
+        "x": 1.231,
+        "y": 13.113
+      },
+      {
+        "country": "Gabon",
+        "x": -0.59,
+        "y": 29.276
+      },
+      {
+        "country": "Gambia, The",
+        "x": -0.573,
+        "y": 38.33
+      },
+      {
+        "country": "Georgia",
+        "x": 0.481,
+        "y": 19.382
+      },
+      {
+        "country": "Germany",
+        "x": 1.541,
+        "y": 13.552
+      },
+      {
+        "country": "Ghana",
+        "x": -0.19,
+        "y": 30.073
+      },
+      {
+        "country": "Greece",
+        "x": 0.492,
+        "y": 18.32
+      },
+      {
+        "country": "Greenland",
+        "x": 1.486,
+        "y": 1.726
+      },
+      {
+        "country": "Grenada",
+        "x": 0.12,
+        "y": 11.379
+      },
+      {
+        "country": "Guam",
+        "x": 0.392,
+        "y": 3.984
+      },
+      {
+        "country": "Guatemala",
+        "x": -0.39,
+        "y": 29.602
+      },
+      {
+        "country": "Guinea",
+        "x": -1.046,
+        "y": 28.814
+      },
+      {
+        "country": "Guinea-Bissau",
+        "x": -1.203,
+        "y": 33.341
+      },
+      {
+        "country": "Guyana",
+        "x": -0.531,
+        "y": 18.597
+      },
+      {
+        "country": "Haiti",
+        "x": -1.254,
+        "y": 15.087
+      },
+      {
+        "country": "Honduras",
+        "x": -0.482,
+        "y": 31.167
+      },
+      {
+        "country": "Hungary",
+        "x": 0.789,
+        "y": 19.233
+      },
+      {
+        "country": "Iceland",
+        "x": 1.452,
+        "y": 5.148
+      },
+      {
+        "country": "India",
+        "x": -0.248,
+        "y": 52.534
+      },
+      {
+        "country": "Indonesia",
+        "x": -0.086,
+        "y": 21.569
+      },
+      {
+        "country": "Iran, Islamic Rep.",
+        "x": -1.31,
+        "y": 39.993
+      },
+      {
+        "country": "Iraq",
+        "x": -1.219,
+        "y": 50.125
+      },
+      {
+        "country": "Ireland",
+        "x": 1.705,
+        "y": 9.111
+      },
+      {
+        "country": "Israel",
+        "x": 1.073,
+        "y": 22.81
+      },
+      {
+        "country": "Italy",
+        "x": 0.701,
+        "y": 19.243
+      },
+      {
+        "country": "Jamaica",
+        "x": 0.164,
+        "y": 20.599
+      },
+      {
+        "country": "Japan",
+        "x": 1.277,
+        "y": 12.708
+      },
+      {
+        "country": "Jordan",
+        "x": 0.183,
+        "y": 30.286
+      },
+      {
+        "country": "Kazakhstan",
+        "x": -0.285,
+        "y": 19.75
+      },
+      {
+        "country": "Kenya",
+        "x": -0.36,
+        "y": 19.911
+      },
+      {
+        "country": "Kiribati",
+        "x": -0.819,
+        "y": 4.5
+      },
+      {
+        "country": "Korea, Dem. People's Rep.",
+        "x": -2.071,
+        "y": 25.287
+      },
+      {
+        "country": "Korea, Rep.",
+        "x": 0.889,
+        "y": 22.747
+      },
+      {
+        "country": "Kuwait",
+        "x": 0.194,
+        "y": 62.155
+      },
+      {
+        "country": "Kyrgyz Republic",
+        "x": -0.433,
+        "y": 21.187
+      },
+      {
+        "country": "Lao PDR",
+        "x": -0.942,
+        "y": 29.795
+      },
+      {
+        "country": "Latvia",
+        "x": 0.997,
+        "y": 18.587
+      },
+      {
+        "country": "Lebanon",
+        "x": -0.41,
+        "y": 26.417
+      },
+      {
+        "country": "Lesotho",
+        "x": -0.548,
+        "y": 27.755
+      },
+      {
+        "country": "Liberia",
+        "x": -1.177,
+        "y": 19.171
+      },
+      {
+        "country": "Libya",
+        "x": -1.639,
+        "y": 23.002
+      },
+      {
+        "country": "Lithuania",
+        "x": 1.051,
+        "y": 16.183
+      },
+      {
+        "country": "Luxembourg",
+        "x": 1.802,
+        "y": 12.891
+      },
+      {
+        "country": "Madagascar",
+        "x": -0.69,
+        "y": 13.437
+      },
+      {
+        "country": "Malawi",
+        "x": -0.651,
+        "y": 18.622
+      },
+      {
+        "country": "Malaysia",
+        "x": 0.681,
+        "y": 18.511
+      },
+      {
+        "country": "Maldives",
+        "x": -0.118,
+        "y": 14.247
+      },
+      {
+        "country": "Mali",
+        "x": -0.544,
+        "y": 38.554
+      },
+      {
+        "country": "Malta",
+        "x": 1.093,
+        "y": 13.333
+      },
+      {
+        "country": "Marshall Islands",
+        "x": -0.91,
+        "y": 4.763
+      },
+      {
+        "country": "Mauritania",
+        "x": -0.612,
+        "y": 47.109
+      },
+      {
+        "country": "Mauritius",
+        "x": 0.826,
+        "y": 15.389
+      },
+      {
+        "country": "Mexico",
+        "x": 0.186,
+        "y": 16.831
+      },
+      {
+        "country": "Micronesia, Fed. Sts.",
+        "x": -0.537,
+        "y": 4.287
+      },
+      {
+        "country": "Moldova",
+        "x": -0.274,
+        "y": 18.818
+      },
+      {
+        "country": "Monaco",
+        "x": 1.343,
+        "y": 15.258
+      },
+      {
+        "country": "Mongolia",
+        "x": -0.185,
+        "y": 41.338
+      },
+      {
+        "country": "Montenegro",
+        "x": 0.117,
+        "y": 22.959
+      },
+      {
+        "country": "Morocco",
+        "x": -0.076,
+        "y": 19.025
+      },
+      {
+        "country": "Mozambique",
+        "x": -0.588,
+        "y": 15.597
+      },
+      {
+        "country": "Myanmar",
+        "x": -1.57,
+        "y": 37.064
+      },
+      {
+        "country": "Namibia",
+        "x": 0.189,
+        "y": 16.617
+      },
+      {
+        "country": "Naoero",
+        "x": -0.61,
+        "y": 5.165
+      },
+      {
+        "country": "Nepal",
+        "x": -0.656,
+        "y": 51.299
+      },
+      {
+        "country": "Netherlands",
+        "x": 1.826,
+        "y": 13.709
+      },
+      {
+        "country": "New Zealand",
+        "x": 1.902,
+        "y": 7.051
+      },
+      {
+        "country": "Nicaragua",
+        "x": -0.497,
+        "y": 21.639
+      },
+      {
+        "country": "Niger",
+        "x": -0.689,
+        "y": 66.42
+      },
+      {
+        "country": "Nigeria",
+        "x": -0.886,
+        "y": 62.087
+      },
+      {
+        "country": "North Macedonia",
+        "x": 0.115,
+        "y": 27.232
+      },
+      {
+        "country": "Norway",
+        "x": 1.673,
+        "y": 7.393
+      },
+      {
+        "country": "Oman",
+        "x": 0.679,
+        "y": 46.434
+      },
+      {
+        "country": "Pakistan",
+        "x": -0.718,
+        "y": 56.029
+      },
+      {
+        "country": "Palau",
+        "x": -0.053,
+        "y": 6.09
+      },
+      {
+        "country": "Panama",
+        "x": 0.347,
+        "y": 15.895
+      },
+      {
+        "country": "Papua New Guinea",
+        "x": -0.556,
+        "y": 14.552
+      },
+      {
+        "country": "Paraguay",
+        "x": -0.404,
+        "y": 17.222
+      },
+      {
+        "country": "Peru",
+        "x": 0.191,
+        "y": 35.534
+      },
+      {
+        "country": "Philippines",
+        "x": 0.043,
+        "y": 24.996
+      },
+      {
+        "country": "Poland",
+        "x": 0.772,
+        "y": 23.111
+      },
+      {
+        "country": "Portugal",
+        "x": 0.952,
+        "y": 10.232
+      },
+      {
+        "country": "Puerto Rico (US)",
+        "x": 0.936,
+        "y": 7.247
+      },
+      {
+        "country": "Qatar",
+        "x": 0.658,
+        "y": 104.347
+      },
+      {
+        "country": "Romania",
+        "x": 0.287,
+        "y": 20.165
+      },
+      {
+        "country": "Russian Federation",
+        "x": -0.403,
+        "y": 14.952
+      },
+      {
+        "country": "Rwanda",
+        "x": -0.197,
+        "y": 37.754
+      },
+      {
+        "country": "Samoa",
+        "x": -0.006,
+        "y": 4.731
+      },
+      {
+        "country": "San Marino",
+        "x": 0.869,
+        "y": 15.66
+      },
+      {
+        "country": "Sao Tome and Principe",
+        "x": -0.762,
+        "y": 14.942
+      },
+      {
+        "country": "Saudi Arabia",
+        "x": 0.179,
+        "y": 70.839
+      },
+      {
+        "country": "Senegal",
+        "x": -0.27,
+        "y": 41.586
+      },
+      {
+        "country": "Serbia",
+        "x": -0.25,
+        "y": 24.014
+      },
+      {
+        "country": "Seychelles",
+        "x": 0.147,
+        "y": 9.843
+      },
+      {
+        "country": "Sierra Leone",
+        "x": -1.026,
+        "y": 23.007
+      },
+      {
+        "country": "Singapore",
+        "x": 2.077,
+        "y": 17.781
+      },
+      {
+        "country": "Slovak Republic",
+        "x": 0.879,
+        "y": 19.681
+      },
+      {
+        "country": "Slovenia",
+        "x": 0.765,
+        "y": 17.641
+      },
+      {
+        "country": "Solomon Islands",
+        "x": -1.046,
+        "y": 9.573
+      },
+      {
+        "country": "Somalia, Fed. Rep.",
+        "x": -2.034,
+        "y": 18.449
+      },
+      {
+        "country": "South Africa",
+        "x": 0.435,
+        "y": 27.017
+      },
+      {
+        "country": "South Sudan",
+        "x": -1.773,
+        "y": 24.82
+      },
+      {
+        "country": "Spain",
+        "x": 1.035,
+        "y": 12.197
+      },
+      {
+        "country": "Sri Lanka",
+        "x": -0.114,
+        "y": 26.612
+      },
+      {
+        "country": "St. Kitts and Nevis",
+        "x": 0.757,
+        "y": 9.298
+      },
+      {
+        "country": "St. Lucia",
+        "x": 0.428,
+        "y": 10.982
+      },
+      {
+        "country": "St. Vincent and the Grenadines",
+        "x": 0.343,
+        "y": 11.199
+      },
+      {
+        "country": "Sudan",
+        "x": -1.387,
+        "y": 39.072
+      },
+      {
+        "country": "Suriname",
+        "x": -0.605,
+        "y": 17.652
+      },
+      {
+        "country": "Sweden",
+        "x": 1.782,
+        "y": 7.254
+      },
+      {
+        "country": "Switzerland",
+        "x": 1.817,
+        "y": 13.217
+      },
+      {
+        "country": "Syrian Arab Republic",
+        "x": -1.347,
+        "y": 32.095
+      },
+      {
+        "country": "Tajikistan",
+        "x": -0.978,
+        "y": 29.806
+      },
+      {
+        "country": "Tanzania",
+        "x": -0.531,
+        "y": 21.788
+      },
+      {
+        "country": "Thailand",
+        "x": 0.163,
+        "y": 26.885
+      },
+      {
+        "country": "Timor-Leste",
+        "x": -1.049,
+        "y": 13.654
+      },
+      {
+        "country": "Togo",
+        "x": -0.835,
+        "y": 34.705
+      },
+      {
+        "country": "Tonga",
+        "x": -0.428,
+        "y": 4.66
+      },
+      {
+        "country": "Trinidad and Tobago",
+        "x": 0.296,
+        "y": 14.235
+      },
+      {
+        "country": "Tunisia",
+        "x": -0.113,
+        "y": 19.025
+      },
+      {
+        "country": "Turkiye",
+        "x": 0.156,
+        "y": 26.147
+      },
+      {
+        "country": "Turkmenistan",
+        "x": -1.824,
+        "y": 30.593
+      },
+      {
+        "country": "Tuvalu",
+        "x": -0.689,
+        "y": 5.495
+      },
+      {
+        "country": "Uganda",
+        "x": -0.364,
+        "y": 31.357
+      },
+      {
+        "country": "Ukraine",
+        "x": -0.518,
+        "y": 19.543
+      },
+      {
+        "country": "United Arab Emirates",
+        "x": 0.958,
+        "y": 56.396
+      },
+      {
+        "country": "United Kingdom",
+        "x": 1.723,
+        "y": 12.264
+      },
+      {
+        "country": "United States",
+        "x": 1.474,
+        "y": 9.455
+      },
+      {
+        "country": "Uruguay",
+        "x": 0.564,
+        "y": 11.806
+      },
+      {
+        "country": "Uzbekistan",
+        "x": -1.331,
+        "y": 32.697
+      },
+      {
+        "country": "Vanuatu",
+        "x": -0.424,
+        "y": 7.738
+      },
+      {
+        "country": "Venezuela, RB",
+        "x": -1.585,
+        "y": 21.576
+      },
+      {
+        "country": "Viet Nam",
+        "x": -0.453,
+        "y": 29.841
+      },
+      {
+        "country": "Virgin Islands (U.S.)",
+        "x": 0.944,
+        "y": 6.578
+      },
+      {
+        "country": "West Bank and Gaza",
+        "x": -0.37,
+        "y": 22.582
+      },
+      {
+        "country": "Yemen, Rep.",
+        "x": -1.039,
+        "y": 44.247
+      },
+      {
+        "country": "Zambia",
+        "x": -0.534,
+        "y": 22.046
+      },
+      {
+        "country": "Zimbabwe",
+        "x": -1.661,
+        "y": 16.97
+      }
+    ]
+  },
+  "esg_composite": {
+    "n_countries": 207,
+    "methodology_note": "Average of each country's percentile rank (0-100) across all 24 indicators and all years reported, split into three pillar sub-scores, then averaged across the three pillars. Indicators where a high value is a bad outcome are inverted first so 100 always means \"best\".",
+    "top10": [
+      {
+        "country": "Liechtenstein",
+        "iso3": "LIE",
+        "overall": 82.6,
+        "Environmental": 71.2,
+        "Social": 88.3,
+        "Governance": 88.2
+      },
+      {
+        "country": "Norway",
+        "iso3": "NOR",
+        "overall": 80.6,
+        "Environmental": 62,
+        "Social": 83.9,
+        "Governance": 96
+      },
+      {
+        "country": "Sweden",
+        "iso3": "SWE",
+        "overall": 80.6,
+        "Environmental": 68.6,
+        "Social": 77.3,
+        "Governance": 95.9
+      },
+      {
+        "country": "Iceland",
+        "iso3": "ISL",
+        "overall": 80.5,
+        "Environmental": 64.3,
+        "Social": 83.3,
+        "Governance": 93.9
+      },
+      {
+        "country": "Finland",
+        "iso3": "FIN",
+        "overall": 79.2,
+        "Environmental": 62.4,
+        "Social": 77.4,
+        "Governance": 97.8
+      },
+      {
+        "country": "Switzerland",
+        "iso3": "CHE",
+        "overall": 79,
+        "Environmental": 65.3,
+        "Social": 76.8,
+        "Governance": 95
+      },
+      {
+        "country": "Andorra",
+        "iso3": "AND",
+        "overall": 78.7,
+        "Environmental": 74.1,
+        "Social": 72.9,
+        "Governance": 89
+      },
+      {
+        "country": "New Zealand",
+        "iso3": "NZL",
+        "overall": 77.4,
+        "Environmental": 60.6,
+        "Social": 75.5,
+        "Governance": 96.1
+      },
+      {
+        "country": "Austria",
+        "iso3": "AUT",
+        "overall": 77.1,
+        "Environmental": 60.2,
+        "Social": 79.6,
+        "Governance": 91.5
+      },
+      {
+        "country": "San Marino",
+        "iso3": "SMR",
+        "overall": 75.8,
+        "Environmental": 53.5,
+        "Social": 91.5,
+        "Governance": 82.4
+      }
+    ],
+    "bottom10": [
+      {
+        "country": "Somalia, Fed. Rep.",
+        "iso3": "SOM",
+        "overall": 19.6,
+        "Environmental": 49.9,
+        "Social": 3.7,
+        "Governance": 5.3
+      },
+      {
+        "country": "Yemen, Rep.",
+        "iso3": "YEM",
+        "overall": 19.7,
+        "Environmental": 35,
+        "Social": 15.5,
+        "Governance": 8.6
+      },
+      {
+        "country": "Djibouti",
+        "iso3": "DJI",
+        "overall": 25.5,
+        "Environmental": 39,
+        "Social": 9.8,
+        "Governance": 27.8
+      },
+      {
+        "country": "Afghanistan",
+        "iso3": "AFG",
+        "overall": 26,
+        "Environmental": 51.1,
+        "Social": 14.7,
+        "Governance": 12.3
+      },
+      {
+        "country": "Iraq",
+        "iso3": "IRQ",
+        "overall": 26.2,
+        "Environmental": 35.5,
+        "Social": 27.2,
+        "Governance": 15.8
+      },
+      {
+        "country": "Libya",
+        "iso3": "LBY",
+        "overall": 26.8,
+        "Environmental": 31.7,
+        "Social": 36.4,
+        "Governance": 12.2
+      },
+      {
+        "country": "Sudan",
+        "iso3": "SDN",
+        "overall": 26.9,
+        "Environmental": 55.6,
+        "Social": 13.1,
+        "Governance": 12
+      },
+      {
+        "country": "South Sudan",
+        "iso3": "SSD",
+        "overall": 27.5,
+        "Environmental": 43.9,
+        "Social": 25.5,
+        "Governance": 13.1
+      },
+      {
+        "country": "Syrian Arab Republic",
+        "iso3": "SYR",
+        "overall": 27.9,
+        "Environmental": 38.5,
+        "Social": 32,
+        "Governance": 13.3
+      },
+      {
+        "country": "Mauritania",
+        "iso3": "MRT",
+        "overall": 28.3,
+        "Environmental": 34.9,
+        "Social": 20.2,
+        "Governance": 29.7
+      }
+    ]
   },
   "headline": {
     "total_rows": 95355,

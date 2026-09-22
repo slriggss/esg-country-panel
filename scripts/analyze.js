@@ -46,6 +46,7 @@ for (let i = 1; i < lines.length; i++) {
     indicator_code: f[idx.indicator_code],
     indicator_name: f[idx.indicator_name],
     value: Number(f[idx.value]),
+    percentile_rank: Number(f[idx.percentile_rank]),
   });
 }
 
@@ -61,10 +62,17 @@ function yearlyGlobalAvg(code) {
   return years.map(y => ({ year: y, avg: round(avg(data.filter(r => r.year === y).map(r => r.value)), 2) }));
 }
 
+const INCOME_ORDER = ['High income', 'Upper middle income', 'Lower middle income', 'Low income'];
+
 function yearlyGroupAvg(code, groupField) {
   const data = filterInd(code);
   const years = [...new Set(data.map(r => r.year))].sort((a, b) => a - b);
-  const groups = [...new Set(data.map(r => r[groupField]))].sort();
+  let groups = [...new Set(data.map(r => r[groupField]))];
+  if (groupField === 'income_group') {
+    groups = INCOME_ORDER.filter(g => groups.includes(g));
+  } else {
+    groups = groups.sort();
+  }
   return groups.map(g => ({
     group: g,
     series: years.map(y => ({ year: y, avg: round(avg(data.filter(r => r.year === y && r[groupField] === g).map(r => r.value)), 2) }))
@@ -104,7 +112,7 @@ function pearson(xs, ys) {
   return num / Math.sqrt(dx2 * dy2);
 }
 
-function correlation(codeA, codeB) {
+function correlation(codeA, codeB, nameA, nameB) {
   const a = filterInd(codeA);
   const b = filterInd(codeB);
   const bMap = {};
@@ -114,7 +122,21 @@ function correlation(codeA, codeB) {
     const k = `${r.iso3}|${r.year}`;
     if (bMap[k] !== undefined) { xs.push(r.value); ys.push(bMap[k]); }
   });
-  return { n: xs.length, r: round(pearson(xs, ys), 3) };
+
+  // Country-level averages (across all years) for a legible scatter -- one
+  // point per country instead of one per country-year observation.
+  const byCountryA = {}, byCountryB = {};
+  a.forEach(r => { (byCountryA[r.iso3] = byCountryA[r.iso3] || []).push(r.value); });
+  b.forEach(r => { (byCountryB[r.iso3] = byCountryB[r.iso3] || []).push(r.value); });
+  const points = [];
+  for (const iso3 of Object.keys(byCountryA)) {
+    if (byCountryB[iso3]) {
+      const country = rows.find(r => r.iso3 === iso3)?.country || iso3;
+      points.push({ country, x: round(avg(byCountryA[iso3]), 3), y: round(avg(byCountryB[iso3]), 3) });
+    }
+  }
+
+  return { n: xs.length, r: round(pearson(xs, ys), 3), xLabel: nameA, yLabel: nameB, points };
 }
 
 const findings = {};
@@ -157,7 +179,7 @@ const findings = {};
 
 // --- Finding 5: Government effectiveness vs electricity access (correlation) ---
 {
-  findings.governance_vs_electricity = correlation('GOV_WGI_GE.EST', 'EG.ELC.ACCS.ZS');
+  findings.governance_vs_electricity = correlation('GOV_WGI_GE.EST', 'EG.ELC.ACCS.ZS', 'Government effectiveness (estimate)', 'Access to electricity (%)');
 }
 
 // --- Finding 6: Income inequality (Gini) by region ---
@@ -178,7 +200,55 @@ const findings = {};
 
 // --- Finding 8: Regulatory quality vs PM2.5 pollution (correlation) ---
 {
-  findings.regulation_vs_pollution = correlation('GOV_WGI_RQ.EST', 'EN.ATM.PM25.MC.M3');
+  findings.regulation_vs_pollution = correlation('GOV_WGI_RQ.EST', 'EN.ATM.PM25.MC.M3', 'Regulatory quality (estimate)', 'PM2.5 air pollution (micrograms/m3)');
+}
+
+// --- Finding 9: ESG composite score & country ranking ---
+// Built from the percentile_rank column already in the CSV (each country's
+// standing among all countries reporting that indicator in that year, 0-100).
+// For indicators where a HIGH value is a bad outcome (emissions, pollution,
+// unemployment, coal share, inequality, child mortality), the percentile is
+// inverted so "100" always means "best outcome" across every indicator, in
+// every pillar, before anything is averaged together.
+{
+  const BAD_WHEN_HIGH = new Set([
+    'EG.ELC.COAL.ZS', 'EG.USE.COMM.FO.ZS', 'EN.GHG.ALL.PC.CE.AR5', 'EN.ATM.PM25.MC.M3',
+    'SL.UEM.TOTL.ZS', 'SI.POV.GINI', 'SH.DYN.MORT',
+  ]);
+
+  // country -> pillar -> [adjusted percentiles across all its years/indicators]
+  const byCountryPillar = {};
+  const countryNames = {};
+  for (const r of rows) {
+    if (Number.isNaN(r.percentile_rank)) continue;
+    countryNames[r.iso3] = r.country;
+    const adjusted = BAD_WHEN_HIGH.has(r.indicator_code) ? 100 - r.percentile_rank : r.percentile_rank;
+    byCountryPillar[r.iso3] = byCountryPillar[r.iso3] || {};
+    (byCountryPillar[r.iso3][r.pillar] = byCountryPillar[r.iso3][r.pillar] || []).push(adjusted);
+  }
+
+  const composite = [];
+  for (const iso3 of Object.keys(byCountryPillar)) {
+    const pillars = byCountryPillar[iso3];
+    const pillarScores = {};
+    for (const p of ['Environmental', 'Social', 'Governance']) {
+      if (pillars[p] && pillars[p].length >= 3) pillarScores[p] = round(avg(pillars[p]), 1);
+    }
+    // Require all three pillars represented so the composite isn't skewed by
+    // a country that only reports, say, governance indicators.
+    if (pillarScores.Environmental !== undefined && pillarScores.Social !== undefined && pillarScores.Governance !== undefined) {
+      const overall = round(avg([pillarScores.Environmental, pillarScores.Social, pillarScores.Governance]), 1);
+      composite.push({ country: countryNames[iso3], iso3, overall, ...pillarScores });
+    }
+  }
+  composite.sort((a, b) => b.overall - a.overall);
+
+  findings.esg_composite = {
+    n_countries: composite.length,
+    methodology_note: 'Average of each country\'s percentile rank (0-100) across all 24 indicators and all years reported, split into three pillar sub-scores, then averaged across the three pillars. Indicators where a high value is a bad outcome are inverted first so 100 always means "best".',
+    top10: composite.slice(0, 10),
+    bottom10: composite.slice(-10).reverse(),
+  };
 }
 
 // --- Headline numbers ---
