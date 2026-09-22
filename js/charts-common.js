@@ -12,6 +12,7 @@
     baseline: v('--baseline'),
     surface: v('--surface-1'),
     accent: v('--accent'),
+    sequential: [v('--seq-100'), v('--seq-250'), v('--seq-400'), v('--seq-500'), v('--seq-650')],
   };
 
   if (window.Chart) {
