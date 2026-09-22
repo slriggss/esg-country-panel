@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard &mdash; ESG Country Panel</title>
+<meta name="description" content="Filter and explore 22 years of World Bank ESG country data interactively.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">ESG Country Panel</a>
+    <div class="links">
+      <a href="index.html">Report</a>
+      <a href="dashboard.html" class="active">Dashboard</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="wrap">
+    <h1>Explore the panel</h1>
+    <p class="byline">Pick an indicator, filter it, and everything below &mdash; the summary numbers, the four
+      charts, and the table &mdash; recomputes from the raw CSV in your browser.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="dashboard-toolbar">
+    <div class="filter-row">
+      <div class="filter-field">
+        <label for="f-indicator">Indicator</label>
+        <select id="f-indicator"></select>
+      </div>
+      <div class="filter-field">
+        <label for="f-year-from">From year</label>
+        <select id="f-year-from"></select>
+      </div>
+      <div class="filter-field">
+        <label for="f-year-to">To year</label>
+        <select id="f-year-to"></select>
+      </div>
+      <div class="filter-field">
+        <label for="f-region">Region</label>
+        <select id="f-region"><option value="">All regions</option></select>
+      </div>
+      <div class="filter-field">
+        <label for="f-income">Income group</label>
+        <select id="f-income"><option value="">All income groups</option></select>
+      </div>
+      <div class="filter-field">
+        <label for="f-country">Country</label>
+        <select id="f-country"><option value="">All countries</option></select>
+      </div>
+    </div>
+    <div class="toolbar-actions">
+      <button class="btn" id="btn-reset">Reset all filters</button>
+    </div>
+  </div>
+
+  <div class="stat-grid" id="summary-tiles">
+    <div class="stat-tile"><div class="value" id="stat-countries">&ndash;</div><div class="label">Countries in view</div></div>
+    <div class="stat-tile"><div class="value" id="stat-years">&ndash;</div><div class="label">Years in view</div></div>
+    <div class="stat-tile"><div class="value" id="stat-measure-label">&ndash;</div><div class="label" id="stat-measure-caption">Selected measure</div></div>
+    <div class="stat-tile"><div class="value" id="stat-latest">&ndash;</div><div class="label" id="stat-latest-caption">Latest year average</div></div>
+  </div>
+
+  <div class="switch-row">
+    <div class="switch-group" id="measure-switch">
+      <button data-measure="avg" class="active">Average</button>
+      <button data-measure="median">Median</button>
+      <button data-measure="total">Total</button>
+      <button data-measure="count">Count</button>
+    </div>
+    <div class="switch-group" id="breakdown-switch">
+      <button data-breakdown="region" class="active">By region</button>
+      <button data-breakdown="income_group">By income group</button>
+      <button data-breakdown="none">No breakdown</button>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card"><h3 style="margin:0 0 8px;font-size:14px;">Trend over time</h3><div class="chart-holder"><canvas id="chart-trend"></canvas></div></div>
+    <div class="chart-card"><h3 style="margin:0 0 8px;font-size:14px;">Latest year, by group</h3><div class="chart-holder"><canvas id="chart-groups"></canvas></div></div>
+    <div class="chart-card"><h3 style="margin:0 0 8px;font-size:14px;">Distribution across countries, latest year</h3><div class="chart-holder"><canvas id="chart-distribution"></canvas></div></div>
+    <div class="chart-card"><h3 style="margin:0 0 8px;font-size:14px;">Highest &amp; lowest countries, latest year</h3><div class="chart-holder"><canvas id="chart-rank"></canvas></div></div>
+  </div>
+
+  <p class="result-count" id="result-count"></p>
+  <div class="table-wrap">
+    <table class="data-table" id="data-table">
+      <thead>
+        <tr>
+          <th>Country</th><th>Year</th><th>Region</th><th>Income group</th>
+          <th>Indicator</th><th>Value</th><th>YoY change (%)</th><th>Percentile</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <tr><td colspan="8" class="loading-note">Loading data&hellip;</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    Data: World Bank ESG Data &amp; Worldwide Governance Indicators, pulled via the World Bank API.
+    Built with Claude Code.
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="js/charts-common.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
