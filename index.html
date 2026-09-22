@@ -152,6 +152,25 @@
     <p class="figure-note">World Bank indicators GOV_WGI_RQ.EST and EN.ATM.PM25.MC.M3. Each point is one country's own multi-year average.</p>
   </section>
 
+  <section class="finding">
+    <span class="tag tag-governance">Composite</span>
+    <h2>Building an ESG composite score from this data &mdash; and where it lands 207 countries</h2>
+    <p>
+      Every other finding above looks at one indicator at a time. This one combines all 24: for each of the 207
+      countries with data in every pillar, each indicator-year is converted to a percentile rank against every
+      other country that reported it (0&ndash;100), indicators where a high value is a bad outcome are inverted
+      so 100 always means the best outcome, and the result is averaged into an Environmental score, a Social
+      score, and a Governance score, then averaged once more into a single composite. It's a transparent,
+      equally-weighted score &mdash; not a claim that this is *the* right way to weight ESG, but a demonstration
+      of how one would build it from a panel like this, and a sanity check on the rest of the report: small,
+      wealthy, stable democracies (Liechtenstein, the Nordics, Switzerland) top the list, and states in active
+      conflict or state collapse (Somalia, Yemen, Afghanistan, Syria) sit at the bottom &mdash; which is exactly
+      what a face-valid ESG score should show.
+    </p>
+    <div class="chart-card"><div class="chart-holder" style="height:420px;"><canvas id="chart-composite"></canvas></div></div>
+    <p class="figure-note">Composite = average of Environmental, Social, and Governance pillar scores, each the mean percentile rank across that pillar's indicators and all years 2002&ndash;2023. Full method in the closing section below.</p>
+  </section>
+
   <section class="methodology">
     <h2>About this data set</h2>
     <p>
@@ -187,8 +206,12 @@
       (across all years) per country, to keep the chart legible. Percentile ranks used on the dashboard rank each
       country against every other country reporting the same indicator in the same year (0 = lowest, 100 =
       highest). Year-over-year percent change is <code>(this year &minus; last year) / |last year|</code> for the
-      same country and indicator. All of this is computed in <code>scripts/analyze.js</code>, which reads
-      directly from the same CSV the dashboard loads &mdash; nothing here is hand-typed.</p>
+      same country and indicator. The composite ESG score averages each country's percentile rank across every
+      indicator it has data for, within a pillar, across all years, then averages the three pillar scores;
+      indicators where a high value is a bad outcome (coal share, fossil fuel share, GHG per capita, PM2.5,
+      unemployment, Gini, under-5 mortality) are inverted first. A country is only scored if it has at least
+      three data points in each of the three pillars. All of this is computed in <code>scripts/analyze.js</code>,
+      which reads directly from the same CSV the dashboard loads &mdash; nothing here is hand-typed.</p>
   </section>
 
 </main>

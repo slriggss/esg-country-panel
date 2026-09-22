@@ -175,6 +175,38 @@ async function main() {
 
   // 8. Regulation vs pollution scatter
   scatterChart('chart-regulation', findings.regulation_vs_pollution.points, findings.regulation_vs_pollution.xLabel, findings.regulation_vs_pollution.yLabel, C.series[1]);
+
+  // 9. ESG composite ranking
+  compositeChart('chart-composite', findings.esg_composite.top10, findings.esg_composite.bottom10);
+}
+
+function compositeChart(canvasId, top10, bottom10) {
+  const C = window.ESG_COLORS;
+  const combined = [...top10, ...[...bottom10].reverse()];
+  new Chart(document.getElementById(canvasId), {
+    type: 'bar',
+    data: {
+      labels: combined.map(c => c.country),
+      datasets: [{
+        data: combined.map(c => c.overall),
+        backgroundColor: combined.map(c => top10.includes(c) ? C.series[0] : C.series[7]),
+        borderRadius: 4,
+        maxBarThickness: 16,
+      }],
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: (ctx) => `Composite score: ${ctx.parsed.x}` } },
+      },
+      scales: {
+        x: { min: 0, max: 100, grid: { color: C.grid }, ticks: { color: C.muted }, title: { display: true, text: 'ESG composite score (0–100)', color: C.textSecondary, font: { size: 11 } } },
+        y: { grid: { display: false }, ticks: { color: C.textSecondary, font: { size: 10.5 } } },
+      },
+    },
+  });
 }
 
 main();
