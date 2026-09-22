@@ -399,6 +399,7 @@ function render() {
           labels: mapFeatures.map(f => f.properties.name),
           datasets: [{
             label: ind ? ind.name : '',
+            outline: { type: 'Sphere' },
             data: mapFeatures.map(f => ({ feature: f, value: valueByIso3[numericToIso3[f.id]] })),
             backgroundColor: (ctx) => bucketColor(ctx.raw && ctx.raw.value),
             borderColor: C.surface,
@@ -408,7 +409,13 @@ function render() {
         options: {
           responsive: true, maintainAspectRatio: false,
           showOutline: true,
-          showGraticule: false,
+          showGraticule: true,
+          scales: {
+            projection: {
+              axis: 'x',
+              projection: 'equalEarth',
+            },
+          },
           plugins: {
             legend: { display: false },
             tooltip: {
