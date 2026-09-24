@@ -13,7 +13,7 @@
       || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     btn.textContent = current === 'dark' ? '☀️ Light' : '🌙 Dark';
     btn.addEventListener('click', function () {
-      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       setStored(next);
       location.reload();
