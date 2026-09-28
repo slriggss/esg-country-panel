@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Two Decades of E, S, and G &mdash; A World Bank Country Panel</title>
 <meta name="description" content="An ESG-lens report on 22 years of World Bank country data across 217 countries.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="css/style.css">
 <script>
   (function () {
@@ -46,12 +49,37 @@
       <div class="stat-tile"><div class="value" id="stat-years">&ndash;</div><div class="label">Years spanned</div></div>
       <div class="stat-tile"><div class="value" id="stat-indicators">&ndash;</div><div class="label">ESG indicators tracked</div></div>
     </div>
+    <nav class="section-nav" aria-label="Report sections">
+      <div class="nav-group env">
+        <h3>Environmental</h3>
+        <a href="#s-renewables">Renewables stalled</a>
+        <a href="#s-emissions">Emissions by income</a>
+        <a href="#s-coal">Coal's slow decline</a>
+      </div>
+      <div class="nav-group soc">
+        <h3>Social</h3>
+        <a href="#s-electricity">Electricity access</a>
+        <a href="#s-inequality">Regional inequality</a>
+      </div>
+      <div class="nav-group gov">
+        <h3>Governance</h3>
+        <a href="#s-governance">Governance &amp; access</a>
+        <a href="#s-women">Women in parliament</a>
+        <a href="#s-regulation">Regulation &amp; clean air</a>
+      </div>
+      <div class="nav-group cmp">
+        <h3>Overall</h3>
+        <a href="#s-composite">ESG composite score</a>
+        <a href="#s-method">About the data</a>
+      </div>
+    </nav>
   </div>
 </header>
 
+
 <main class="wrap">
 
-  <section class="finding">
+  <section class="finding" id="s-renewables">
     <span class="tag tag-environmental">Environmental</span>
     <h2>The average country is no more renewable-powered than it was in 2002</h2>
     <p>
@@ -66,7 +94,7 @@
     <p class="figure-note">World Bank indicator EG.FEC.RNEW.ZS, unweighted mean across reporting countries. 2022&ndash;2023 excluded: only ~35% of the usual country panel had reported yet at data-pull time (see methodology).</p>
   </section>
 
-  <section class="finding">
+  <section class="finding" id="s-electricity">
     <span class="tag tag-social">Social</span>
     <h2>Electricity access still splits almost exactly along income lines</h2>
     <p>
@@ -80,22 +108,27 @@
     <p class="figure-note">World Bank indicator EG.ELC.ACCS.ZS, mean by World Bank income classification, 2002&ndash;2023.</p>
   </section>
 
-  <section class="finding">
+  <section class="finding" id="s-emissions">
     <span class="tag tag-environmental">Environmental</span>
     <h2>High-income countries emit more than seven times the CO2 per person of low-income countries</h2>
     <p>
-      In 2023, the average high-income country produced 11.2 tonnes of CO2-equivalent per person, versus 1.55
-      tonnes in the average low-income country &mdash; a 7.2x ratio. Upper-middle-income countries (5.65 t) and
-      lower-middle-income countries (2.36 t) fall in between, roughly stepping down with income. Read alongside
-      the electricity-access finding above, the pattern is uncomfortable for ESG framing that treats "emissions"
-      and "development" as separable: the countries furthest from full electricity access are also the ones with
-      the smallest carbon footprint per person.
+      In 2023, emissions per person stepped down with income: the average high-income country produced 7.2 times
+      the CO2-equivalent per person of the average low-income country. Read alongside the electricity-access
+      finding above, the pattern is uncomfortable for ESG framing that treats "emissions" and "development" as
+      separable: the countries furthest from full electricity access are also the ones with the smallest carbon
+      footprint per person.
     </p>
     <div class="chart-card"><div class="chart-holder"><canvas id="chart-ghg"></canvas></div></div>
+    <ul class="bar-notes" id="ghg-notes">
+      <li data-index="0" tabindex="0"><strong>High income &mdash; 11.17 t per person.</strong> The largest footprint of the four tiers, 7.2&times; the low-income average.</li>
+      <li data-index="1" tabindex="0"><strong>Upper middle income &mdash; 5.65 t.</strong> Roughly half the high-income level.</li>
+      <li data-index="2" tabindex="0"><strong>Lower middle income &mdash; 2.36 t.</strong> About a fifth of the high-income level.</li>
+      <li data-index="3" tabindex="0"><strong>Low income &mdash; 1.55 t.</strong> The smallest footprint &mdash; and, from the finding above, the tier with the lowest electricity access (43.5%).</li>
+    </ul>
     <p class="figure-note">World Bank indicator EN.GHG.ALL.PC.CE.AR5 (total GHG excluding land-use change), mean by income group, 2023.</p>
   </section>
 
-  <section class="finding">
+  <section class="finding" id="s-coal">
     <span class="tag tag-environmental">Environmental</span>
     <h2>Coal's share of the electricity mix has drifted down, but slowly</h2>
     <p>
@@ -108,7 +141,7 @@
     <p class="figure-note">World Bank indicator EG.ELC.COAL.ZS, unweighted mean across reporting countries. 2022&ndash;2023 excluded for the same thin-coverage reason as the renewables chart.</p>
   </section>
 
-  <section class="finding">
+  <section class="finding" id="s-governance">
     <span class="tag tag-governance">Governance</span>
     <h2>Government effectiveness is one of the strongest predictors of electricity access</h2>
     <p>
@@ -119,10 +152,10 @@
       access &mdash; the bottom-left of the chart is dense; the bottom-right is nearly empty.
     </p>
     <div class="chart-card"><div class="chart-holder"><canvas id="chart-governance"></canvas></div></div>
-    <p class="figure-note">World Bank indicators GOV_WGI_GE.EST and EG.ELC.ACCS.ZS. Each point is one country's own multi-year average (203 countries with data on both).</p>
+    <p class="figure-note">World Bank indicators GOV_WGI_GE.EST and EG.ELC.ACCS.ZS. Each point is one country's own multi-year average (203 countries with data on both). Dashed line: least-squares fit to the plotted country averages.</p>
   </section>
 
-  <section class="finding">
+  <section class="finding" id="s-inequality">
     <span class="tag tag-social">Social</span>
     <h2>Latin America remains the world's most unequal region by income</h2>
     <p>
@@ -135,7 +168,7 @@
     <p class="figure-note">World Bank indicator SI.POV.GINI, mean by region, most recent year each region reported in 2023. South Asia excluded: no country in that region reported a 2023 Gini figure.</p>
   </section>
 
-  <section class="finding">
+  <section class="finding" id="s-women">
     <span class="tag tag-governance">Governance</span>
     <h2>Women's parliamentary representation has nearly doubled since 2002</h2>
     <p>
@@ -147,7 +180,7 @@
     <p class="figure-note">World Bank indicator SG.GEN.PARL.ZS, unweighted mean across reporting countries, 2002&ndash;2023.</p>
   </section>
 
-  <section class="finding">
+  <section class="finding" id="s-regulation">
     <span class="tag tag-governance">Governance</span>
     <h2>Stronger regulatory quality tracks with cleaner air &mdash; a moderate but real relationship</h2>
     <p>
@@ -158,10 +191,10 @@
       (geography, industrial mix, and population density all matter too).
     </p>
     <div class="chart-card"><div class="chart-holder"><canvas id="chart-regulation"></canvas></div></div>
-    <p class="figure-note">World Bank indicators GOV_WGI_RQ.EST and EN.ATM.PM25.MC.M3. Each point is one country's own multi-year average.</p>
+    <p class="figure-note">World Bank indicators GOV_WGI_RQ.EST and EN.ATM.PM25.MC.M3. Each point is one country's own multi-year average. Dashed line: least-squares fit to the plotted country averages.</p>
   </section>
 
-  <section class="finding">
+  <section class="finding" id="s-composite">
     <span class="tag tag-governance">Composite</span>
     <h2>Building an ESG composite score from this data &mdash; and where it lands 207 countries</h2>
     <p>
@@ -176,11 +209,20 @@
       conflict or state collapse (Somalia, Yemen, Afghanistan, Syria) sit at the bottom &mdash; which is exactly
       what a face-valid ESG score should show.
     </p>
-    <div class="chart-card"><div class="chart-holder" style="height:420px;"><canvas id="chart-composite"></canvas></div></div>
+    <div class="chart-pair">
+      <div class="chart-card">
+        <div class="chart-card-head"><h3 class="pair-title top">Top 10</h3></div>
+        <div class="chart-holder" style="height:380px;"><canvas id="chart-top10"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-head"><h3 class="pair-title bottom">Bottom 10 <span>(lowest first)</span></h3></div>
+        <div class="chart-holder" style="height:380px;"><canvas id="chart-bottom10"></canvas></div>
+      </div>
+    </div>
     <p class="figure-note">Composite = average of Environmental, Social, and Governance pillar scores, each the mean percentile rank across that pillar's indicators and all years 2002&ndash;2023. Full method in the closing section below.</p>
   </section>
 
-  <section class="methodology">
+  <section class="methodology" id="s-method">
     <h2>About this data set</h2>
     <p>
       The data comes from the World Bank's API, combining its purpose-built
@@ -236,5 +278,6 @@
 <script src="js/charts-common.js"></script>
 <script src="js/report.js"></script>
 <script src="js/theme.js"></script>
+<script src="js/effects.js"></script>
 </body>
 </html>
