@@ -16,8 +16,8 @@
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     targets.forEach((el, i) => {
-      // Report chart cards have their own opening animation (js/report.js).
-      if (el.matches('section.finding .chart-card')) return;
+      // Chart cards have their own opening animation (whenCardOpens).
+      if (el.matches('.chart-card')) return;
       el.classList.add('reveal');
       // Stagger tiles in a row slightly.
       if (el.classList.contains('stat-tile')) el.style.transitionDelay = `${(i % 4) * 70}ms`;

@@ -176,7 +176,7 @@
     ctx.restore();
   }
 
-  // Intro animations (js/report.js) can hold annotations back while the data
+  // Chart intros (esgIntro, below) can hold annotations back while the data
   // draws in: chart.$intro.annot is 0..1 (or one value per dataset), and
   // chart.$intro.fit is how far the scatter trend line has drawn across.
   const introAlpha = (chart, d) => {
@@ -289,4 +289,117 @@
 // Canvas text can't use a web font until it has loaded; redraw once it has.
 if (window.Chart && document.fonts && document.fonts.ready) {
   document.fonts.ready.then(() => Object.values(Chart.instances).forEach(c => c.update('none')));
+}
+
+// ===========================================================================
+// Shared by the report and dashboard: chart intros and card opening.
+// ===========================================================================
+const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ---------------------------------------------------------------------------
+// Chart intros. Each chart can declare options.plugins.esgIntro to control
+// how its data first appears:
+//   { mode: 'sweep' }                 line(s) draw left to right together
+//   { mode: 'sequence', gap }         one line at a time, in dataset order
+//   { mode: 'fade', after }           native animation, then annotations fade in
+//   { mode: 'scatter', after }        points fall in, then trend line draws across
+// Annotations (labels, callouts) are held back until the data has landed.
+// Hover highlighting is untouched: this only affects the first draw.
+// ---------------------------------------------------------------------------
+const ease = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+function tween(chart, duration, delay, step) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const start = performance.now();
+      function frame(now) {
+        const t = Math.min(1, (now - start) / duration);
+        step(ease(t));
+        if (chart.ctx) chart.draw();
+        if (t < 1) requestAnimationFrame(frame); else resolve();
+      }
+      requestAnimationFrame(frame);
+    }, delay);
+  });
+}
+
+if (window.Chart) Chart.register({
+  id: 'esgIntro',
+  beforeInit(chart, args, o) {
+    if (!o || !o.mode) return;
+    const n = chart.data.datasets.length;
+    const clipped = o.mode === 'sweep' || o.mode === 'sequence';
+    chart.$intro = {
+      clip: clipped ? Array(n).fill(0) : null,
+      annot: o.mode === 'sequence' ? Array(n).fill(0) : 0,
+      fill: o.mode === 'sweep' ? 0 : null, // area fill (drawn outside the clip) fades in after
+      fit: o.mode === 'scatter' ? 0 : null,
+    };
+    // Start once the first frame exists.
+    setTimeout(() => runIntro(chart, o), 0);
+  },
+  beforeDatasetDraw(chart, args) {
+    const s = chart.$intro;
+    if (!s || !s.clip) return;
+    const p = s.clip[args.index];
+    const a = chart.chartArea;
+    chart.ctx.save();
+    chart.ctx.beginPath();
+    chart.ctx.rect(a.left - 8, a.top - 30, (a.width + 16) * p, a.height + 60);
+    chart.ctx.clip();
+  },
+  afterDatasetDraw(chart) {
+    if (chart.$intro && chart.$intro.clip) chart.ctx.restore();
+  },
+});
+
+async function runIntro(chart, o) {
+  const s = chart.$intro;
+  if (o.mode === 'sweep') {
+    await tween(chart, 1500, 0, p => s.clip.fill(p));
+    await tween(chart, 450, 0, p => { s.annot = p; s.fill = p; chart.update('none'); });
+  } else if (o.mode === 'sequence') {
+    const gap = o.gap || 750;
+    await Promise.all(s.clip.map((_, d) =>
+      tween(chart, 1000, d * gap, p => { s.clip[d] = p; })
+        .then(() => tween(chart, 350, 0, p => { s.annot[d] = p; }))));
+  } else if (o.mode === 'fade') {
+    await tween(chart, 450, o.after || 0, p => { s.annot = p; });
+  } else if (o.mode === 'scatter') {
+    await tween(chart, 900, o.after || 0, p => { s.fit = p; });
+    await tween(chart, 400, 0, p => { s.annot = p; });
+  }
+  chart.$intro = null; // done: behave exactly like a normal chart from here on
+  chart.draw();
+}
+
+// Staggered first-draw animation for bars. Only the initial ('default') draw
+// is delayed, so hover transitions stay instant.
+const staggered = (step, duration = 800) => ({
+  duration,
+  easing: 'easeOutQuart',
+  delay: (ctx) => (ctx.type === 'data' && ctx.mode === 'default' ? ctx.dataIndex * step : 0),
+});
+
+// Card opening: the card lifts in with a brief glow in its --pillar color the
+// first time it scrolls into view, then onOpen runs (typically: build the
+// chart so its intro plays where the reader can see it). Returns a function
+// reporting whether the card has opened yet.
+function whenCardOpens(card, onOpen) {
+  let opened = false;
+  if (REDUCED_MOTION || !('IntersectionObserver' in window) || !card) {
+    opened = true;
+    onOpen();
+    return () => opened;
+  }
+  card.classList.add('card-closed');
+  const io = new IntersectionObserver((entries) => {
+    if (!entries[0].isIntersecting) return;
+    io.disconnect();
+    card.classList.remove('card-closed');
+    card.classList.add('card-open');
+    setTimeout(() => { opened = true; onOpen(); }, 380);
+  }, { threshold: 0.3 });
+  io.observe(card);
+  return () => opened;
 }

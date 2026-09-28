@@ -410,11 +410,51 @@ function destroyChart(id) {
   if (charts[id]) { charts[id].destroy(); delete charts[id]; }
 }
 
+// Charts are built the first time their card scrolls into view, with an intro
+// matched to the chart type (as on the report page). Later renders -- every
+// filter change -- rebuild immediately with the normal quick animation, so
+// dragging the year slider doesn't replay the intros.
+const cardOpened = {};    // canvasId -> () => boolean
+const pendingConfig = {}; // canvasId -> latest config waiting for its card
+
+function addIntro(id, cfg) {
+  const o = cfg.options = cfg.options || {};
+  o.plugins = o.plugins || {};
+  if (id === 'chart-trend') {
+    // One breakdown group at a time, or a single left-to-right sweep.
+    const n = cfg.data.datasets.length;
+    o.animation = { duration: 0 };
+    o.plugins.esgIntro = n > 1 ? { mode: 'sequence', gap: Math.max(220, 1800 / n) } : { mode: 'sweep' };
+  } else if (id === 'chart-groups') {
+    o.animation = staggered(160, 800);
+  } else if (id === 'chart-distribution') {
+    o.animation = staggered(70, 700);
+  } else if (id === 'chart-rank') {
+    o.animation = staggered(80, 700);
+  }
+}
+
+function mountChart(id, config) {
+  destroyChart(id);
+  const canvas = document.getElementById(id);
+  const isOpen = cardOpened[id];
+  if (isOpen && isOpen()) { charts[id] = new Chart(canvas, config); return; }
+  pendingConfig[id] = config;
+  if (isOpen) return; // card is already opening; it will use the latest config
+  cardOpened[id] = whenCardOpens(canvas.closest('.chart-card'), () => {
+    const cfg = pendingConfig[id];
+    delete pendingConfig[id];
+    if (REDUCED_MOTION) { cfg.options = cfg.options || {}; cfg.options.animation = false; } else addIntro(id, cfg);
+    charts[id] = new Chart(canvas, cfg);
+  });
+}
+
 function render() {
   syncURL();
   const rows = filteredForIndicator();
   const ind = indicatorMeta.find(i => i.code === state.indicator);
   const C = window.ESG_COLORS;
+  if (ind) document.querySelector('main').dataset.pillar = ind.pillar;
 
   // --- Summary tiles ---
   document.getElementById('stat-countries').textContent = new Set(rows.map(r => r.iso3)).size;
@@ -437,8 +477,7 @@ function render() {
     });
     const years = [...new Set(rows.map(r => r.year))].sort((a, b) => a - b);
     const groups = Object.keys(byGroupYear).sort();
-    destroyChart('chart-trend');
-    charts['chart-trend'] = new Chart(document.getElementById('chart-trend'), {
+    mountChart('chart-trend', {
       type: 'line',
       data: {
         labels: years,
@@ -471,8 +510,7 @@ function render() {
       return acc;
     }, {});
     const groupNames = Object.keys(g2).sort();
-    destroyChart('chart-groups');
-    charts['chart-groups'] = new Chart(document.getElementById('chart-groups'), {
+    mountChart('chart-groups', {
       type: 'bar',
       data: {
         labels: groupNames,
@@ -510,8 +548,7 @@ function render() {
       });
       binLabels = bins.map((_, i) => (min + i * width).toFixed(1));
     }
-    destroyChart('chart-distribution');
-    charts['chart-distribution'] = new Chart(document.getElementById('chart-distribution'), {
+    mountChart('chart-distribution', {
       type: 'bar',
       data: {
         labels: binLabels,
@@ -537,8 +574,7 @@ function render() {
     const top = sorted.slice(0, 8);
     const bottom = sorted.slice(-8).reverse();
     const combined = [...top, ...bottom.filter(b => !top.includes(b))];
-    destroyChart('chart-rank');
-    charts['chart-rank'] = new Chart(document.getElementById('chart-rank'), {
+    mountChart('chart-rank', {
       type: 'bar',
       data: {
         labels: combined.map(r => r.country),
@@ -554,7 +590,7 @@ function render() {
         plugins: { legend: { display: false } },
         scales: {
           x: { grid: { color: C.grid }, ticks: { color: C.muted } },
-          y: { grid: { display: false }, ticks: { color: C.textSecondary, font: { size: 10.5 } } },
+          y: { grid: { display: false }, ticks: { color: C.textSecondary, font: { size: 11 }, autoSkip: false } },
         },
       },
     });
@@ -574,8 +610,7 @@ function render() {
         const bucket = Math.min(4, Math.max(0, Math.floor(t * 5)));
         return C.sequential[bucket];
       };
-      destroyChart('chart-map');
-      charts['chart-map'] = new Chart(document.getElementById('chart-map').getContext('2d'), {
+      mountChart('chart-map', {
         type: 'choropleth',
         data: {
           labels: mapFeatures.map(f => f.properties.name),
