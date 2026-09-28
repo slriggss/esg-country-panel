@@ -55,7 +55,7 @@
     <nav class="section-nav" aria-label="Report sections">
       <div class="nav-group env">
         <h3>Environmental</h3>
-        <a href="#s-renewables">Renewables stalled</a>
+        <a href="#s-renewables">Renewables: energy vs. power</a>
         <a href="#s-emissions">Emissions by income</a>
         <a href="#s-coal">Coal's slow decline</a>
       </div>
@@ -84,17 +84,24 @@
 
   <section class="finding" id="s-renewables">
     <span class="tag tag-environmental">Environmental</span>
-    <h2>The average country is no more renewable-powered than it was in 2002</h2>
+    <h2>Renewables are gaining in electricity, but the average country's total energy mix hasn't gotten greener</h2>
     <p>
-      Averaged across every reporting country, renewable energy's share of final energy consumption actually
-      slipped from 31.2% in 2002 to 29.1% in 2021 &mdash; a 2.1 point decline, not the steady climb the "energy
-      transition" narrative implies. This is a simple average of each country's own share, so it isn't dominated
-      by a few large economies; it says the typical country hasn't shifted its energy mix toward renewables over
-      two decades. Solar and wind headlines are real, but they're concentrated in a handful of large, fast-moving
-      markets &mdash; not broad-based across the 170+ countries this average covers each year.
+      Averaged across every reporting country, renewable energy's share of total final energy consumption slipped
+      from 31.2% in 2002 to 29.1% in 2021 &mdash; a 2.1-point decline. This is a simple average of each country's
+      own share, so every country counts equally. But the World Bank counts traditional biomass (firewood,
+      charcoal) as renewable, and the decline sits in the poorest countries: lower-middle-income countries fell
+      from 55.9% to 45.2% and low-income countries from 74.5% to 66.6%, while high-income countries rose from
+      10.5% to 15.6%. That pattern most likely reflects households moving off traditional biomass as they gain
+      modern energy, rather than a retreat from modern renewables.
+    </p>
+    <p>
+      Electricity tells a different story. Among the 195 countries that reported in both 2002 and 2021, the
+      average renewable share of electricity generation rose from 26.9% to 32.8%, and it rose in 136 of them. The
+      power-sector transition is broad-based; it just hasn't yet moved countries' total energy mix, which still
+      includes heating, transport, and industry.
     </p>
     <div class="chart-card"><div class="chart-holder"><canvas id="chart-renewables"></canvas></div></div>
-    <p class="figure-note">World Bank indicator EG.FEC.RNEW.ZS, unweighted mean across reporting countries. 2022&ndash;2023 excluded: only ~35% of the usual country panel had reported yet at data-pull time (see methodology).</p>
+    <p class="figure-note">World Bank indicator EG.FEC.RNEW.ZS (includes traditional biomass), unweighted mean across reporting countries; income-group and electricity figures (EG.ELC.RNEW.ZS) in the text are computed in <code>scripts/analyze.js</code>. 2022&ndash;2023 excluded: only ~35% of the usual country panel had reported yet at data-pull time (see methodology).</p>
   </section>
 
   <section class="finding" id="s-electricity">
@@ -254,7 +261,7 @@
       filter to those indicators and years to see the drop in country count directly.</p>
     <p><strong>How every rate and average is computed.</strong> Every "average" above is an unweighted mean
       across the countries that reported a value for that indicator in that year or year range &mdash; not
-      weighted by population or GDP, so it reflects the typical country rather than the typical person. Every
+      weighted by population or GDP, so it reflects the typical country rather than the typical person. The one exception is the renewable-electricity comparison in the first finding, which uses only the countries that reported in both 2002 and 2021, so the before and after averages cover exactly the same countries. Every
       correlation is a Pearson correlation coefficient computed on the full set of overlapping country-year
       observations, with 90/10 confidence-interval scatter points instead plotted as one country-level average
       (across all years) per country, to keep the chart legible. Percentile ranks used on the dashboard rank each

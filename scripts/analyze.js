@@ -147,6 +147,32 @@ const findings = {};
   const robustYear = robustLatestYear('EG.FEC.RNEW.ZS');
   const first = series[0], last = series.find(s => s.year === robustYear);
   findings.renewables_trend = { series: series.filter(s => s.year <= robustYear), first, last, change: round(last.avg - first.avg, 2) };
+
+  // The final-energy series counts traditional biomass (firewood, charcoal) as
+  // renewable, so split it by income group to see where the decline sits.
+  findings.renewables_trend.byIncome = yearlyGroupAvg('EG.FEC.RNEW.ZS', 'income_group').map(g => ({
+    group: g.group,
+    first: g.series.find(s => s.year === first.year),
+    last: g.series.find(s => s.year === robustYear),
+  }));
+
+  // Renewable share of electricity generation over the same years, for the
+  // power sector specifically. Countries that rose/fell are counted on a
+  // balanced panel: only countries reporting in both the first and last year.
+  const elec = filterInd('EG.ELC.RNEW.ZS');
+  const startMap = new Map(elec.filter(r => r.year === first.year).map(r => [r.iso3, r.value]));
+  const endMap = new Map(elec.filter(r => r.year === robustYear).map(r => [r.iso3, r.value]));
+  const both = [...startMap.keys()].filter(k => endMap.has(k));
+  const deltas = both.map(k => endMap.get(k) - startMap.get(k));
+  findings.renewables_trend.electricity = {
+    firstYear: first.year,
+    lastYear: robustYear,
+    countries: both.length,
+    firstAvg: round(avg(both.map(k => startMap.get(k))), 1),
+    lastAvg: round(avg(both.map(k => endMap.get(k))), 1),
+    rose: deltas.filter(d => d > 0).length,
+    fell: deltas.filter(d => d < 0).length,
+  };
 }
 
 // --- Finding 2: Electricity access gap by income group ---

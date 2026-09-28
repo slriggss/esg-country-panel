@@ -90,7 +90,62 @@
       "year": 2021,
       "avg": 29.08
     },
-    "change": -2.12
+    "change": -2.12,
+    "byIncome": [
+      {
+        "group": "High income",
+        "first": {
+          "year": 2002,
+          "avg": 10.47
+        },
+        "last": {
+          "year": 2021,
+          "avg": 15.57
+        }
+      },
+      {
+        "group": "Upper middle income",
+        "first": {
+          "year": 2002,
+          "avg": 22.03
+        },
+        "last": {
+          "year": 2021,
+          "avg": 18.97
+        }
+      },
+      {
+        "group": "Lower middle income",
+        "first": {
+          "year": 2002,
+          "avg": 55.91
+        },
+        "last": {
+          "year": 2021,
+          "avg": 45.19
+        }
+      },
+      {
+        "group": "Low income",
+        "first": {
+          "year": 2002,
+          "avg": 74.55
+        },
+        "last": {
+          "year": 2021,
+          "avg": 66.56
+        }
+      }
+    ],
+    "electricity": {
+      "firstYear": 2002,
+      "lastYear": 2021,
+      "countries": 195,
+      "firstAvg": 26.9,
+      "lastAvg": 32.8,
+      "rose": 136,
+      "fell": 59
+    }
   },
   "electricity_access": {
     "byIncome": [
