@@ -497,9 +497,9 @@ html { scroll-behavior: smooth; }
   section.finding h2 { font-size: 24px; }
 }
 
-/* ---- Report: headline numbers ------------------------------------------ */
-header.page-header .stat-tile { text-align: center; padding: 20px 14px 18px; }
-header.page-header .stat-tile .value {
+/* ---- Headline numbers (report header + dashboard summary) ------------------------------------------ */
+.stat-tile { text-align: center; padding: 20px 14px 18px; }
+.stat-tile .value {
   font-size: clamp(28px, 7vw, 42px);
   font-weight: 700;
   white-space: nowrap;
@@ -508,7 +508,7 @@ header.page-header .stat-tile .value {
     0 3px 6px color-mix(in srgb, var(--series-1) 22%, transparent),
     0 8px 22px color-mix(in srgb, var(--series-3) 30%, transparent);
 }
-header.page-header .stat-tile .label { margin-top: 6px; }
+.stat-tile .label { margin-top: 6px; }
 
 /* ---- Report: chart cards open as they scroll into view ----------------- */
 section.finding { --pillar: var(--accent); }
@@ -747,4 +747,19 @@ ul.bar-notes li.is-active, ul.bar-notes li:focus-visible {
   .pillar-tabs { flex-wrap: nowrap; gap: 0; }
   .pillar-tab { font-size: 13.5px; padding: 7px 9px 8px; }
   .pillar-tab .count { display: none; }
+}
+
+/* Dashboard chart cards glow in the selected indicator's pillar color */
+main[data-pillar="Environmental"] { --pillar: var(--series-3); }
+main[data-pillar="Social"]        { --pillar: var(--series-5); }
+main[data-pillar="Governance"]    { --pillar: var(--series-7); }
+
+/* Light mode: the pale page washes the glows out, so push them harder */
+:root[data-theme="light"]::before {
+  background: radial-gradient(ellipse 60% 65% at 6% calc(4% + var(--scroll) * 70%),
+    color-mix(in srgb, var(--series-3) 42%, transparent), transparent 72%);
+}
+:root[data-theme="light"]::after {
+  background: radial-gradient(ellipse 55% 65% at 96% calc(12% + var(--scroll) * 55%),
+    color-mix(in srgb, var(--series-1) 28%, transparent), transparent 70%);
 }

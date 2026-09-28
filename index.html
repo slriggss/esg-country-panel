@@ -13,8 +13,11 @@
   (function () {
     try {
       var t = localStorage.getItem('esg-theme');
-      if (t) document.documentElement.setAttribute('data-theme', t);
-    } catch (e) {}
+      // Dark is the default look; a saved choice from the toggle wins.
+      document.documentElement.setAttribute('data-theme', t || 'dark');
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
   })();
 </script>
 </head>
