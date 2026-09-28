@@ -9,9 +9,9 @@ const state = {
   indicator: null,
   yearFrom: null,
   yearTo: null,
-  region: '',
-  income: '',
-  country: '',
+  regions: [],   // empty = all regions
+  incomes: [],   // empty = all income groups
+  countries: [], // ISO3 codes; empty = all countries
   measure: 'avg',
   breakdown: 'region',
 };
@@ -43,54 +43,237 @@ function fmt(n) {
   return n.toLocaleString(undefined, { maximumFractionDigits: 2 });
 }
 
-function populateFilters() {
-  const indSel = document.getElementById('f-indicator');
-  const pillars = ['Environmental', 'Social', 'Governance'];
-  pillars.forEach(p => {
-    const group = document.createElement('optgroup');
-    group.label = p;
-    indicatorMeta.filter(i => i.pillar === p).forEach(i => {
-      const opt = document.createElement('option');
-      opt.value = i.code;
-      opt.textContent = i.name;
-      group.appendChild(opt);
+// ---------------------------------------------------------------------------
+// Filter controls. None are dropdowns:
+//   indicator  - pillar tabs (E / S / G) + one chip per indicator (pick one)
+//   years      - a two-handle range slider
+//   region     - chips, select all that apply ("All" = no filter)
+//   income     - chips, select all that apply
+//   countries  - type-ahead search; each pick becomes a removable chip
+// Empty region/income/country lists mean "no filter".
+// ---------------------------------------------------------------------------
+const PILLARS = [
+  { name: 'Environmental', cls: 'env' },
+  { name: 'Social', cls: 'soc' },
+  { name: 'Governance', cls: 'gov' },
+];
+const INCOME_ORDER = ['High income', 'Upper middle income', 'Lower middle income', 'Low income'];
+let YEARS = [];
+let REGIONS = [];
+let INCOMES = [];
+let COUNTRIES = []; // [iso3, name], sorted by name
+let activePillar = null;
+let renderQueued = false;
+
+// Coalesce bursts of input (e.g. dragging the slider) into one render per frame.
+function queueRender() {
+  if (renderQueued) return;
+  renderQueued = true;
+  requestAnimationFrame(() => { renderQueued = false; render(); });
+}
+
+function chip(label, pressed, extraClass) {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'chip' + (extraClass ? ' ' + extraClass : '');
+  b.textContent = label;
+  b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+  return b;
+}
+
+// --- Indicator: pillar tabs + chips ----------------------------------------
+function drawIndicatorPicker() {
+  const tabs = document.getElementById('pillar-tabs');
+  const chips = document.getElementById('indicator-chips');
+  const current = indicatorMeta.find(i => i.code === state.indicator);
+  if (!activePillar) activePillar = current ? current.pillar : PILLARS[0].name;
+
+  tabs.innerHTML = '';
+  PILLARS.forEach(p => {
+    const n = indicatorMeta.filter(i => i.pillar === p.name).length;
+    const t = document.createElement('button');
+    t.type = 'button';
+    t.className = `pillar-tab ${p.cls}`;
+    t.setAttribute('role', 'tab');
+    t.setAttribute('aria-selected', p.name === activePillar ? 'true' : 'false');
+    t.innerHTML = `${p.name} <span class="count">${n}</span>`;
+    // A small dot marks the tab holding the selected indicator.
+    if (current && current.pillar === p.name) t.classList.add('has-selection');
+    t.addEventListener('click', () => { activePillar = p.name; drawIndicatorPicker(); });
+    tabs.appendChild(t);
+  });
+
+  chips.innerHTML = '';
+  const pillarCls = PILLARS.find(p => p.name === activePillar).cls;
+  chips.className = `chip-row indicator-chips ${pillarCls}`;
+  indicatorMeta.filter(i => i.pillar === activePillar).forEach(i => {
+    const b = chip(i.name, i.code === state.indicator);
+    b.addEventListener('click', () => {
+      state.indicator = i.code;
+      drawIndicatorPicker();
+      queueRender();
     });
-    indSel.appendChild(group);
+    chips.appendChild(b);
   });
-  indSel.value = DEFAULT_INDICATOR;
+}
 
-  const years = [...new Set(allRows.map(r => r.year))].sort((a, b) => a - b);
-  const fromSel = document.getElementById('f-year-from');
-  const toSel = document.getElementById('f-year-to');
-  years.forEach(y => {
-    fromSel.appendChild(new Option(y, y));
-    toSel.appendChild(new Option(y, y));
+// --- Multi-select chip groups (region, income) ------------------------------
+function drawChipGroup(containerId, options, key, labelOf) {
+  const box = document.getElementById(containerId);
+  box.innerHTML = '';
+  const selected = state[key];
+  const all = chip('All', selected.length === 0, 'chip-all');
+  all.addEventListener('click', () => { state[key] = []; drawChipGroup(containerId, options, key, labelOf); queueRender(); });
+  box.appendChild(all);
+  options.forEach(opt => {
+    const b = chip(labelOf(opt), selected.includes(opt));
+    b.addEventListener('click', () => {
+      const next = selected.includes(opt) ? selected.filter(s => s !== opt) : [...selected, opt];
+      // Everything selected is the same as no filter.
+      state[key] = next.length === options.length ? [] : next;
+      drawChipGroup(containerId, options, key, labelOf);
+      queueRender();
+    });
+    box.appendChild(b);
   });
-  fromSel.value = years[0];
-  toSel.value = years[years.length - 1];
-  state.yearFrom = years[0];
-  state.yearTo = years[years.length - 1];
+}
 
-  const regions = [...new Set(allRows.map(r => r.region))].sort();
-  const regionSel = document.getElementById('f-region');
-  regions.forEach(r => regionSel.appendChild(new Option(r.trim(), r)));
+// --- Year range slider -------------------------------------------------------
+function syncYearSlider() {
+  const from = document.getElementById('f-year-from');
+  const to = document.getElementById('f-year-to');
+  from.value = state.yearFrom;
+  to.value = state.yearTo;
+  const span = YEARS[YEARS.length - 1] - YEARS[0] || 1;
+  const a = (state.yearFrom - YEARS[0]) / span * 100;
+  const b = (state.yearTo - YEARS[0]) / span * 100;
+  const fill = document.querySelector('#year-slider .range-fill');
+  fill.style.left = a + '%';
+  fill.style.width = (b - a) + '%';
+  document.getElementById('year-readout').textContent =
+    state.yearFrom === state.yearTo ? `${state.yearFrom}` : `${state.yearFrom} – ${state.yearTo}`;
+}
 
-  const incomeOrder = ['High income', 'Upper middle income', 'Lower middle income', 'Low income'];
-  const incomeSel = document.getElementById('f-income');
-  incomeOrder.filter(g => allRows.some(r => r.income_group === g)).forEach(g => incomeSel.appendChild(new Option(g, g)));
+function setupYearSlider() {
+  const from = document.getElementById('f-year-from');
+  const to = document.getElementById('f-year-to');
+  [from, to].forEach(el => {
+    el.min = YEARS[0];
+    el.max = YEARS[YEARS.length - 1];
+    el.step = 1;
+  });
+  from.setAttribute('aria-label', 'From year');
+  to.setAttribute('aria-label', 'To year');
+  // The handles can meet but not cross.
+  from.addEventListener('input', () => {
+    state.yearFrom = Math.min(Number(from.value), state.yearTo);
+    syncYearSlider();
+    queueRender();
+  });
+  to.addEventListener('input', () => {
+    state.yearTo = Math.max(Number(to.value), state.yearFrom);
+    syncYearSlider();
+    queueRender();
+  });
+  document.getElementById('year-min').textContent = YEARS[0];
+  document.getElementById('year-max').textContent = YEARS[YEARS.length - 1];
+}
 
-  const countries = [...new Map(allRows.map(r => [r.iso3, r.country])).entries()].sort((a, b) => a[1].localeCompare(b[1]));
-  const countrySel = document.getElementById('f-country');
-  countries.forEach(([iso3, name]) => countrySel.appendChild(new Option(name, iso3)));
+// --- Country type-ahead --------------------------------------------------------
+function drawCountryChips() {
+  const box = document.getElementById('country-chips');
+  box.innerHTML = '';
+  state.countries.forEach(iso3 => {
+    const entry = COUNTRIES.find(c => c[0] === iso3);
+    const b = chip(entry ? entry[1] : iso3, true, 'chip-removable');
+    b.setAttribute('aria-label', `Remove ${entry ? entry[1] : iso3}`);
+    b.addEventListener('click', () => {
+      state.countries = state.countries.filter(c => c !== iso3);
+      drawCountryChips();
+      queueRender();
+    });
+    box.appendChild(b);
+  });
+  document.getElementById('f-country-search').placeholder =
+    state.countries.length ? 'Add another country…' : 'All countries — type to search…';
+}
+
+function setupCountrySearch() {
+  const input = document.getElementById('f-country-search');
+  const list = document.getElementById('country-suggest');
+  let matches = [];
+  let cursor = -1;
+
+  function close() { list.hidden = true; input.setAttribute('aria-expanded', 'false'); cursor = -1; }
+  function pick(iso3) {
+    if (!state.countries.includes(iso3)) state.countries = [...state.countries, iso3];
+    input.value = '';
+    close();
+    drawCountryChips();
+    queueRender();
+    input.focus();
+  }
+  function show() {
+    const q = input.value.trim().toLowerCase();
+    if (!q) { close(); return; }
+    const pool = COUNTRIES.filter(c => !state.countries.includes(c[0]));
+    const starts = pool.filter(c => c[1].toLowerCase().startsWith(q));
+    const contains = pool.filter(c => !c[1].toLowerCase().startsWith(q) && c[1].toLowerCase().includes(q));
+    matches = [...starts, ...contains].slice(0, 8);
+    cursor = matches.length ? 0 : -1;
+    list.innerHTML = matches.length
+      ? matches.map((c, i) => `<li role="option" id="cs-${c[0]}" data-iso="${c[0]}" aria-selected="${i === cursor}">${c[1]}</li>`).join('')
+      : '<li class="empty">No matching country</li>';
+    list.hidden = false;
+    input.setAttribute('aria-expanded', 'true');
+  }
+  function moveCursor(d) {
+    if (!matches.length) return;
+    cursor = (cursor + d + matches.length) % matches.length;
+    [...list.children].forEach((li, i) => li.setAttribute('aria-selected', i === cursor ? 'true' : 'false'));
+    input.setAttribute('aria-activedescendant', `cs-${matches[cursor][0]}`);
+  }
+
+  input.addEventListener('input', show);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); if (list.hidden) show(); else moveCursor(1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); moveCursor(-1); }
+    else if (e.key === 'Enter') { if (cursor >= 0 && matches[cursor]) { e.preventDefault(); pick(matches[cursor][0]); } }
+    else if (e.key === 'Escape') { close(); }
+    else if (e.key === 'Backspace' && !input.value && state.countries.length) {
+      state.countries = state.countries.slice(0, -1);
+      drawCountryChips();
+      queueRender();
+    }
+  });
+  // mousedown (not click) so the pick lands before the input's blur closes the list
+  list.addEventListener('mousedown', (e) => {
+    const li = e.target.closest('li[data-iso]');
+    if (li) { e.preventDefault(); pick(li.dataset.iso); }
+  });
+  input.addEventListener('blur', () => setTimeout(close, 100));
+}
+
+function drawAllFilters() {
+  drawIndicatorPicker();
+  syncYearSlider();
+  drawChipGroup('region-chips', REGIONS, 'regions', r => r.trim());
+  drawChipGroup('income-chips', INCOMES, 'incomes', g => g);
+  drawCountryChips();
+}
+
+function populateFilters() {
+  YEARS = [...new Set(allRows.map(r => r.year))].sort((a, b) => a - b);
+  REGIONS = [...new Set(allRows.map(r => r.region))].sort();
+  INCOMES = INCOME_ORDER.filter(g => allRows.some(r => r.income_group === g));
+  COUNTRIES = [...new Map(allRows.map(r => [r.iso3, r.country])).entries()].sort((a, b) => a[1].localeCompare(b[1]));
 
   state.indicator = DEFAULT_INDICATOR;
+  state.yearFrom = YEARS[0];
+  state.yearTo = YEARS[YEARS.length - 1];
 
-  indSel.addEventListener('change', () => { state.indicator = indSel.value; render(); });
-  fromSel.addEventListener('change', () => { state.yearFrom = Number(fromSel.value); render(); });
-  toSel.addEventListener('change', () => { state.yearTo = Number(toSel.value); render(); });
-  regionSel.addEventListener('change', () => { state.region = regionSel.value; render(); });
-  incomeSel.addEventListener('change', () => { state.income = incomeSel.value; render(); });
-  countrySel.addEventListener('change', () => { state.country = countrySel.value; render(); });
+  setupYearSlider();
+  setupCountrySearch();
 
   document.querySelectorAll('#measure-switch button').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -110,20 +293,17 @@ function populateFilters() {
   });
 
   document.getElementById('btn-reset').addEventListener('click', () => {
-    indSel.value = DEFAULT_INDICATOR;
-    fromSel.value = years[0];
-    toSel.value = years[years.length - 1];
-    regionSel.value = '';
-    incomeSel.value = '';
-    countrySel.value = '';
     document.querySelectorAll('#measure-switch button').forEach(b => b.classList.remove('active'));
     document.querySelector('#measure-switch button[data-measure="avg"]').classList.add('active');
     document.querySelectorAll('#breakdown-switch button').forEach(b => b.classList.remove('active'));
     document.querySelector('#breakdown-switch button[data-breakdown="region"]').classList.add('active');
     Object.assign(state, {
-      indicator: DEFAULT_INDICATOR, yearFrom: years[0], yearTo: years[years.length - 1],
-      region: '', income: '', country: '', measure: 'avg', breakdown: 'region',
+      indicator: DEFAULT_INDICATOR, yearFrom: YEARS[0], yearTo: YEARS[YEARS.length - 1],
+      regions: [], incomes: [], countries: [], measure: 'avg', breakdown: 'region',
     });
+    activePillar = null;
+    document.getElementById('f-country-search').value = '';
+    drawAllFilters();
     render();
   });
 
@@ -172,19 +352,20 @@ function populateFilters() {
   });
 }
 
+// Shareable links. Multi-select filters repeat their parameter
+// (?region=A&region=B) because some region names contain commas.
 function applyStateFromURL() {
   const params = new URLSearchParams(location.search);
-  const setSelect = (id, value) => { const el = document.getElementById(id); if (el) el.value = value; };
-
   if (params.has('indicator') && indicatorMeta.some(i => i.code === params.get('indicator'))) {
     state.indicator = params.get('indicator');
-    setSelect('f-indicator', state.indicator);
   }
-  if (params.has('from')) { state.yearFrom = Number(params.get('from')); setSelect('f-year-from', state.yearFrom); }
-  if (params.has('to')) { state.yearTo = Number(params.get('to')); setSelect('f-year-to', state.yearTo); }
-  if (params.has('region')) { state.region = params.get('region'); setSelect('f-region', state.region); }
-  if (params.has('income')) { state.income = params.get('income'); setSelect('f-income', state.income); }
-  if (params.has('country')) { state.country = params.get('country'); setSelect('f-country', state.country); }
+  const clampYear = (y, fallback) => (YEARS.includes(y) ? y : fallback);
+  if (params.has('from')) state.yearFrom = clampYear(Number(params.get('from')), YEARS[0]);
+  if (params.has('to')) state.yearTo = clampYear(Number(params.get('to')), YEARS[YEARS.length - 1]);
+  if (state.yearFrom > state.yearTo) [state.yearFrom, state.yearTo] = [state.yearTo, state.yearFrom];
+  state.regions = params.getAll('region').filter(r => REGIONS.includes(r));
+  state.incomes = params.getAll('income').filter(g => INCOMES.includes(g));
+  state.countries = params.getAll('country').filter(c => COUNTRIES.some(e => e[0] === c));
   if (params.has('measure')) {
     state.measure = params.get('measure');
     document.querySelectorAll('#measure-switch button').forEach(b => b.classList.toggle('active', b.dataset.measure === state.measure));
@@ -193,6 +374,7 @@ function applyStateFromURL() {
     state.breakdown = params.get('breakdown');
     document.querySelectorAll('#breakdown-switch button').forEach(b => b.classList.toggle('active', b.dataset.breakdown === state.breakdown));
   }
+  drawAllFilters();
 }
 
 function syncURL() {
@@ -200,9 +382,9 @@ function syncURL() {
   params.set('indicator', state.indicator);
   params.set('from', state.yearFrom);
   params.set('to', state.yearTo);
-  if (state.region) params.set('region', state.region);
-  if (state.income) params.set('income', state.income);
-  if (state.country) params.set('country', state.country);
+  state.regions.forEach(r => params.append('region', r));
+  state.incomes.forEach(g => params.append('income', g));
+  state.countries.forEach(c => params.append('country', c));
   params.set('measure', state.measure);
   params.set('breakdown', state.breakdown);
   history.replaceState(null, '', '?' + params.toString());
@@ -212,9 +394,9 @@ function filteredForIndicator() {
   return allRows.filter(r =>
     r.indicator_code === state.indicator &&
     r.year >= state.yearFrom && r.year <= state.yearTo &&
-    (!state.region || r.region === state.region) &&
-    (!state.income || r.income_group === state.income) &&
-    (!state.country || r.iso3 === state.country)
+    (!state.regions.length || state.regions.includes(r.region)) &&
+    (!state.incomes.length || state.incomes.includes(r.income_group)) &&
+    (!state.countries.length || state.countries.includes(r.iso3))
   );
 }
 

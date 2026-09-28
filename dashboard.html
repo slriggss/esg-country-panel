@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dashboard &mdash; ESG Country Panel</title>
 <meta name="description" content="Filter and explore 22 years of World Bank ESG country data interactively.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="css/style.css">
 <script>
   (function () {
@@ -39,31 +42,37 @@
 <main class="wrap">
 
   <div class="dashboard-toolbar">
-    <div class="filter-row">
-      <div class="filter-field">
-        <label for="f-indicator">Indicator</label>
-        <select id="f-indicator"></select>
+    <div class="filter-block">
+      <div class="filter-label" id="indicator-label">Indicator</div>
+      <div class="pillar-tabs" id="pillar-tabs" role="tablist" aria-labelledby="indicator-label"></div>
+      <div class="chip-row indicator-chips" id="indicator-chips" role="group" aria-labelledby="indicator-label"></div>
+    </div>
+    <div class="filter-split">
+      <div class="filter-block">
+        <div class="filter-label">Years <span class="readout" id="year-readout"></span></div>
+        <div class="range-slider" id="year-slider">
+          <div class="range-track"><div class="range-fill"></div></div>
+          <input type="range" id="f-year-from">
+          <input type="range" id="f-year-to">
+        </div>
+        <div class="range-ends"><span id="year-min"></span><span id="year-max"></span></div>
       </div>
-      <div class="filter-field">
-        <label for="f-year-from">From year</label>
-        <select id="f-year-from"></select>
+      <div class="filter-block">
+        <label class="filter-label" for="f-country-search">Countries</label>
+        <div class="typeahead">
+          <div class="chip-row" id="country-chips"></div>
+          <input id="f-country-search" type="text" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="country-suggest">
+          <ul id="country-suggest" role="listbox" hidden></ul>
+        </div>
       </div>
-      <div class="filter-field">
-        <label for="f-year-to">To year</label>
-        <select id="f-year-to"></select>
-      </div>
-      <div class="filter-field">
-        <label for="f-region">Region</label>
-        <select id="f-region"><option value="">All regions</option></select>
-      </div>
-      <div class="filter-field">
-        <label for="f-income">Income group</label>
-        <select id="f-income"><option value="">All income groups</option></select>
-      </div>
-      <div class="filter-field">
-        <label for="f-country">Country</label>
-        <select id="f-country"><option value="">All countries</option></select>
-      </div>
+    </div>
+    <div class="filter-block">
+      <div class="filter-label" id="region-label">Region <small>select all that apply</small></div>
+      <div class="chip-row" id="region-chips" role="group" aria-labelledby="region-label"></div>
+    </div>
+    <div class="filter-block">
+      <div class="filter-label" id="income-label">Income group <small>select all that apply</small></div>
+      <div class="chip-row" id="income-chips" role="group" aria-labelledby="income-label"></div>
     </div>
     <div class="toolbar-actions">
       <button class="btn" id="btn-share">Copy shareable link</button>
@@ -98,25 +107,30 @@
       <div class="chart-card-head"><h3>Trend over time</h3><button class="btn btn-sm" data-download="chart-trend">Download PNG</button></div>
       <div class="chart-holder"><canvas id="chart-trend"></canvas></div>
     </div>
+    <hr class="rule">
     <div class="chart-card">
       <div class="chart-card-head"><h3>Latest year, by group</h3><button class="btn btn-sm" data-download="chart-groups">Download PNG</button></div>
       <div class="chart-holder"><canvas id="chart-groups"></canvas></div>
     </div>
+    <hr class="rule">
     <div class="chart-card">
       <div class="chart-card-head"><h3>Distribution across countries, latest year</h3><button class="btn btn-sm" data-download="chart-distribution">Download PNG</button></div>
       <div class="chart-holder"><canvas id="chart-distribution"></canvas></div>
     </div>
+    <hr class="rule">
     <div class="chart-card">
       <div class="chart-card-head"><h3>Highest &amp; lowest countries, latest year</h3><button class="btn btn-sm" data-download="chart-rank">Download PNG</button></div>
       <div class="chart-holder"><canvas id="chart-rank"></canvas></div>
     </div>
   </div>
 
-  <div class="chart-card" style="max-width:none;margin-top:18px;">
+  <hr class="rule">
+  <div class="chart-card" style="max-width:none;">
     <div class="chart-card-head"><h3>World map, latest year</h3><button class="btn btn-sm" data-download="chart-map">Download PNG</button></div>
     <div class="chart-holder" style="height:420px;"><canvas id="chart-map"></canvas></div>
   </div>
 
+  <hr class="rule">
   <p class="result-count" id="result-count"></p>
   <div class="table-wrap">
     <table class="data-table" id="data-table">
@@ -147,5 +161,6 @@
 <script src="js/charts-common.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/theme.js"></script>
+<script src="js/effects.js"></script>
 </body>
 </html>
