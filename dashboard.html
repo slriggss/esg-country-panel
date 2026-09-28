@@ -121,9 +121,15 @@
       <div class="chart-holder"><canvas id="chart-distribution"></canvas></div>
     </div>
     <hr class="rule">
-    <div class="chart-card">
-      <div class="chart-card-head"><h3>Highest &amp; lowest countries, latest year</h3><button class="btn btn-sm" data-download="chart-rank">Download PNG</button></div>
-      <div class="chart-holder"><canvas id="chart-rank"></canvas></div>
+    <div class="chart-pair">
+      <div class="chart-card">
+        <div class="chart-card-head"><h3 class="pair-title top">Highest 10 <span>latest year</span></h3><button class="btn btn-sm" data-download="chart-top">Download PNG</button></div>
+        <div class="chart-holder" style="height:360px;"><canvas id="chart-top"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-head"><h3 class="pair-title bottom">Lowest 10 <span>lowest first</span></h3><button class="btn btn-sm" data-download="chart-bottom">Download PNG</button></div>
+        <div class="chart-holder" style="height:360px;"><canvas id="chart-bottom"></canvas></div>
+      </div>
     </div>
   </div>
 

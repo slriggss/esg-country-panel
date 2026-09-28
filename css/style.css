@@ -564,6 +564,7 @@ ul.bar-notes li.is-active, ul.bar-notes li:focus-visible {
   margin-top: 18px;
 }
 .chart-pair .chart-card { margin-top: 0; max-width: none; min-width: 0; }
+.charts-grid > .chart-pair { margin-top: 0; }
 @media (max-width: 760px) { .chart-pair { grid-template-columns: minmax(0, 1fr); } }
 .pair-title.top    { color: var(--series-1); }
 .pair-title.bottom { color: var(--series-8); }

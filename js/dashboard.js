@@ -429,8 +429,9 @@ function addIntro(id, cfg) {
     o.animation = staggered(160, 800);
   } else if (id === 'chart-distribution') {
     o.animation = staggered(70, 700);
-  } else if (id === 'chart-rank') {
-    o.animation = staggered(80, 700);
+  } else if (id === 'chart-top' || id === 'chart-bottom') {
+    o.animation = staggered(90, 800);
+    o.plugins.esgIntro = { mode: 'fade', after: 800 + 90 * 9 }; // value labels after bars land
   }
 }
 
@@ -568,32 +569,50 @@ function render() {
     });
   }
 
-  // --- Chart 4: highest & lowest countries, latest year ---
+  // --- Chart 4: highest 10 and lowest 10 countries, latest year ---
+  // Two charts side by side on one shared value axis, matching the report's
+  // top 10 / bottom 10 pair. Lowest 10 lists the lowest value first.
   {
-    const sorted = [...latestRows].sort((a, b) => b.value - a.value);
-    const top = sorted.slice(0, 8);
-    const bottom = sorted.slice(-8).reverse();
-    const combined = [...top, ...bottom.filter(b => !top.includes(b))];
-    mountChart('chart-rank', {
+    const desc = [...latestRows].sort((a, b) => b.value - a.value);
+    const top = desc.slice(0, 10);
+    // With fewer than 20 countries in view the two lists overlap; each is still correct.
+    const bottom = [...desc].reverse().slice(0, 10);
+    const vals = [...top, ...bottom].map(r => r.value);
+    const lo = vals.length ? Math.min(0, ...vals) : 0;
+    const hi = vals.length ? Math.max(0, ...vals) : 1;
+    // Round the shared range out to a half step so both axes match exactly.
+    const roundOut = (v) => {
+      if (v === 0) return 0;
+      const step = Math.pow(10, Math.floor(Math.log10(Math.abs(v)))) / 2;
+      return Math.sign(v) * Math.ceil(Math.abs(v) / step) * step;
+    };
+    const axisMin = roundOut(lo), axisMax = roundOut(hi) || 1;
+    const decimals = Math.max(Math.abs(lo), Math.abs(hi)) < 10 ? 2 : 1;
+    const rankChart = (id, list, color) => mountChart(id, {
       type: 'bar',
       data: {
-        labels: combined.map(r => r.country),
-        datasets: [{
-          data: combined.map(r => r.value),
-          backgroundColor: combined.map(r => top.includes(r) ? C.series[0] : C.series[7]),
-          borderRadius: 4, maxBarThickness: 16,
-        }],
+        labels: list.map(r => r.country),
+        datasets: [{ data: list.map(r => r.value), backgroundColor: color, borderRadius: 4, maxBarThickness: 18 }],
       },
       options: {
         indexAxis: 'y',
         responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
+        layout: { padding: { right: 44 } },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: (ctx) => `${ind ? ind.name : 'Value'}: ${fmt(ctx.parsed.x)}` } },
+          esgAnnotate: { valueLabels: { decimals } },
+        },
         scales: {
-          x: { grid: { color: C.grid }, ticks: { color: C.muted } },
-          y: { grid: { display: false }, ticks: { color: C.textSecondary, font: { size: 11 }, autoSkip: false } },
+          x: { min: axisMin, max: axisMax, grid: { color: C.grid }, ticks: { color: C.muted } },
+          // Long names are shortened on the axis; the tooltip shows the full name.
+          y: { grid: { display: false, drawTicks: false }, ticks: { color: C.textSecondary, font: { size: 11 }, autoSkip: false,
+            callback(v) { const s = this.getLabelForValue(v); return s.length > 20 ? s.slice(0, 19) + '…' : s; } } },
         },
       },
     });
+    rankChart('chart-top', top, C.series[0]);
+    rankChart('chart-bottom', bottom, C.series[7]);
   }
 
   // --- Chart 5: world map, latest year ---

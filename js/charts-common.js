@@ -240,7 +240,8 @@
           const v = ds0.data[i];
           if (v == null) return;
           const text = fmt(v, o.valueLabels);
-          if (horizontal) label(ctx, text, bar.x + 5, bar.y, { size: 11.5 });
+          // Negative bars run left from zero, so label them just right of the zero line.
+          if (horizontal) label(ctx, text, (v < 0 ? bar.base : bar.x) + 5, bar.y, { size: 11.5 });
           else label(ctx, text, bar.x, bar.y - 9, { align: 'center', weight: 600, color: C.text });
         });
       }
@@ -286,9 +287,20 @@
   });
 })();
 
-// Canvas text can't use a web font until it has loaded; redraw once it has.
-if (window.Chart && document.fonts && document.fonts.ready) {
-  document.fonts.ready.then(() => Object.values(Chart.instances).forEach(c => c.update('none')));
+// Canvas text can't use a web font until it has loaded, and the browser only
+// downloads a font once something asks for it -- the chart font is used only
+// on canvas, so request it up front. Charts drawn before it arrives measured
+// their labels with the fallback font, so clear those cached widths and
+// redraw once it's in.
+if (window.Chart && document.fonts && document.fonts.load) {
+  const chartFont = getComputedStyle(document.documentElement).getPropertyValue('--font-chart').trim();
+  Promise.all(['400', '500', '600'].map(w => document.fonts.load(`${w} 12px ${chartFont}`)))
+    .catch(() => {})
+    .then(() => document.fonts.ready)
+    .then(() => Object.values(Chart.instances).forEach(ch => {
+      Object.values(ch.scales).forEach(s => { s._longestTextCache = {}; });
+      ch.update('none');
+    }));
 }
 
 // ===========================================================================

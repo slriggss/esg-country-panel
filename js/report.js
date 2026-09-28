@@ -209,7 +209,7 @@ async function main() {
         plugins: { legend: { display: false }, esgAnnotate: annotate, esgIntro: { mode: 'fade', after: 800 + step * (items.length - 1) } },
         scales: {
           x: { grid: { color: C.grid }, ticks: { color: C.muted }, title: { display: true, text: xLabel, color: C.textSecondary, font: { size: 12 } } },
-          y: { grid: { display: false }, ticks: { color: C.textSecondary } },
+          y: { grid: { display: false, drawTicks: false }, ticks: { color: C.textSecondary } },
         },
       },
     });
@@ -290,7 +290,7 @@ async function main() {
         scales: {
           // Shared 0-100 axis on both charts so the gap between them is honest.
           x: { min: 0, max: 100, grid: { color: C.grid }, ticks: { color: C.muted }, title: { display: true, text: 'ESG composite score (0–100)', color: C.textSecondary, font: { size: 12 } } },
-          y: { grid: { display: false }, ticks: { color: C.textSecondary, font: { size: 12 } } },
+          y: { grid: { display: false, drawTicks: false }, ticks: { color: C.textSecondary, font: { size: 12 } } },
         },
       },
     });
