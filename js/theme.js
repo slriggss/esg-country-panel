@@ -11,7 +11,8 @@
     if (!btn) return;
     const current = document.documentElement.getAttribute('data-theme')
       || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    btn.textContent = current === 'dark' ? '☀️ Light' : '🌙 Dark';
+    btn.innerHTML = current === 'dark' ? '☀️ <span class="tt-label">Light</span>' : '🌙 <span class="tt-label">Dark</span>';
+    btn.setAttribute('aria-label', current === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
     btn.addEventListener('click', function () {
       const next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
