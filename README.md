@@ -11,20 +11,26 @@ Environmental, Social, and Governance (ESG) indicators &mdash; 217 countries,
 
 | File | What it does |
 |---|---|
-| `index.html` | The report page. Title, byline, headline numbers, 9 findings (each with a chart, including a percentile-based ESG composite score and country ranking), and a closing methodology section. Loads `data/findings.json` and renders charts with Chart.js. |
-| `dashboard.html` | The interactive dashboard. Loads `data/esg_panel.csv` directly in the browser (via PapaParse) and lets the reader filter by indicator (pillar tabs with one chip per indicator), year range (a two-handle slider), region and income group (select-all-that-apply chips), and countries (type-ahead search, several at once); switch the measure (average/median/total/count) and the breakdown variable (region/income group/none); and see six charts (trend, group comparison, distribution, a side-by-side highest 10 / lowest 10 pair on a shared axis, and a world map), four summary numbers, and a data table all recompute live. Each chart animates in the first time it scrolls into view. Also supports shareable filtered links (state syncs to the URL), CSV export of the filtered rows, and PNG export of any chart. |
+| `index.template.html` | The source of the report page: title, byline, headline numbers, 9 findings (each with a chart, including a percentile-based ESG composite score and country ranking), and a closing methodology section. Every number and country name in the prose is a `{{token}}` here. **Edit this file, not `index.html`.** |
+| `index.html` | The report page as served. Generated from `index.template.html` and `data/findings.json` by `scripts/build_report.js`; loads `data/findings.json` and renders charts with Chart.js. |
+| `dashboard.html` | The interactive dashboard. Loads one small per-indicator CSV at a time in the browser (via PapaParse; each is fetched the first time that indicator is picked, then cached) and lets the reader filter by indicator (pillar tabs with one chip per indicator), year range (a two-handle slider), region and income group (select-all-that-apply chips), and countries (type-ahead search, several at once); switch the measure (average/median/total/count) and the breakdown variable (region/income group/none); and see six charts (trend, group comparison, distribution, a side-by-side highest 10 / lowest 10 pair on a shared axis, and a world map), four summary numbers, and a data table all recompute live. Each chart animates in the first time it scrolls into view; after that, filter changes update the existing charts in place. Also supports shareable filtered links (state syncs to the URL), CSV export of the filtered rows, and PNG export of any chart. |
 | `css/style.css` | Shared styles for both pages &mdash; one navigation bar, one type system, one color palette (light and dark mode, plus a manual toggle). |
 | `js/charts-common.js` | Shared Chart.js defaults (colors, fonts, tooltip style, the sequential color ramp used by the map) so every chart on the site looks like one system, plus two small plugins: hover highlighting (hovering a line, bar, point, or legend entry fades the rest) and data-driven chart annotations (start/end labels, reference lines, value labels, correlation callouts, trend lines), which only ever display numbers from the chart's own data or `findings.json`. Also holds the chart intro animations and card-opening effect shared by both pages: each chart is built the first time its card scrolls into view, so its intro plays where the reader can see it. |
-| `js/theme.js` | The light/dark theme toggle button, shared by both pages. |
+| `js/theme.js` | The light/dark theme toggle button, shared by both pages. Switching happens in place (no page reload): it re-reads the theme colors and each page redraws its charts. |
 | `js/effects.js` | Page motion shared by both pages: sections and cards fade up as they scroll into view, and the green/blue glow behind the dotted page background shifts in strength and position as the reader scrolls. Turned off for readers who have reduced motion set. |
 | `js/report.js` | Builds the report-page charts from `data/findings.json` (9 findings; the ESG composite is shown as a top-10 / bottom-10 pair). Each chart card opens as it scrolls into view and its data animates in a way suited to the chart: trend lines draw left to right, the electricity-access lines appear one income group at a time, bars grow in sequence, and scatter points drop in before the trend line draws. Also counts up the headline numbers and links the emissions chart's bars to the notes beneath it (hovering either highlights the other). |
 | `js/dashboard.js` | All dashboard interactivity: filtering, URL state sync, the measure/breakdown switches, the five charts (including the choropleth map), CSV/PNG export, the summary tiles, and the table. |
-| `data/esg_panel.csv` | The data set itself. One row = one country, in one year, for one indicator. Columns: `country, iso3, region, income_group, year, pillar, indicator_code, indicator_name, value, pct_change_yoy, percentile_rank`. |
+| `data/esg_panel.csv` | The full data set (14 MB). The dashboard does not load this file; it loads the per-indicator files below. It is the source for `analyze.js` and `split_data.js` and is available for download. One row = one country, in one year, for one indicator. Columns: `country, iso3, region, income_group, year, pillar, indicator_code, indicator_name, value, pct_change_yoy, percentile_rank`. |
+| `data/indicators/*.csv` | The panel split into one file per indicator (about 0.4 MB each) with the columns that are constant per indicator removed. Generated by `scripts/split_data.js`. |
+| `data/manifest.json` | The indicator list plus the filter options (years, regions, income groups, countries) the dashboard needs before any indicator file loads. Generated by `scripts/split_data.js`. |
 | `data/findings.json` | Precomputed numbers behind every report-page finding (trends, group averages, correlations, the ESG composite ranking), generated from `data/esg_panel.csv` so every number in the report is reproducible from the source data. |
 | `data/world-countries-50m.json` | World country boundaries (TopoJSON, via the `world-atlas` package) used by the dashboard's map chart. |
 | `data/iso3_numeric.json` | Maps each country's World Bank ISO3 code to the numeric country code the map's TopoJSON uses, so the panel data can be joined to the map. |
 | `scripts/fetch_data.js` | Pulls the raw panel from the World Bank API (source: ESG Data + Worldwide Governance Indicators) and writes `data/esg_panel.csv`. Run with `node scripts/fetch_data.js`. |
 | `scripts/analyze.js` | Reads `data/esg_panel.csv` and computes every number used in the report, including the ESG composite score, writing `data/findings.json`. Run with `node scripts/analyze.js`. |
+| `scripts/split_data.js` | Splits `data/esg_panel.csv` into `data/indicators/*.csv` and writes `data/manifest.json`. Run with `node scripts/split_data.js`. |
+| `scripts/build_report.js` | Fills the `{{tokens}}` in `index.template.html` from `data/findings.json` and writes `index.html`. It also checks the report's verbal claims ("rose in every year", "more than seven times") against the data and refuses to build if one is no longer true. Run with `node scripts/build_report.js`. |
+| `favicon.svg`, `assets/` | The site icon and the link-preview image (`assets/og-image.png`, generated from `assets/og-image.html`) used by the Open Graph tags. |
 | `FDA Data Website Project.pdf` | The assignment instructions. |
 | `submission.txt` | Name, student ID, repository URL, and live site URL, as required for turn-in. |
 
@@ -51,6 +57,8 @@ To regenerate the data from scratch:
 ```
 node scripts/fetch_data.js   # pulls from the World Bank API, writes data/esg_panel.csv
 node scripts/analyze.js      # computes report numbers, writes data/findings.json
+node scripts/split_data.js   # writes data/indicators/*.csv and data/manifest.json (dashboard)
+node scripts/build_report.js # fills index.template.html, writes index.html (report)
 ```
 
 ## Running locally
@@ -61,5 +69,10 @@ This is a static site with no build step. Any local HTTP server works, e.g.:
 npx serve .
 ```
 
-(Opening `index.html` directly with `file://` will not work for the dashboard,
-since browsers block `fetch` of local files under that protocol.)
+(Opening `index.html` directly with `file://` will not work: browsers block
+`fetch` of local files under that protocol, so the charts and dashboard data
+would not load.)
+
+The scripts load Chart.js, the map plugin, and PapaParse from jsDelivr at pinned
+versions with Subresource Integrity hashes; if you change a version, update the
+`integrity` attribute in the HTML too.

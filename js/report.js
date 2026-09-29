@@ -1,15 +1,39 @@
+// Charts are built from a factory (build) rather than a ready-made config, so
+// the same chart can be rebuilt with fresh theme colors when the reader flips
+// the light/dark toggle -- no page reload, no intro animations replayed.
+const chartRegistry = []; // { canvas, build, onCreate, chart }
+
 // Create each chart once its card opens (see whenCardOpens in charts-common.js).
-function makeChart(canvasId, config, onCreate) {
+function makeChart(canvasId, build, onCreate) {
   const canvas = document.getElementById(canvasId);
+  const entry = { canvas, build, onCreate, chart: null };
+  chartRegistry.push(entry);
   whenCardOpens(canvas.closest('.chart-card'), () => {
+    const config = build();
     if (REDUCED_MOTION) {
       if (config.options && config.options.plugins) delete config.options.plugins.esgIntro;
       if (config.options) config.options.animation = false;
     }
-    const chart = new Chart(canvas, config);
-    if (onCreate) onCreate(chart);
+    entry.chart = new Chart(canvas, config);
+    if (onCreate) onCreate(entry.chart);
   });
 }
+
+// Redraw every chart that has already been built using the new theme colors.
+// Charts still waiting for their card to scroll into view pick up the new
+// colors when they are eventually built.
+ESG_ON_THEME_CHANGE(() => {
+  chartRegistry.forEach((entry) => {
+    if (!entry.chart) return;
+    entry.chart.destroy();
+    const config = entry.build();
+    config.options = config.options || {};
+    config.options.animation = false;
+    if (config.options.plugins) delete config.options.plugins.esgIntro;
+    entry.chart = new Chart(entry.canvas, config);
+    if (entry.onCreate) entry.onCreate(entry.chart);
+  });
+});
 
 // Count a headline number up from 0; the final text is the exact value.
 function countUp(el, target) {
@@ -27,10 +51,12 @@ function countUp(el, target) {
 // Link a single-dataset bar chart to a list of notes (one per bar): hovering
 // a bar emphasizes its note, and hovering a note highlights its bar.
 // Returns a plugin to pass in the chart config, and attach() to call once
-// the chart exists.
+// the chart exists (safe to call again after a rebuild: it drops the
+// listeners that pointed at the old chart).
 function noteLink(listId) {
   const items = [...document.querySelectorAll(`#${listId} [data-index]`)];
   let shown = -2;
+  let detach = null;
   const plugin = {
     id: 'noteSync',
     afterDraw(c) {
@@ -40,30 +66,53 @@ function noteLink(listId) {
       items.forEach(li => li.classList.toggle('is-active', Number(li.dataset.index) === i));
     },
   };
-  const attach = (chart) => items.forEach(li => {
-    const i = Number(li.dataset.index);
-    const on = () => {
-      const el = [{ datasetIndex: 0, index: i }];
-      chart.setActiveElements(el);
-      const bar = chart.getDatasetMeta(0).data[i];
-      chart.tooltip.setActiveElements(el, { x: bar.x, y: bar.y });
-      window.ESG_FOCUS(chart, { d: 0, i });
-    };
-    const off = () => {
-      chart.setActiveElements([]);
-      chart.tooltip.setActiveElements([], { x: 0, y: 0 });
-      window.ESG_FOCUS(chart, null);
-    };
-    li.addEventListener('mouseenter', on);
-    li.addEventListener('mouseleave', off);
-    li.addEventListener('focus', on);
-    li.addEventListener('blur', off);
-  });
+  const attach = (chart) => {
+    if (detach) detach();
+    shown = -2;
+    const bound = items.map(li => {
+      const i = Number(li.dataset.index);
+      const on = () => {
+        const el = [{ datasetIndex: 0, index: i }];
+        chart.setActiveElements(el);
+        const bar = chart.getDatasetMeta(0).data[i];
+        chart.tooltip.setActiveElements(el, { x: bar.x, y: bar.y });
+        window.ESG_FOCUS(chart, { d: 0, i });
+      };
+      const off = () => {
+        chart.setActiveElements([]);
+        chart.tooltip.setActiveElements([], { x: 0, y: 0 });
+        window.ESG_FOCUS(chart, null);
+      };
+      const handlers = [['mouseenter', on], ['mouseleave', off], ['focus', on], ['blur', off]];
+      handlers.forEach(([type, fn]) => li.addEventListener(type, fn));
+      return { li, handlers };
+    });
+    detach = () => bound.forEach(({ li, handlers }) => handlers.forEach(([type, fn]) => li.removeEventListener(type, fn)));
+  };
   return { plugin, attach };
 }
 
+function showLoadError(message) {
+  const box = document.getElementById('load-error');
+  if (!box) return;
+  box.textContent = message;
+  box.hidden = false;
+}
+
 async function main() {
-  const findings = await fetch('data/findings.json').then(r => r.json());
+  if (!window.Chart) {
+    showLoadError('The charting library could not be loaded (check your connection or an ad/script blocker), so the charts are not shown. The written findings below are unaffected.');
+    return;
+  }
+  let findings;
+  try {
+    const res = await fetch('data/findings.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    findings = await res.json();
+  } catch (err) {
+    showLoadError(`The data behind the charts could not be loaded (${err.message}). Try reloading the page. The written findings below are unaffected.`);
+    return;
+  }
   const C = window.ESG_COLORS;
 
   // Headline numbers
@@ -82,88 +131,93 @@ async function main() {
     },
   });
 
-  function lineChart(canvasId, series, label, color, yLabel, annotate) {
-    makeChart(canvasId, {
-      type: 'line',
-      data: {
-        labels: series.map(s => s.year),
-        datasets: [{
-          label,
-          data: series.map(s => s.avg),
-          borderColor: color,
-          backgroundColor: (ctx) => {
-            const area = ctx.chart.chartArea;
-            const intro = ctx.chart.$intro;
-            const k = intro && intro.fill != null ? intro.fill : 1;
-            const hex = (a) => Math.round(a * k).toString(16).padStart(2, '0');
-            if (!area) return color + hex(0x1a);
-            const g = ctx.chart.ctx.createLinearGradient(0, area.top, 0, area.bottom);
-            g.addColorStop(0, color + hex(0x40));
-            g.addColorStop(1, color + '00');
-            return g;
-          },
-          borderWidth: 2.5,
-          pointRadius: 0,
-          pointHoverRadius: 5,
-          pointBackgroundColor: color,
-          pointBorderColor: C.surface,
-          pointBorderWidth: 2,
-          tension: 0.25,
-          fill: true,
-        }],
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        animation: { duration: 0 },
-        layout: { padding: { top: 22, left: 8, right: 8 } },
-        interaction: { mode: 'index', intersect: false },
-        plugins: { legend: { display: false }, esgAnnotate: annotate, esgIntro: { mode: 'sweep' } },
-        scales: { ...commonScales(yLabel), y: { ...commonScales(yLabel).y, grace: '8%' } },
-      },
+  function lineChart(canvasId, series, label, colorIndex, yLabel, annotate) {
+    makeChart(canvasId, () => {
+      const color = C.series[colorIndex];
+      return {
+        type: 'line',
+        data: {
+          labels: series.map(s => s.year),
+          datasets: [{
+            label,
+            data: series.map(s => s.avg),
+            borderColor: color,
+            backgroundColor: (ctx) => {
+              const area = ctx.chart.chartArea;
+              const intro = ctx.chart.$intro;
+              const k = intro && intro.fill != null ? intro.fill : 1;
+              const hex = (a) => Math.round(a * k).toString(16).padStart(2, '0');
+              if (!area) return color + hex(0x1a);
+              const g = ctx.chart.ctx.createLinearGradient(0, area.top, 0, area.bottom);
+              g.addColorStop(0, color + hex(0x40));
+              g.addColorStop(1, color + '00');
+              return g;
+            },
+            borderWidth: 2.5,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointBackgroundColor: color,
+            pointBorderColor: C.surface,
+            pointBorderWidth: 2,
+            tension: 0.25,
+            fill: true,
+          }],
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          animation: { duration: 0 },
+          layout: { padding: { top: 22, left: 8, right: 8 } },
+          interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { display: false }, esgAnnotate: annotate, esgIntro: { mode: 'sweep' } },
+          scales: { ...commonScales(yLabel), y: { ...commonScales(yLabel).y, grace: '8%' } },
+        },
+      };
     });
   }
 
   function multiLineChart(canvasId, groups, yLabel, annotate) {
-    // Label each line at its end instead of a legend, unless the card is too
-    // narrow for the labels to fit -- then fall back to the legend.
-    const narrow = document.getElementById(canvasId).parentElement.clientWidth < 560;
-    makeChart(canvasId, {
-      type: 'line',
-      data: {
-        labels: groups[0].series.map(s => s.year),
-        datasets: groups.map((g, i) => ({
-          label: g.group,
-          data: g.series.map(s => s.avg),
-          borderColor: C.series[i],
-          backgroundColor: C.series[i] + '1a',
-          borderWidth: 2.5,
-          pointRadius: 0,
-          pointHoverRadius: 5,
-          pointBackgroundColor: C.series[i],
-          pointBorderColor: C.surface,
-          pointBorderWidth: 2,
-          tension: 0.25,
-        })),
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        animation: { duration: 0 },
-        layout: { padding: { right: narrow ? 0 : 170 } },
-        interaction: { mode: 'nearest', intersect: false },
-        plugins: {
-          legend: { display: narrow, position: 'bottom', labels: { color: C.textSecondary } },
-          esgAnnotate: narrow ? undefined : annotate,
-          // One income group at a time, richest first, so the gap builds up.
-          esgIntro: { mode: 'sequence', gap: 850 },
+    makeChart(canvasId, () => {
+      // Label each line at its end instead of a legend, unless the card is too
+      // narrow for the labels to fit -- then fall back to the legend.
+      const narrow = document.getElementById(canvasId).parentElement.clientWidth < 560;
+      return {
+        type: 'line',
+        data: {
+          labels: groups[0].series.map(s => s.year),
+          datasets: groups.map((g, i) => ({
+            label: g.group,
+            data: g.series.map(s => s.avg),
+            borderColor: C.series[i],
+            backgroundColor: C.series[i] + '1a',
+            borderWidth: 2.5,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointBackgroundColor: C.series[i],
+            pointBorderColor: C.surface,
+            pointBorderWidth: 2,
+            tension: 0.25,
+          })),
         },
-        scales: commonScales(yLabel),
-      },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          animation: { duration: 0 },
+          layout: { padding: { right: narrow ? 0 : 170 } },
+          interaction: { mode: 'nearest', intersect: false },
+          plugins: {
+            legend: { display: narrow, position: 'bottom', labels: { color: C.textSecondary } },
+            esgAnnotate: narrow ? undefined : annotate,
+            // One income group at a time, richest first, so the gap builds up.
+            esgIntro: { mode: 'sequence', gap: 850 },
+          },
+          scales: commonScales(yLabel),
+        },
+      };
     });
   }
 
   function barChartGroups(canvasId, items, yLabel, annotate, link) {
     const step = 220;
-    makeChart(canvasId, {
+    makeChart(canvasId, () => ({
       type: 'bar',
       data: {
         labels: items.map(i => i.group),
@@ -185,12 +239,12 @@ async function main() {
         },
       },
       plugins: link ? [link.plugin] : [],
-    }, link && link.attach);
+    }), link && link.attach);
   }
 
   function rankedBarChart(canvasId, items, xLabel, annotate) {
     const step = 130;
-    makeChart(canvasId, {
+    makeChart(canvasId, () => ({
       type: 'bar',
       data: {
         labels: items.map(i => i.group.trim()),
@@ -212,66 +266,69 @@ async function main() {
           y: { grid: { display: false, drawTicks: false }, ticks: { color: C.textSecondary } },
         },
       },
-    });
+    }));
   }
 
-  function scatterChart(canvasId, points, xLabel, yLabel, color, annotate) {
+  function scatterChart(canvasId, points, xLabel, yLabel, colorIndex, annotate) {
     // Points drop in from the top, sweeping left to right by x value.
     const order = points.map((p, i) => [p.x, i]).sort((a, b) => a[0] - b[0]);
     const delayOf = [];
     const spread = 1100 / Math.max(1, points.length - 1);
     order.forEach(([, i], rank) => { delayOf[i] = rank * spread; });
     const firstDraw = (ctx) => ctx.type === 'data' && ctx.mode === 'default';
-    makeChart(canvasId, {
-      type: 'scatter',
-      data: {
-        datasets: [{
-          label: 'Country average, 2002–2023',
-          data: points.map(p => ({ x: p.x, y: p.y, country: p.country })),
-          backgroundColor: color + 'b3',
-          borderColor: color,
-          borderWidth: 1,
-          radius: 4,
-          hoverRadius: 7,
-        }],
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        animations: {
-          y: {
-            duration: 700,
-            easing: 'easeOutBounce',
-            from: (ctx) => (firstDraw(ctx) ? ctx.chart.chartArea.top : undefined),
-            delay: (ctx) => (firstDraw(ctx) ? delayOf[ctx.dataIndex] : 0),
-          },
+    makeChart(canvasId, () => {
+      const color = C.series[colorIndex];
+      return {
+        type: 'scatter',
+        data: {
+          datasets: [{
+            label: 'Country average, 2002–2023',
+            data: points.map(p => ({ x: p.x, y: p.y, country: p.country })),
+            backgroundColor: color + 'b3',
+            borderColor: color,
+            borderWidth: 1,
+            radius: 4,
+            hoverRadius: 7,
+          }],
         },
-        plugins: {
-          legend: { display: false },
-          esgAnnotate: annotate,
-          esgIntro: { mode: 'scatter', after: 1100 + 700 },
-          tooltip: {
-            callbacks: {
-              label: (ctx) => `${ctx.raw.country}: ${ctx.parsed.x}, ${ctx.parsed.y}`,
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          animations: {
+            y: {
+              duration: 700,
+              easing: 'easeOutBounce',
+              from: (ctx) => (firstDraw(ctx) ? ctx.chart.chartArea.top : undefined),
+              delay: (ctx) => (firstDraw(ctx) ? delayOf[ctx.dataIndex] : 0),
             },
           },
+          plugins: {
+            legend: { display: false },
+            esgAnnotate: annotate,
+            esgIntro: { mode: 'scatter', after: 1100 + 700 },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => `${ctx.raw.country}: ${ctx.parsed.x}, ${ctx.parsed.y}`,
+              },
+            },
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: C.muted }, title: { display: true, text: xLabel, color: C.textSecondary, font: { size: 12 } } },
+            y: { grid: { color: C.grid }, ticks: { color: C.muted }, title: { display: true, text: yLabel, color: C.textSecondary, font: { size: 12 } } },
+          },
         },
-        scales: {
-          x: { grid: { display: false }, ticks: { color: C.muted }, title: { display: true, text: xLabel, color: C.textSecondary, font: { size: 12 } } },
-          y: { grid: { color: C.grid }, ticks: { color: C.muted }, title: { display: true, text: yLabel, color: C.textSecondary, font: { size: 12 } } },
-        },
-      },
+      };
     });
   }
 
-  function countryBars(canvasId, countries, color) {
+  function countryBars(canvasId, countries, colorIndex, totalIndicators) {
     const step = 110;
-    makeChart(canvasId, {
+    makeChart(canvasId, () => ({
       type: 'bar',
       data: {
         labels: countries.map(c => c.country),
         datasets: [{
           data: countries.map(c => c.overall),
-          backgroundColor: color,
+          backgroundColor: C.series[colorIndex],
           borderRadius: 4,
           maxBarThickness: 18,
         }],
@@ -283,7 +340,15 @@ async function main() {
         layout: { padding: { right: 34 } },
         plugins: {
           legend: { display: false },
-          tooltip: { callbacks: { label: (ctx) => `Composite score: ${ctx.parsed.x}` } },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => `Composite score: ${ctx.parsed.x}`,
+              afterLabel: (ctx) => {
+                const c = countries[ctx.dataIndex];
+                return `Environmental ${c.Environmental} · Social ${c.Social} · Governance ${c.Governance}\nReports ${c.indicators} of ${totalIndicators} indicators`;
+              },
+            },
+          },
           esgAnnotate: { valueLabels: { decimals: 1 } },
           esgIntro: { mode: 'fade', after: 800 + step * (countries.length - 1) },
         },
@@ -293,17 +358,19 @@ async function main() {
           y: { grid: { display: false, drawTicks: false }, ticks: { color: C.textSecondary, font: { size: 12 } } },
         },
       },
-    });
+    }));
   }
 
   const trendAnnotate = (f, suffix) => ({
     baseline: { value: f.first.avg, label: `${f.first.year} level` },
     endpoints: { suffix, decimals: 1 },
   });
-  const scatterNote = (f) => `r = ${f.r} across ${f.n.toLocaleString()} country-years`;
+  // The trend line on each scatter is fit to the plotted country averages, so
+  // the r shown next to it is computed on those same points.
+  const scatterNote = (f) => `r = ${String(f.r_country).replace('-', '−')} across ${f.n_countries.toLocaleString()} countries`;
 
   // 1. Renewables trend
-  lineChart('chart-renewables', findings.renewables_trend.series, 'Renewable energy share (%)', C.series[0], '% of final energy',
+  lineChart('chart-renewables', findings.renewables_trend.series, 'Renewable energy share (%)', 0, '% of final energy',
     trendAnnotate(findings.renewables_trend, '%'));
 
   // 2. Electricity access by income group
@@ -316,28 +383,31 @@ async function main() {
     noteLink('ghg-notes'));
 
   // 4. Coal trend
-  lineChart('chart-coal', findings.coal_trend.series, 'Electricity from coal (%)', C.series[0], '% of electricity mix',
+  lineChart('chart-coal', findings.coal_trend.series, 'Electricity from coal (%)', 0, '% of electricity mix',
     trendAnnotate(findings.coal_trend, '%'));
 
   // 5. Governance vs electricity scatter
-  scatterChart('chart-governance', findings.governance_vs_electricity.points, findings.governance_vs_electricity.xLabel, findings.governance_vs_electricity.yLabel, C.series[0],
+  scatterChart('chart-governance', findings.governance_vs_electricity.points, findings.governance_vs_electricity.xLabel, findings.governance_vs_electricity.yLabel, 0,
     { fitLine: true, note: scatterNote(findings.governance_vs_electricity), notePos: 'br' });
 
-  // 6. Gini by region
-  rankedBarChart('chart-gini', findings.gini_by_region.latest, 'Gini index',
+  // 6. Gini by region (each label carries the number of countries behind it)
+  rankedBarChart('chart-gini', findings.gini_by_region.latest.map(g => ({ group: `${g.group} (n=${g.n})`, avg: g.avg })), 'Gini index',
     { valueLabels: { decimals: 1 } });
 
   // 7. Women in parliament trend
-  lineChart('chart-women', findings.women_parliament_trend.series, 'Seats held by women (%)', C.series[0], '% of parliamentary seats',
+  lineChart('chart-women', findings.women_parliament_trend.series, 'Seats held by women (%)', 0, '% of parliamentary seats',
     trendAnnotate(findings.women_parliament_trend, '%'));
 
   // 8. Regulation vs pollution scatter
-  scatterChart('chart-regulation', findings.regulation_vs_pollution.points, findings.regulation_vs_pollution.xLabel, findings.regulation_vs_pollution.yLabel, C.series[1],
+  scatterChart('chart-regulation', findings.regulation_vs_pollution.points, findings.regulation_vs_pollution.xLabel, findings.regulation_vs_pollution.yLabel, 1,
     { fitLine: true, note: scatterNote(findings.regulation_vs_pollution), notePos: 'tr' });
 
   // 9. ESG composite: top 10 and bottom 10, side by side
-  countryBars('chart-top10', findings.esg_composite.top10, C.series[0]);
-  countryBars('chart-bottom10', findings.esg_composite.bottom10, C.series[7]);
+  countryBars('chart-top10', findings.esg_composite.top10, 0, findings.esg_composite.total_indicators);
+  countryBars('chart-bottom10', findings.esg_composite.bottom10, 7, findings.esg_composite.total_indicators);
 }
 
-main();
+main().catch((err) => {
+  console.error(err);
+  showLoadError(`Something went wrong while drawing the charts (${err.message}). Try reloading the page.`);
+});

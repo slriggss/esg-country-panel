@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dashboard &mdash; ESG Country Panel</title>
 <meta name="description" content="Filter and explore 22 years of World Bank ESG country data interactively.">
+<link rel="canonical" href="https://slriggss.github.io/esg-country-panel/dashboard.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ESG Country Panel">
+<meta property="og:title" content="Dashboard &mdash; ESG Country Panel">
+<meta property="og:description" content="Filter 22 years of World Bank ESG data by indicator, year, region, income group, and country; charts, map, and table update live.">
+<meta property="og:url" content="https://slriggss.github.io/esg-country-panel/dashboard.html">
+<meta property="og:image" content="https://slriggss.github.io/esg-country-panel/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Fira+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap">
@@ -29,7 +40,7 @@
     <div class="links">
       <a href="index.html">Report</a>
       <a href="dashboard.html" class="active">Dashboard</a>
-      <button class="btn" id="theme-toggle" style="margin-left:20px;">&#127769; Dark</button>
+      <button class="btn" id="theme-toggle" type="button" style="margin-left:20px;" aria-label="Switch color theme"></button>
     </div>
   </div>
 </nav>
@@ -41,6 +52,10 @@
       charts, and the table &mdash; recomputes from the raw CSV in your browser.</p>
   </div>
 </header>
+
+<noscript>
+  <div class="wrap"><p class="noscript-note">The dashboard needs JavaScript to load and filter the data, and it is turned off in your browser. The full data set is available as <a href="data/esg_panel.csv">data/esg_panel.csv</a>, and the <a href="index.html">report</a> reads without it.</p></div>
+</noscript>
 
 <main class="wrap">
 
@@ -164,9 +179,9 @@
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-geo@4/build/index.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" integrity="sha384-NrKB+u6Ts6AtkIhwPixiKTzgSKNblyhlk0Sohlgar9UHUBzai/sgnNNWWd291xqt" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-geo@4.3.6/build/index.umd.min.js" integrity="sha384-EW6qTcZh7bPyECHRcIzVvefbUO37nGjPkmDFEdcdAe7ex44EjBA0GWnoleczHbC/" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" integrity="sha384-D/t0ZMqQW31H3az8ktEiNb39wyKnS82iFY52QPACM+IjKW3jDUhyIgh2PApRqJZs" crossorigin="anonymous"></script>
 <script src="js/charts-common.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/theme.js"></script>

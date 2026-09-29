@@ -91,6 +91,12 @@
       "avg": 29.08
     },
     "change": -2.12,
+    "sameCountries": {
+      "countries": 209,
+      "first": 31.2,
+      "last": 29.2,
+      "change": -2
+    },
     "byIncome": [
       {
         "group": "High income",
@@ -1030,11 +1036,19 @@
       "year": 2021,
       "avg": 10.69
     },
-    "change": -1.85
+    "change": -1.85,
+    "sameCountries": {
+      "countries": 205,
+      "first": 12.6,
+      "last": 10.7,
+      "change": -1.9
+    }
   },
   "governance_vs_electricity": {
     "n": 4370,
     "r": 0.574,
+    "n_countries": 203,
+    "r_country": 0.61,
     "xLabel": "Government effectiveness (estimate)",
     "yLabel": "Access to electricity (%)",
     "points": [
@@ -2053,689 +2067,58 @@
         "x": -1.179,
         "y": 41.605
       }
-    ]
+    ],
+    "split": {
+      "strong": 91,
+      "strongBelow80": 2,
+      "weak": 112,
+      "weakAbove90": 43
+    }
   },
   "gini_by_region": {
-    "byRegion": [
+    "windowStart": 2015,
+    "windowEnd": 2023,
+    "countries": 151,
+    "latest": [
       {
-        "group": "East Asia & Pacific",
-        "series": [
-          {
-            "year": 2002,
-            "avg": 36.92
-          },
-          {
-            "year": 2003,
-            "avg": 38.95
-          },
-          {
-            "year": 2004,
-            "avg": 35.7
-          },
-          {
-            "year": 2005,
-            "avg": 39.82
-          },
-          {
-            "year": 2006,
-            "avg": 38.54
-          },
-          {
-            "year": 2007,
-            "avg": 34.4
-          },
-          {
-            "year": 2008,
-            "avg": 38.17
-          },
-          {
-            "year": 2009,
-            "avg": 38.62
-          },
-          {
-            "year": 2010,
-            "avg": 36.48
-          },
-          {
-            "year": 2011,
-            "avg": 38.05
-          },
-          {
-            "year": 2012,
-            "avg": 36.74
-          },
-          {
-            "year": 2013,
-            "avg": 38.09
-          },
-          {
-            "year": 2014,
-            "avg": 34.16
-          },
-          {
-            "year": 2015,
-            "avg": 37.6
-          },
-          {
-            "year": 2016,
-            "avg": 35.05
-          },
-          {
-            "year": 2017,
-            "avg": 34.88
-          },
-          {
-            "year": 2018,
-            "avg": 36.62
-          },
-          {
-            "year": 2019,
-            "avg": 33.44
-          },
-          {
-            "year": 2020,
-            "avg": 34.71
-          },
-          {
-            "year": 2021,
-            "avg": 35.36
-          },
-          {
-            "year": 2022,
-            "avg": 34.66
-          },
-          {
-            "year": 2023,
-            "avg": 33.4
-          }
-        ]
+        "group": "Latin America & Caribbean",
+        "avg": 43.4,
+        "n": 22
       },
       {
-        "group": "Europe & Central Asia",
-        "series": [
-          {
-            "year": 2002,
-            "avg": 32.58
-          },
-          {
-            "year": 2003,
-            "avg": 32.17
-          },
-          {
-            "year": 2004,
-            "avg": 32.19
-          },
-          {
-            "year": 2005,
-            "avg": 32.45
-          },
-          {
-            "year": 2006,
-            "avg": 32.14
-          },
-          {
-            "year": 2007,
-            "avg": 31.85
-          },
-          {
-            "year": 2008,
-            "avg": 31.89
-          },
-          {
-            "year": 2009,
-            "avg": 31.53
-          },
-          {
-            "year": 2010,
-            "avg": 31.48
-          },
-          {
-            "year": 2011,
-            "avg": 31.42
-          },
-          {
-            "year": 2012,
-            "avg": 31.97
-          },
-          {
-            "year": 2013,
-            "avg": 32.13
-          },
-          {
-            "year": 2014,
-            "avg": 31.92
-          },
-          {
-            "year": 2015,
-            "avg": 31.96
-          },
-          {
-            "year": 2016,
-            "avg": 31.64
-          },
-          {
-            "year": 2017,
-            "avg": 31.77
-          },
-          {
-            "year": 2018,
-            "avg": 31.75
-          },
-          {
-            "year": 2019,
-            "avg": 31.34
-          },
-          {
-            "year": 2020,
-            "avg": 31.51
-          },
-          {
-            "year": 2021,
-            "avg": 31.81
-          },
-          {
-            "year": 2022,
-            "avg": 31.79
-          },
-          {
-            "year": 2023,
-            "avg": 31.31
-          }
-        ]
-      },
-      {
-        "group": "Latin America & Caribbean ",
-        "series": [
-          {
-            "year": 2002,
-            "avg": 53.11
-          },
-          {
-            "year": 2003,
-            "avg": 52.4
-          },
-          {
-            "year": 2004,
-            "avg": 51.33
-          },
-          {
-            "year": 2005,
-            "avg": 51.52
-          },
-          {
-            "year": 2006,
-            "avg": 50.99
-          },
-          {
-            "year": 2007,
-            "avg": 50.87
-          },
-          {
-            "year": 2008,
-            "avg": 50.04
-          },
-          {
-            "year": 2009,
-            "avg": 48.71
-          },
-          {
-            "year": 2010,
-            "avg": 48.26
-          },
-          {
-            "year": 2011,
-            "avg": 47.84
-          },
-          {
-            "year": 2012,
-            "avg": 47.01
-          },
-          {
-            "year": 2013,
-            "avg": 47.34
-          },
-          {
-            "year": 2014,
-            "avg": 47.03
-          },
-          {
-            "year": 2015,
-            "avg": 46.49
-          },
-          {
-            "year": 2016,
-            "avg": 45.63
-          },
-          {
-            "year": 2017,
-            "avg": 45.66
-          },
-          {
-            "year": 2018,
-            "avg": 44.51
-          },
-          {
-            "year": 2019,
-            "avg": 45.42
-          },
-          {
-            "year": 2020,
-            "avg": 45.38
-          },
-          {
-            "year": 2021,
-            "avg": 44.45
-          },
-          {
-            "year": 2022,
-            "avg": 43.46
-          },
-          {
-            "year": 2023,
-            "avg": 44.77
-          }
-        ]
-      },
-      {
-        "group": "Middle East, North Africa, Afghanistan & Pakistan",
-        "series": [
-          {
-            "year": 2002,
-            "avg": 38.87
-          },
-          {
-            "year": 2003,
-            "avg": 39.1
-          },
-          {
-            "year": 2004,
-            "avg": 34.55
-          },
-          {
-            "year": 2005,
-            "avg": 37.38
-          },
-          {
-            "year": 2006,
-            "avg": 36.46
-          },
-          {
-            "year": 2007,
-            "avg": 33.9
-          },
-          {
-            "year": 2008,
-            "avg": 33.58
-          },
-          {
-            "year": 2009,
-            "avg": 37.96
-          },
-          {
-            "year": 2010,
-            "avg": 34.01
-          },
-          {
-            "year": 2011,
-            "avg": 32.69
-          },
-          {
-            "year": 2012,
-            "avg": 34.67
-          },
-          {
-            "year": 2013,
-            "avg": 35.47
-          },
-          {
-            "year": 2014,
-            "avg": 35.08
-          },
-          {
-            "year": 2015,
-            "avg": 33.38
-          },
-          {
-            "year": 2016,
-            "avg": 34.42
-          },
-          {
-            "year": 2017,
-            "avg": 35.38
-          },
-          {
-            "year": 2018,
-            "avg": 32.14
-          },
-          {
-            "year": 2019,
-            "avg": 34.42
-          },
-          {
-            "year": 2020,
-            "avg": 35
-          },
-          {
-            "year": 2021,
-            "avg": 33.44
-          },
-          {
-            "year": 2022,
-            "avg": 33.92
-          },
-          {
-            "year": 2023,
-            "avg": 33.48
-          }
-        ]
+        "group": "Sub-Saharan Africa",
+        "avg": 40.5,
+        "n": 44
       },
       {
         "group": "North America",
-        "series": [
-          {
-            "year": 2002,
-            "avg": 37
-          },
-          {
-            "year": 2003,
-            "avg": 37.3
-          },
-          {
-            "year": 2004,
-            "avg": 37.15
-          },
-          {
-            "year": 2005,
-            "avg": 37.45
-          },
-          {
-            "year": 2006,
-            "avg": 37.9
-          },
-          {
-            "year": 2007,
-            "avg": 37.45
-          },
-          {
-            "year": 2008,
-            "avg": 37.5
-          },
-          {
-            "year": 2009,
-            "avg": 37.45
-          },
-          {
-            "year": 2010,
-            "avg": 36.9
-          },
-          {
-            "year": 2011,
-            "avg": 36.95
-          },
-          {
-            "year": 2012,
-            "avg": 37.35
-          },
-          {
-            "year": 2013,
-            "avg": 37.35
-          },
-          {
-            "year": 2014,
-            "avg": 37.45
-          },
-          {
-            "year": 2015,
-            "avg": 37.6
-          },
-          {
-            "year": 2016,
-            "avg": 37
-          },
-          {
-            "year": 2017,
-            "avg": 37.35
-          },
-          {
-            "year": 2018,
-            "avg": 37.15
-          },
-          {
-            "year": 2019,
-            "avg": 36.85
-          },
-          {
-            "year": 2020,
-            "avg": 34.95
-          },
-          {
-            "year": 2021,
-            "avg": 35.4
-          },
-          {
-            "year": 2022,
-            "avg": 36.6
-          },
-          {
-            "year": 2023,
-            "avg": 41.8
-          }
-        ]
+        "avg": 36.6,
+        "n": 2
+      },
+      {
+        "group": "East Asia & Pacific",
+        "avg": 33.6,
+        "n": 17
+      },
+      {
+        "group": "Middle East, North Africa, Afghanistan & Pakistan",
+        "avg": 33,
+        "n": 13
+      },
+      {
+        "group": "Europe & Central Asia",
+        "avg": 31.1,
+        "n": 47
       },
       {
         "group": "South Asia",
-        "series": [
-          {
-            "year": 2002,
-            "avg": 40.75
-          },
-          {
-            "year": 2003,
-            "avg": 42.35
-          },
-          {
-            "year": 2004,
-            "avg": 27.7
-          },
-          {
-            "year": 2005,
-            "avg": 33.2
-          },
-          {
-            "year": 2006,
-            "avg": 39.7
-          },
-          {
-            "year": 2007,
-            "avg": 38.1
-          },
-          {
-            "year": 2008,
-            "avg": null
-          },
-          {
-            "year": 2009,
-            "avg": 34.1
-          },
-          {
-            "year": 2010,
-            "avg": 32.45
-          },
-          {
-            "year": 2011,
-            "avg": 28.8
-          },
-          {
-            "year": 2012,
-            "avg": 38.75
-          },
-          {
-            "year": 2013,
-            "avg": null
-          },
-          {
-            "year": 2014,
-            "avg": null
-          },
-          {
-            "year": 2015,
-            "avg": null
-          },
-          {
-            "year": 2016,
-            "avg": 34.33
-          },
-          {
-            "year": 2017,
-            "avg": 37.4
-          },
-          {
-            "year": 2018,
-            "avg": null
-          },
-          {
-            "year": 2019,
-            "avg": 33.5
-          },
-          {
-            "year": 2020,
-            "avg": null
-          },
-          {
-            "year": 2021,
-            "avg": null
-          },
-          {
-            "year": 2022,
-            "avg": 28.73
-          },
-          {
-            "year": 2023,
-            "avg": null
-          }
-        ]
-      },
-      {
-        "group": "Sub-Saharan Africa ",
-        "series": [
-          {
-            "year": 2002,
-            "avg": 45.85
-          },
-          {
-            "year": 2003,
-            "avg": 44.66
-          },
-          {
-            "year": 2004,
-            "avg": 43.62
-          },
-          {
-            "year": 2005,
-            "avg": 46.21
-          },
-          {
-            "year": 2006,
-            "avg": 41.27
-          },
-          {
-            "year": 2007,
-            "avg": 40.57
-          },
-          {
-            "year": 2008,
-            "avg": 47.63
-          },
-          {
-            "year": 2009,
-            "avg": 46
-          },
-          {
-            "year": 2010,
-            "avg": 44.19
-          },
-          {
-            "year": 2011,
-            "avg": 40.93
-          },
-          {
-            "year": 2012,
-            "avg": 39.4
-          },
-          {
-            "year": 2013,
-            "avg": 43.5
-          },
-          {
-            "year": 2014,
-            "avg": 41.68
-          },
-          {
-            "year": 2015,
-            "avg": 44.72
-          },
-          {
-            "year": 2016,
-            "avg": 44.09
-          },
-          {
-            "year": 2017,
-            "avg": 40.94
-          },
-          {
-            "year": 2018,
-            "avg": 37.92
-          },
-          {
-            "year": 2019,
-            "avg": 42.84
-          },
-          {
-            "year": 2020,
-            "avg": 38.28
-          },
-          {
-            "year": 2021,
-            "avg": 36.54
-          },
-          {
-            "year": 2022,
-            "avg": 43.36
-          },
-          {
-            "year": 2023,
-            "avg": 39.4
-          }
-        ]
+        "avg": 30.3,
+        "n": 6
       }
     ],
-    "latestYear": 2023,
-    "latest": [
-      {
-        "group": "Latin America & Caribbean ",
-        "avg": 44.77
-      },
-      {
-        "group": "North America",
-        "avg": 41.8
-      },
-      {
-        "group": "Sub-Saharan Africa ",
-        "avg": 39.4
-      },
-      {
-        "group": "Middle East, North Africa, Afghanistan & Pakistan",
-        "avg": 33.48
-      },
-      {
-        "group": "East Asia & Pacific",
-        "avg": 33.4
-      },
-      {
-        "group": "Europe & Central Asia",
-        "avg": 31.31
-      }
-    ]
+    "topRegion": "Latin America & Caribbean",
+    "topRegionYears": 22,
+    "totalYears": 22
   },
   "women_parliament_trend": {
     "series": [
@@ -2836,11 +2219,21 @@
       "year": 2023,
       "avg": 25.51
     },
-    "change": 11.92
+    "change": 11.92,
+    "upYears": 21,
+    "steps": 21,
+    "sameCountries": {
+      "countries": 156,
+      "first": 13.7,
+      "last": 26.6,
+      "change": 12.9
+    }
   },
   "regulation_vs_pollution": {
     "n": 4294,
     "r": -0.333,
+    "n_countries": 199,
+    "r_country": -0.348,
     "xLabel": "Regulatory quality (estimate)",
     "yLabel": "PM2.5 air pollution (micrograms/m3)",
     "points": [
@@ -3842,46 +3235,45 @@
     ]
   },
   "esg_composite": {
-    "n_countries": 207,
-    "methodology_note": "Average of each country's percentile rank (0-100) across all 24 indicators and all years reported, split into three pillar sub-scores, then averaged across the three pillars. Indicators where a high value is a bad outcome are inverted first so 100 always means \"best\".",
+    "n_countries": 195,
+    "n_excluded": 22,
+    "total_indicators": 24,
+    "min_indicators": 18,
+    "methodology_note": "Percentile rank (0-100) of each country on each indicator, inverted where a high value is bad, averaged over years within an indicator, then across indicators within a pillar, then across the three pillars. Countries reporting fewer than 18 of 24 indicators are not scored.",
     "top10": [
-      {
-        "country": "Liechtenstein",
-        "iso3": "LIE",
-        "overall": 82.6,
-        "Environmental": 71.2,
-        "Social": 88.3,
-        "Governance": 88.2
-      },
       {
         "country": "Norway",
         "iso3": "NOR",
-        "overall": 80.6,
-        "Environmental": 62,
-        "Social": 83.9,
+        "overall": 80.5,
+        "indicators": 24,
+        "Environmental": 61.6,
+        "Social": 84,
         "Governance": 96
       },
       {
         "country": "Sweden",
         "iso3": "SWE",
-        "overall": 80.6,
+        "overall": 80.5,
+        "indicators": 24,
         "Environmental": 68.6,
-        "Social": 77.3,
+        "Social": 77.1,
         "Governance": 95.9
       },
       {
         "country": "Iceland",
         "iso3": "ISL",
-        "overall": 80.5,
-        "Environmental": 64.3,
-        "Social": 83.3,
+        "overall": 80.1,
+        "indicators": 24,
+        "Environmental": 64.1,
+        "Social": 82.4,
         "Governance": 93.9
       },
       {
         "country": "Finland",
         "iso3": "FIN",
         "overall": 79.2,
-        "Environmental": 62.4,
+        "indicators": 24,
+        "Environmental": 62.5,
         "Social": 77.4,
         "Governance": 97.8
       },
@@ -3889,123 +3281,147 @@
         "country": "Switzerland",
         "iso3": "CHE",
         "overall": 79,
-        "Environmental": 65.3,
-        "Social": 76.8,
+        "indicators": 24,
+        "Environmental": 65.4,
+        "Social": 76.6,
         "Governance": 95
-      },
-      {
-        "country": "Andorra",
-        "iso3": "AND",
-        "overall": 78.7,
-        "Environmental": 74.1,
-        "Social": 72.9,
-        "Governance": 89
       },
       {
         "country": "New Zealand",
         "iso3": "NZL",
-        "overall": 77.4,
-        "Environmental": 60.6,
-        "Social": 75.5,
+        "overall": 77.6,
+        "indicators": 22,
+        "Environmental": 62.5,
+        "Social": 74.2,
         "Governance": 96.1
       },
       {
         "country": "Austria",
         "iso3": "AUT",
-        "overall": 77.1,
-        "Environmental": 60.2,
-        "Social": 79.6,
-        "Governance": 91.5
+        "overall": 77.5,
+        "indicators": 24,
+        "Environmental": 62.1,
+        "Social": 79,
+        "Governance": 91.4
       },
       {
-        "country": "San Marino",
-        "iso3": "SMR",
-        "overall": 75.8,
-        "Environmental": 53.5,
-        "Social": 91.5,
-        "Governance": 82.4
+        "country": "Andorra",
+        "iso3": "AND",
+        "overall": 76.4,
+        "indicators": 19,
+        "Environmental": 75.1,
+        "Social": 65.1,
+        "Governance": 89
+      },
+      {
+        "country": "Denmark",
+        "iso3": "DNK",
+        "overall": 75.5,
+        "indicators": 24,
+        "Environmental": 53.3,
+        "Social": 77.1,
+        "Governance": 96
+      },
+      {
+        "country": "Germany",
+        "iso3": "DEU",
+        "overall": 74.6,
+        "indicators": 24,
+        "Environmental": 52,
+        "Social": 81.5,
+        "Governance": 90.2
       }
     ],
     "bottom10": [
       {
         "country": "Somalia, Fed. Rep.",
         "iso3": "SOM",
-        "overall": 19.6,
-        "Environmental": 49.9,
-        "Social": 3.7,
-        "Governance": 5.3
+        "overall": 18.8,
+        "indicators": 20,
+        "Environmental": 46.1,
+        "Social": 4.3,
+        "Governance": 6.1
       },
       {
         "country": "Yemen, Rep.",
         "iso3": "YEM",
-        "overall": 19.7,
-        "Environmental": 35,
-        "Social": 15.5,
+        "overall": 20.5,
+        "indicators": 23,
+        "Environmental": 34.1,
+        "Social": 18.7,
         "Governance": 8.6
-      },
-      {
-        "country": "Djibouti",
-        "iso3": "DJI",
-        "overall": 25.5,
-        "Environmental": 39,
-        "Social": 9.8,
-        "Governance": 27.8
       },
       {
         "country": "Afghanistan",
         "iso3": "AFG",
-        "overall": 26,
-        "Environmental": 51.1,
-        "Social": 14.7,
-        "Governance": 12.3
-      },
-      {
-        "country": "Iraq",
-        "iso3": "IRQ",
-        "overall": 26.2,
-        "Environmental": 35.5,
-        "Social": 27.2,
-        "Governance": 15.8
-      },
-      {
-        "country": "Libya",
-        "iso3": "LBY",
-        "overall": 26.8,
-        "Environmental": 31.7,
-        "Social": 36.4,
-        "Governance": 12.2
-      },
-      {
-        "country": "Sudan",
-        "iso3": "SDN",
-        "overall": 26.9,
-        "Environmental": 55.6,
-        "Social": 13.1,
-        "Governance": 12
+        "overall": 26.6,
+        "indicators": 22,
+        "Environmental": 49.9,
+        "Social": 15.2,
+        "Governance": 14.8
       },
       {
         "country": "South Sudan",
         "iso3": "SSD",
-        "overall": 27.5,
-        "Environmental": 43.9,
-        "Social": 25.5,
-        "Governance": 13.1
+        "overall": 27.2,
+        "indicators": 21,
+        "Environmental": 48.2,
+        "Social": 20.1,
+        "Governance": 13.2
       },
       {
-        "country": "Syrian Arab Republic",
-        "iso3": "SYR",
-        "overall": 27.9,
-        "Environmental": 38.5,
-        "Social": 32,
-        "Governance": 13.3
+        "country": "Libya",
+        "iso3": "LBY",
+        "overall": 27.2,
+        "indicators": 21,
+        "Environmental": 32.3,
+        "Social": 36.6,
+        "Governance": 12.7
+      },
+      {
+        "country": "Sudan",
+        "iso3": "SDN",
+        "overall": 28.1,
+        "indicators": 23,
+        "Environmental": 53.3,
+        "Social": 17.3,
+        "Governance": 13.7
+      },
+      {
+        "country": "Iraq",
+        "iso3": "IRQ",
+        "overall": 28.1,
+        "indicators": 24,
+        "Environmental": 36,
+        "Social": 31.4,
+        "Governance": 16.8
+      },
+      {
+        "country": "Djibouti",
+        "iso3": "DJI",
+        "overall": 28.3,
+        "indicators": 22,
+        "Environmental": 43.8,
+        "Social": 13.2,
+        "Governance": 27.8
       },
       {
         "country": "Mauritania",
         "iso3": "MRT",
-        "overall": 28.3,
-        "Environmental": 34.9,
-        "Social": 20.2,
-        "Governance": 29.7
+        "overall": 28.5,
+        "indicators": 22,
+        "Environmental": 34.7,
+        "Social": 20.6,
+        "Governance": 30.2
+      },
+      {
+        "country": "Chad",
+        "iso3": "TCD",
+        "overall": 28.5,
+        "indicators": 24,
+        "Environmental": 52.5,
+        "Social": 21.3,
+        "Governance": 11.6
       }
     ]
   },

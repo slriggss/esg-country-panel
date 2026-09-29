@@ -764,3 +764,25 @@ main[data-pillar="Governance"]    { --pillar: var(--series-7); }
   background: radial-gradient(ellipse 55% 65% at 96% calc(12% + var(--scroll) * 55%),
     color-mix(in srgb, var(--series-1) 28%, transparent), transparent 70%);
 }
+
+/* Theme toggle icon (inline SVG replaces the old emoji) */
+#theme-toggle { display: inline-flex; align-items: center; gap: 6px; }
+#theme-toggle .tt-icon { flex: none; }
+
+/* Load problems and no-JavaScript notes */
+.load-error, .noscript-note {
+  margin: 20px 0 0;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--series-2);
+  border-radius: 6px;
+  background: var(--surface-1);
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+.load-error[hidden] { display: none; }
+
+/* Dashboard while a newly picked indicator is downloading */
+main.is-loading .charts-grid,
+main.is-loading .stat-grid,
+main.is-loading .table-wrap { opacity: 0.55; transition: opacity 0.15s; }

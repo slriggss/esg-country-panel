@@ -1,5 +1,6 @@
-let allRows = [];
-let indicatorMeta = []; // [{code, name, pillar}]
+let allRows = []; // rows of the indicator currently selected (loaded on demand)
+let indicatorMeta = []; // [{code, name, pillar, file, rows}] from data/manifest.json
+const rowCache = {}; // indicator code -> its parsed rows, so switching back is instant
 let charts = {}; // canvasId -> Chart instance
 let mapFeatures = null; // GeoJSON features from the world topojson
 let isoToNumeric = {}; // ISO3 -> numeric country code (for joining to the map)
@@ -108,11 +109,7 @@ function drawIndicatorPicker() {
   chips.className = `chip-row indicator-chips ${pillarCls}`;
   indicatorMeta.filter(i => i.pillar === activePillar).forEach(i => {
     const b = chip(i.name, i.code === state.indicator);
-    b.addEventListener('click', () => {
-      state.indicator = i.code;
-      drawIndicatorPicker();
-      queueRender();
-    });
+    b.addEventListener('click', () => selectIndicator(i.code));
     chips.appendChild(b);
   });
 }
@@ -262,11 +259,11 @@ function drawAllFilters() {
   drawCountryChips();
 }
 
-function populateFilters() {
-  YEARS = [...new Set(allRows.map(r => r.year))].sort((a, b) => a - b);
-  REGIONS = [...new Set(allRows.map(r => r.region))].sort();
-  INCOMES = INCOME_ORDER.filter(g => allRows.some(r => r.income_group === g));
-  COUNTRIES = [...new Map(allRows.map(r => [r.iso3, r.country])).entries()].sort((a, b) => a[1].localeCompare(b[1]));
+function populateFilters(manifest) {
+  YEARS = manifest.years;
+  REGIONS = manifest.regions;
+  INCOMES = INCOME_ORDER.filter(g => manifest.incomes.includes(g));
+  COUNTRIES = manifest.countries;
 
   state.indicator = DEFAULT_INDICATOR;
   state.yearFrom = YEARS[0];
@@ -292,7 +289,7 @@ function populateFilters() {
     });
   });
 
-  document.getElementById('btn-reset').addEventListener('click', () => {
+  document.getElementById('btn-reset').addEventListener('click', async () => {
     document.querySelectorAll('#measure-switch button').forEach(b => b.classList.remove('active'));
     document.querySelector('#measure-switch button[data-measure="avg"]').classList.add('active');
     document.querySelectorAll('#breakdown-switch button').forEach(b => b.classList.remove('active'));
@@ -304,7 +301,7 @@ function populateFilters() {
     activePillar = null;
     document.getElementById('f-country-search').value = '';
     drawAllFilters();
-    render();
+    if (await loadCurrentIndicator()) render();
   });
 
   document.getElementById('btn-share').addEventListener('click', () => {
@@ -435,11 +432,34 @@ function addIntro(id, cfg) {
   }
 }
 
+// Filter changes update the existing chart in place (new data and options, no
+// rebuild, no animation) instead of destroying and recreating it, so dragging
+// the year slider stays smooth.
+function updateChart(chart, config) {
+  chart.$focus = null; // hover-fade state belongs to the datasets being replaced
+  chart.$legendFocus = false;
+  chart.data = config.data;
+  chart.options = config.options;
+  chart.update('none');
+}
+
+// True while charts are being redrawn for a theme switch: no intro/animation replay.
+let redrawingForTheme = false;
+
 function mountChart(id, config) {
-  destroyChart(id);
   const canvas = document.getElementById(id);
   const isOpen = cardOpened[id];
-  if (isOpen && isOpen()) { charts[id] = new Chart(canvas, config); return; }
+  const existing = charts[id];
+  if (existing && existing.config.type === config.type && isOpen && isOpen()) {
+    updateChart(existing, config);
+    return;
+  }
+  destroyChart(id);
+  if (isOpen && isOpen()) {
+    if (redrawingForTheme) { config.options = config.options || {}; config.options.animation = false; }
+    charts[id] = new Chart(canvas, config);
+    return;
+  }
   pendingConfig[id] = config;
   if (isOpen) return; // card is already opening; it will use the latest config
   cardOpened[id] = whenCardOpens(canvas.closest('.chart-card'), () => {
@@ -452,6 +472,8 @@ function mountChart(id, config) {
 
 function render() {
   syncURL();
+  // Wait until the selected indicator's rows have arrived (they load on demand).
+  if (!allRows.length || allRows[0].indicator_code !== state.indicator) return;
   const rows = filteredForIndicator();
   const ind = indicatorMeta.find(i => i.code === state.indicator);
   const C = window.ESG_COLORS;
@@ -616,7 +638,10 @@ function render() {
   }
 
   // --- Chart 5: world map, latest year ---
-  if (mapFeatures && window.ChartGeo) {
+  const mapCanvas = document.getElementById('chart-map');
+  if (!mapFeatures && mapCanvas) {
+    mapCanvas.parentElement.innerHTML = '<p class="loading-note">The map library could not be loaded, so the map is not shown. The other charts and the table below are unaffected.</p>';
+  } else if (mapFeatures && window.ChartGeo && mapCanvas) {
     try {
       const valueByIso3 = {};
       latestRows.forEach(r => { valueByIso3[r.iso3] = r.value; });
@@ -690,38 +715,98 @@ function render() {
     : `${rows.length.toLocaleString()} matching row${rows.length === 1 ? '' : 's'}.`;
 }
 
-function loadCSV() {
-  return new Promise((resolve) => {
-    Papa.parse('data/esg_panel.csv', {
+function parseCSV(url) {
+  return new Promise((resolve, reject) => {
+    Papa.parse(url, {
       download: true, header: true, dynamicTyping: true, skipEmptyLines: true,
       complete: (results) => resolve(results.data.filter(r => r.iso3)),
+      error: (err) => reject(new Error(err && err.message ? err.message : 'download failed')),
     });
   });
 }
 
-Promise.all([
-  loadCSV(),
-  fetch('data/world-countries-50m.json').then(r => r.json()),
-  fetch('data/iso3_numeric.json').then(r => r.json()),
-]).then(([rows, topology, isoMap]) => {
-  allRows = rows;
-  const seen = new Set();
-  indicatorMeta = [];
-  allRows.forEach(r => {
-    if (!seen.has(r.indicator_code)) {
-      seen.add(r.indicator_code);
-      indicatorMeta.push({ code: r.indicator_code, name: r.indicator_name, pillar: r.pillar });
-    }
+// Fetch one indicator's rows (about 0.4 MB) the first time it is needed. The
+// per-indicator files leave out the columns that are constant for the
+// indicator, so put them back here to keep the rest of the code unchanged.
+async function loadIndicator(code) {
+  if (rowCache[code]) return rowCache[code];
+  const meta = indicatorMeta.find(i => i.code === code);
+  const rows = await parseCSV('data/' + meta.file);
+  rows.forEach(r => {
+    r.indicator_code = meta.code;
+    r.indicator_name = meta.name;
+    r.pillar = meta.pillar;
   });
-  indicatorMeta.sort((a, b) => a.name.localeCompare(b.name));
+  rowCache[code] = rows;
+  return rows;
+}
+
+function setLoading(on) {
+  document.querySelector('main').classList.toggle('is-loading', on);
+  if (on) document.getElementById('result-count').textContent = 'Loading indicator data…';
+}
+
+function showDataError(err) {
+  document.getElementById('table-body').innerHTML =
+    `<tr><td colspan="8" class="loading-note">Could not load the data (${err.message}). Try reloading.</td></tr>`;
+  document.getElementById('result-count').textContent = '';
+}
+
+// Load the rows for state.indicator into allRows. Returns false if the reader
+// picked a different indicator while this one was downloading (a newer call
+// owns the screen) or if the download failed.
+async function loadCurrentIndicator() {
+  const code = state.indicator;
+  if (!rowCache[code]) setLoading(true);
+  try {
+    const rows = await loadIndicator(code);
+    if (state.indicator !== code) return false;
+    allRows = rows;
+    setLoading(false);
+    return true;
+  } catch (err) {
+    if (state.indicator === code) { setLoading(false); showDataError(err); }
+    return false;
+  }
+}
+
+async function selectIndicator(code) {
+  state.indicator = code;
+  drawIndicatorPicker();
+  if (await loadCurrentIndicator()) queueRender();
+}
+
+// Charts hold theme colors in their configs, so after a theme switch rebuild
+// them all from the new colors (without replaying intro animations).
+ESG_ON_THEME_CHANGE(() => {
+  if (!allRows.length) return;
+  Object.keys(charts).forEach(destroyChart);
+  redrawingForTheme = true;
+  try { render(); } finally { redrawingForTheme = false; }
+});
+
+function fatal(message) {
+  document.getElementById('table-body').innerHTML = `<tr><td colspan="8" class="loading-note">${message}</td></tr>`;
+}
+
+async function init() {
+  if (!window.Chart || !window.Papa) {
+    fatal('A charting or data library could not be loaded (check your connection or an ad/script blocker). Try reloading.');
+    return;
+  }
+  const [manifest, topology, isoMap] = await Promise.all([
+    fetch('data/manifest.json').then(r => { if (!r.ok) throw new Error('manifest: HTTP ' + r.status); return r.json(); }),
+    fetch('data/world-countries-50m.json').then(r => r.json()),
+    fetch('data/iso3_numeric.json').then(r => r.json()),
+  ]);
+  indicatorMeta = manifest.indicators;
 
   isoMap.forEach(m => { isoToNumeric[m.iso3] = m.numeric; numericToIso3[m.numeric] = m.iso3; });
-  mapFeatures = ChartGeo.topojson.feature(topology, topology.objects.countries).features;
+  if (window.ChartGeo) mapFeatures = ChartGeo.topojson.feature(topology, topology.objects.countries).features;
 
-  populateFilters();
+  populateFilters(manifest);
   applyStateFromURL();
-  render();
-}).catch((err) => {
-  document.getElementById('table-body').innerHTML =
-    `<tr><td colspan="8" class="loading-note">Could not load the data set (${err.message}). Try reloading.</td></tr>`;
-});
+  if (await loadCurrentIndicator()) render();
+}
+
+init().catch((err) => fatal(`Could not load the data set (${err.message}). Try reloading.`));

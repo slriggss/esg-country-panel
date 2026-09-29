@@ -1,18 +1,16 @@
 <!doctype html>
-<!-- GENERATED FILE: edit index.template.html and run `node scripts/build_report.js`. -->
-
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Two Decades of E, S, and G &mdash; A World Bank Country Panel</title>
-<meta name="description" content="An ESG-lens report on 22 years of World Bank country data across 217 countries.">
+<meta name="description" content="An ESG-lens report on {{head.nyears}} years of World Bank country data across {{head.countries}} countries.">
 <link rel="canonical" href="https://slriggss.github.io/esg-country-panel/">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ESG Country Panel">
 <meta property="og:title" content="Two Decades of E, S, and G &mdash; A World Bank Country Panel">
-<meta property="og:description" content="22 years of World Bank data on 217 countries, read through an ESG lens: nine findings and an interactive dashboard.">
+<meta property="og:description" content="{{head.nyears}} years of World Bank data on {{head.countries}} countries, read through an ESG lens: nine findings and an interactive dashboard.">
 <meta property="og:url" content="https://slriggss.github.io/esg-country-panel/">
 <meta property="og:image" content="https://slriggss.github.io/esg-country-panel/assets/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -49,21 +47,21 @@
 
 <header class="page-header">
   <div class="wrap">
-    <h1>Two decades of Environmental, Social, and Governance data, 217 countries at a time</h1>
+    <h1>Two decades of Environmental, Social, and Governance data, {{head.countries}} countries at a time</h1>
     <p class="byline">Shelby L. Riggs &middot; Financial Data Analytics &middot; Data Website Project</p>
     <p class="summary">
-      This report reads 22 years (2002&ndash;2023) of country-level World Bank data through an ESG lens &mdash;
+      This report reads {{head.nyears}} years ({{head.years}}) of country-level World Bank data through an ESG lens &mdash;
       pairing environmental indicators (energy mix, emissions, forest cover), social indicators (inequality,
       health, labor), and governance indicators (rule of law, regulatory quality, corruption control) for the
-      same 217 countries, year over year. The goal isn't a single ESG score; it's testing whether the
+      same {{head.countries}} countries, year over year. The goal isn't a single ESG score; it's testing whether the
       relationships an ESG analyst assumes &mdash; that better governance tracks with better outcomes, that the
       energy transition is visibly underway &mdash; actually show up in two decades of data.
     </p>
     <div class="stat-grid">
-      <div class="stat-tile"><div class="value" id="stat-rows">95,355</div><div class="label">Country-year-indicator observations</div></div>
-      <div class="stat-tile"><div class="value" id="stat-countries">217</div><div class="label">Countries covered</div></div>
-      <div class="stat-tile"><div class="value" id="stat-years">2002&ndash;2023</div><div class="label">Years spanned</div></div>
-      <div class="stat-tile"><div class="value" id="stat-indicators">24</div><div class="label">ESG indicators tracked</div></div>
+      <div class="stat-tile"><div class="value" id="stat-rows">{{head.rows}}</div><div class="label">Country-year-indicator observations</div></div>
+      <div class="stat-tile"><div class="value" id="stat-countries">{{head.countries}}</div><div class="label">Countries covered</div></div>
+      <div class="stat-tile"><div class="value" id="stat-years">{{head.years}}</div><div class="label">Years spanned</div></div>
+      <div class="stat-tile"><div class="value" id="stat-indicators">{{head.indicators}}</div><div class="label">ESG indicators tracked</div></div>
     </div>
     <nav class="section-nav" aria-label="Report sections">
       <div class="nav-group env">
@@ -104,18 +102,18 @@
     <h2>Renewables are gaining in electricity, but the average country's total energy mix hasn't gotten greener</h2>
     <p>
       Averaged across every reporting country, renewable energy's share of total final energy consumption slipped
-      from 31.2% in 2002 to 29.1% in 2021 &mdash; a 2.1-point decline. This is a simple average of each country's
+      from {{ren.first}}% in {{ren.y0}} to {{ren.last}}% in {{ren.y1}} &mdash; a {{ren.drop}}-point decline. This is a simple average of each country's
       own share, so every country counts equally. But the World Bank counts traditional biomass (firewood,
       charcoal) as renewable, and the decline sits in the poorest countries: lower-middle-income countries fell
-      from 55.9% to 45.2% and low-income countries from 74.5% to 66.6%, while high-income countries rose from
-      10.5% to 15.6%. That pattern most likely reflects households moving off traditional biomass as they gain
+      from {{ren.lmi.first}}% to {{ren.lmi.last}}% and low-income countries from {{ren.li.first}}% to {{ren.li.last}}%, while high-income countries rose from
+      {{ren.hi.first}}% to {{ren.hi.last}}%. That pattern most likely reflects households moving off traditional biomass as they gain
       modern energy, rather than a retreat from modern renewables. (The set of reporting countries changes from
-      year to year, so as a check: among the 209 countries with data in both 2002 and 2021, the average
-      moved from 31.2% to 29.2%, a 2.0-point decline &mdash; the trend isn't an artifact of who reported.)
+      year to year, so as a check: among the {{ren.same.n}} countries with data in both {{ren.y0}} and {{ren.y1}}, the average
+      moved from {{ren.same.first}}% to {{ren.same.last}}%, a {{ren.same.drop}}-point decline &mdash; the trend isn't an artifact of who reported.)
     </p>
     <p>
-      Electricity tells a different story. Among the 195 countries that reported in both 2002 and 2021, the
-      average renewable share of electricity generation rose from 26.9% to 32.8%, and it rose in 136 of them. The
+      Electricity tells a different story. Among the {{ren.elec.n}} countries that reported in both {{ren.y0}} and {{ren.y1}}, the
+      average renewable share of electricity generation rose from {{ren.elec.first}}% to {{ren.elec.last}}%, and it rose in {{ren.elec.rose}} of them. The
       power-sector transition is broad-based; it just hasn't yet moved countries' total energy mix, which still
       includes heating, transport, and industry.
     </p>
@@ -127,21 +125,21 @@
     <span class="tag tag-social">Social</span>
     <h2>Electricity access still splits almost exactly along income lines</h2>
     <p>
-      In 2023, high-income countries averaged 99.9% electricity access and upper-middle-income countries 97.6%
-      &mdash; both essentially universal. Lower-middle-income countries averaged 79.0%, and low-income countries
-      just 43.5%: a 56.4-point gap between the richest and poorest income tier. This isn't a story of gradual
+      In {{acc.year}}, high-income countries averaged {{acc.hi}}% electricity access and upper-middle-income countries {{acc.umi}}%
+      &mdash; both essentially universal. Lower-middle-income countries averaged {{acc.lmi}}%, and low-income countries
+      just {{acc.li}}%: a {{acc.gap}}-point gap between the richest and poorest income tier. This isn't a story of gradual
       convergence so much as two different worlds &mdash; access is a solved problem for three of the four income
       tiers and an open one for the fourth.
     </p>
     <div class="chart-card"><div class="chart-holder"><canvas id="chart-electricity"></canvas></div></div>
-    <p class="figure-note">World Bank indicator EG.ELC.ACCS.ZS, mean by World Bank income classification, 2002&ndash;2023.</p>
+    <p class="figure-note">World Bank indicator EG.ELC.ACCS.ZS, mean by World Bank income classification, {{head.years}}.</p>
   </section>
 
   <section class="finding" id="s-emissions">
     <span class="tag tag-environmental">Environmental</span>
     <h2>High-income countries emit more than seven times the CO2 per person of low-income countries</h2>
     <p>
-      In 2023, emissions per person stepped down with income: the average high-income country produced 7.2 times
+      In {{ghg.year}}, emissions per person stepped down with income: the average high-income country produced {{ghg.ratio}} times
       the CO2-equivalent per person of the average low-income country. Read alongside the electricity-access
       finding above, the pattern is uncomfortable for ESG framing that treats "emissions" and "development" as
       separable: the countries furthest from full electricity access are also the ones with the smallest carbon
@@ -149,21 +147,21 @@
     </p>
     <div class="chart-card"><div class="chart-holder"><canvas id="chart-ghg"></canvas></div></div>
     <ul class="bar-notes" id="ghg-notes">
-      <li data-index="0" tabindex="0"><strong>High income &mdash; 11.17 t per person.</strong> The largest footprint of the four tiers, 7.2&times; the low-income average.</li>
-      <li data-index="1" tabindex="0"><strong>Upper middle income &mdash; 5.65 t.</strong> Roughly half the high-income level.</li>
-      <li data-index="2" tabindex="0"><strong>Lower middle income &mdash; 2.36 t.</strong> About a fifth of the high-income level.</li>
-      <li data-index="3" tabindex="0"><strong>Low income &mdash; 1.55 t.</strong> The smallest footprint &mdash; and, from the finding above, the tier with the lowest electricity access (43.5%).</li>
+      <li data-index="0" tabindex="0"><strong>High income &mdash; {{ghg.hi}} t per person.</strong> The largest footprint of the four tiers, {{ghg.ratio}}&times; the low-income average.</li>
+      <li data-index="1" tabindex="0"><strong>Upper middle income &mdash; {{ghg.umi}} t.</strong> Roughly half the high-income level.</li>
+      <li data-index="2" tabindex="0"><strong>Lower middle income &mdash; {{ghg.lmi}} t.</strong> About a fifth of the high-income level.</li>
+      <li data-index="3" tabindex="0"><strong>Low income &mdash; {{ghg.li}} t.</strong> The smallest footprint &mdash; and, from the finding above, the tier with the lowest electricity access ({{acc.li}}%).</li>
     </ul>
-    <p class="figure-note">World Bank indicator EN.GHG.ALL.PC.CE.AR5 (total GHG excluding land-use change), mean by income group, 2023.</p>
+    <p class="figure-note">World Bank indicator EN.GHG.ALL.PC.CE.AR5 (total GHG excluding land-use change), mean by income group, {{ghg.year}}.</p>
   </section>
 
   <section class="finding" id="s-coal">
     <span class="tag tag-environmental">Environmental</span>
     <h2>Coal's share of the electricity mix has drifted down, but slowly</h2>
     <p>
-      The average country generated 12.5% of its electricity from coal in 2002, falling to 10.7% by 2021 &mdash;
-      a real but modest 1.85-point decline over two decades. Holding the country set fixed gives the same
-      picture: the 205 countries with data in both years went from 12.6% to 10.7%. That's a much smaller move than
+      The average country generated {{coal.first}}% of its electricity from coal in {{coal.y0}}, falling to {{coal.last}}% by {{coal.y1}} &mdash;
+      a real but modest {{coal.drop}}-point decline over two decades. Holding the country set fixed gives the same
+      picture: the {{coal.same.n}} countries with data in both years went from {{coal.same.first}}% to {{coal.same.last}}%. That's a much smaller move than
       the renewable-share finding above would predict if coal were being displaced directly by renewables; more
       likely, natural gas and other sources are absorbing some of coal's lost share too.
     </p>
@@ -175,56 +173,56 @@
     <span class="tag tag-governance">Governance</span>
     <h2>Effective government and electricity access go together &mdash; but the link runs one way</h2>
     <p>
-      Across 4,370 country-year observations, the correlation between the World Bank's Government Effectiveness
-      score and electricity access is r = 0.574. On the 203 country averages plotted below (each dot is one country's
-      2002&ndash;2023 average on both measures), r = 0.610 &mdash; a strong positive relationship for cross-country social
+      Across {{gov.n}} country-year observations, the correlation between the World Bank's Government Effectiveness
+      score and electricity access is r = {{gov.r}}. On the {{gov.nc}} country averages plotted below (each dot is one country's
+      {{head.years}} average on both measures), r = {{gov.rc}} &mdash; a strong positive relationship for cross-country social
       data. It is an association, not a demonstration that governance causes access: income, geography, and
       governance move together, and the country-years behind the first figure are not independent observations.
     </p>
     <p>
-      The pattern is lopsided. Of the 91 countries with a governance score at or above zero, only 2 average
+      The pattern is lopsided. Of the {{gov.strong}} countries with a governance score at or above zero, only {{gov.strong80}} average
       below 80% electricity access &mdash; the bottom-right of the chart is nearly empty. But weak governance is not
-      a barrier on its own: 43 of the 112 countries scoring below zero average above 90%. Good governance
+      a barrier on its own: {{gov.weak90}} of the {{gov.weak}} countries scoring below zero average above 90%. Good governance
       looks close to enough for near-universal access; its absence doesn't rule it out.
     </p>
     <div class="chart-card"><div class="chart-holder"><canvas id="chart-governance"></canvas></div></div>
-    <p class="figure-note">World Bank indicators GOV_WGI_GE.EST and EG.ELC.ACCS.ZS. Each point is one country's own multi-year average (203 countries with data on both). Dashed line: least-squares fit to the plotted country averages; the r shown on the chart is for those same points.</p>
+    <p class="figure-note">World Bank indicators GOV_WGI_GE.EST and EG.ELC.ACCS.ZS. Each point is one country's own multi-year average ({{gov.nc}} countries with data on both). Dashed line: least-squares fit to the plotted country averages; the r shown on the chart is for those same points.</p>
   </section>
 
   <section class="finding" id="s-inequality">
     <span class="tag tag-social">Social</span>
     <h2>Latin America &amp; the Caribbean has had the highest income inequality of any region in every year of the panel</h2>
     <p>
-      Gini data is reported unevenly, so each country counts once, at its most recent reading between 2015 and 2023
-      (151 countries in all). On that basis Latin America &amp; Caribbean averages 43.4 (22 countries), followed by
-      Sub-Saharan Africa at 40.5 (44 countries). South Asia sits lowest at 30.3 (6 countries).
-      North America shows 36.6, but that rests on only 2 countries, so it shouldn't be read as a regional
+      Gini data is reported unevenly, so each country counts once, at its most recent reading between {{gini.from}} and {{gini.to}}
+      ({{gini.n}} countries in all). On that basis {{gini.r1.name}} averages {{gini.r1.avg}} ({{gini.r1.n}} countries), followed by
+      {{gini.r2.name}} at {{gini.r2.avg}} ({{gini.r2.n}} countries). {{gini.low.name}} sits lowest at {{gini.low.avg}} ({{gini.low.n}} countries).
+      North America shows {{gini.na.avg}}, but that rests on only {{gini.na.n}} countries, so it shouldn't be read as a regional
       pattern. The top spot isn't a fluke of the window: comparing whichever countries reported in each year,
-      Latin America &amp; Caribbean had the highest regional average in 22 of 22 years.
+      {{gini.r1.name}} had the highest regional average in {{gini.topyears}} of {{gini.years}} years.
     </p>
     <div class="chart-card"><div class="chart-holder"><canvas id="chart-gini"></canvas></div></div>
-    <p class="figure-note">World Bank indicator SI.POV.GINI, unweighted mean by region of each country's most recent value in 2015&ndash;2023; the number of countries behind each bar is in its label. Gini figures come from household surveys that many countries run only every few years, so region averages with few countries are fragile.</p>
+    <p class="figure-note">World Bank indicator SI.POV.GINI, unweighted mean by region of each country's most recent value in {{gini.from}}&ndash;{{gini.to}}; the number of countries behind each bar is in its label. Gini figures come from household surveys that many countries run only every few years, so region averages with few countries are fragile.</p>
   </section>
 
   <section class="finding" id="s-women">
     <span class="tag tag-governance">Governance</span>
-    <h2>Women's parliamentary representation has nearly doubled since 2002</h2>
+    <h2>Women's parliamentary representation has nearly doubled since {{wom.y0}}</h2>
     <p>
-      The average share of parliamentary seats held by women rose from 13.6% in 2002 to 25.5% in 2023 &mdash; an
-      11.9-point gain. It's the clearest steady, broad-based trend in this entire dataset: unlike the renewable
-      energy and coal figures above, the average rose in every one of the 21 year-over-year steps in the panel. Holding the
-      country set fixed, the 156 countries with data in both years went from 13.7% to 26.6%.
+      The average share of parliamentary seats held by women rose from {{wom.first}}% in {{wom.y0}} to {{wom.last}}% in {{wom.y1}} &mdash; an
+      {{wom.change}}-point gain. It's the clearest steady, broad-based trend in this entire dataset: unlike the renewable
+      energy and coal figures above, the average rose in every one of the {{wom.steps}} year-over-year steps in the panel. Holding the
+      country set fixed, the {{wom.same.n}} countries with data in both years went from {{wom.same.first}}% to {{wom.same.last}}%.
     </p>
     <div class="chart-card"><div class="chart-holder"><canvas id="chart-women"></canvas></div></div>
-    <p class="figure-note">World Bank indicator SG.GEN.PARL.ZS, unweighted mean across reporting countries, 2002&ndash;2023.</p>
+    <p class="figure-note">World Bank indicator SG.GEN.PARL.ZS, unweighted mean across reporting countries, {{head.years}}.</p>
   </section>
 
   <section class="finding" id="s-regulation">
     <span class="tag tag-governance">Governance</span>
     <h2>Stronger regulatory quality tracks with cleaner air &mdash; a moderate but real relationship</h2>
     <p>
-      Regulatory Quality and PM2.5 air pollution correlate at r = &minus;0.333 across 4,294 country-year
-      observations, and at r = &minus;0.348 across the 199 country averages plotted below &mdash; weaker than the
+      Regulatory Quality and PM2.5 air pollution correlate at r = {{reg.r}} across {{reg.n}} country-year
+      observations, and at r = {{reg.rc}} across the {{reg.nc}} country averages plotted below &mdash; weaker than the
       governance/electricity relationship above, but still a meaningful negative relationship: better-regulated
       countries tend to have less fine-particulate air pollution, even though regulation is far from the only thing
       driving air quality (geography, industrial mix, and population density all matter too). As above, this is
@@ -236,9 +234,9 @@
 
   <section class="finding" id="s-composite">
     <span class="tag tag-governance">Composite</span>
-    <h2>Building an ESG composite score from this data &mdash; and where it lands 195 countries</h2>
+    <h2>Building an ESG composite score from this data &mdash; and where it lands {{esg.n}} countries</h2>
     <p>
-      Every other finding above looks at one indicator at a time. This one combines all 24. Each country's value on
+      Every other finding above looks at one indicator at a time. This one combines all {{esg.total}}. Each country's value on
       each indicator is converted to a percentile rank against every other country that reported it that year (0&ndash;100);
       indicators where a high value is a bad outcome are inverted so 100 always means the best outcome. A country's
       years are averaged within each indicator, the indicators are averaged into an Environmental, a Social, and a
@@ -248,13 +246,13 @@
     </p>
     <p>
       Countries that report only a handful of indicators can't be ranked fairly, because their score depends on which few
-      happen to be available. So a country is scored only if it reports at least 18 of the 24 indicators and
-      at least two in each pillar; that leaves 195 countries and sets aside 22, mostly small economies and territories.
-      As a sanity check, Norway, Sweden, Iceland, Finland, and Switzerland lead the list and Somalia, Yemen, Afghanistan, South Sudan, and Libya sit at the bottom &mdash; a mix of wealthy, stable
+      happen to be available. So a country is scored only if it reports at least {{esg.min}} of the {{esg.total}} indicators and
+      at least two in each pillar; that leaves {{esg.n}} countries and sets aside {{esg.excluded}}, mostly small economies and territories.
+      As a sanity check, {{esg.top5}} lead the list and {{esg.bottom5}} sit at the bottom &mdash; a mix of wealthy, stable
       countries at the top and conflict-affected or fragile states at the bottom, which is what a face-valid score should show.
-      Two cautions: the top five sit within 1.5 points of each other, so their exact order means little; and the
-      environmental pillar is where even leaders lose ground (for Norway, 61.6 on Environmental against
-      96.0 on Governance), because wealthy countries do poorly on per-capita emissions and fossil-fuel reliance.
+      Two cautions: the top five sit within {{esg.top5.spread}} points of each other, so their exact order means little; and the
+      environmental pillar is where even leaders lose ground (for {{esg.top1.name}}, {{esg.top1.env}} on Environmental against
+      {{esg.top1.gov}} on Governance), because wealthy countries do poorly on per-capita emissions and fossil-fuel reliance.
     </p>
     <div class="chart-pair">
       <div class="chart-card">
@@ -266,7 +264,7 @@
         <div class="chart-holder" style="height:380px;"><canvas id="chart-bottom10"></canvas></div>
       </div>
     </div>
-    <p class="figure-note">Composite = average of the Environmental, Social, and Governance pillar scores. Hover a bar to see how many of the 24 indicators the country reports. Full method in the closing section below.</p>
+    <p class="figure-note">Composite = average of the Environmental, Social, and Governance pillar scores. Hover a bar to see how many of the {{esg.total}} indicators the country reports. Full method in the closing section below.</p>
   </section>
 
   <section class="methodology" id="s-method">
@@ -279,8 +277,8 @@
       downloaded by hand.
     </p>
     <p><strong>What one row is.</strong> One row is one country, in one year, for one indicator &mdash; for
-      example, Brazil's forest area in 2015. The full panel (<code>data/esg_panel.csv</code>) has 95,355 such
-      rows: 217 countries &times; 2002&ndash;2023 &times; 24 indicators, minus the combinations no country
+      example, Brazil's forest area in 2015. The full panel (<code>data/esg_panel.csv</code>) has {{head.rows}} such
+      rows: {{head.countries}} countries &times; {{head.years}} &times; {{head.indicators}} indicators, minus the combinations no country
       reported.</p>
     <p><strong>Indicators tracked.</strong> 9 environmental (electricity access, renewable energy and
       electricity share, coal share, fossil fuel share, forest area, greenhouse gas emissions per capita, PM2.5
@@ -309,14 +307,14 @@
       other country reporting the same indicator in the same year (0 = lowest, 100 = highest). Year-over-year
       percent change is <code>(this year &minus; last year) / |last year|</code> for the same country and indicator.</p>
     <p><strong>Regional inequality.</strong> Each country counts once in the Gini comparison, at its most recent value
-      from 2015 to 2023, because Gini surveys are irregular and a single year leaves some regions with one or two
+      from {{gini.from}} to {{gini.to}}, because Gini surveys are irregular and a single year leaves some regions with one or two
       countries. The number of countries behind each region is shown on the chart.</p>
     <p><strong>The composite score.</strong> For each indicator, a country's percentile rank in each year is averaged
       across its years; indicators where a high value is a bad outcome (coal share, fossil fuel share, GHG per capita,
       PM2.5, unemployment, Gini, under-5 mortality) are inverted first. Indicator scores are averaged into three pillar
       scores, and the pillar scores are averaged into the composite, so each indicator has equal weight inside its
-      pillar regardless of how many years it reports. A country is scored only if it reports at least 18 of the
-      24 indicators and at least two in each pillar. The score measures relative standing among countries that
+      pillar regardless of how many years it reports. A country is scored only if it reports at least {{esg.min}} of the
+      {{esg.total}} indicators and at least two in each pillar. The score measures relative standing among countries that
       report, not absolute performance, and it depends on the equal-weight choice.</p>
     <p><strong>Reproducibility.</strong> Every figure and every number in the written findings is computed in
       <code>scripts/analyze.js</code> from the same CSV the dashboard loads, and the page text is filled in from that
